@@ -1,0 +1,12 @@
+all: group compiler
+
+group:
+	echo "Leo Welter - lwelter\nHarika Thatukuru - HI\n"
+
+compiler: helloworld
+
+helloworld: helloworld.c
+	$(CC) -o $@ $<
+
+clean:
+	rm helloworld
