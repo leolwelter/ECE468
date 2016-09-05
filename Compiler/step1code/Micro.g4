@@ -1,6 +1,6 @@
 grammar Micro;
 
-program: ('PROGRAM' id 'BEGIN' pgm_body 'END');
+program: (PROGRAM id BEGIN pgm_body END);
 
 id: IDENTIFIER;
 
@@ -16,7 +16,7 @@ INTLITERAL :	'0'..'9'+ ;
 
 FLOATLITERAL :   ('0'..'9')+ '.' ('0'..'9')* | '.' ('0'..'9')+ ;
 
-COMMENT :   '--'  ~('\n')* '\n' ;
+COMMENT :   '--'  ~('\n')* '\n' -> skip;
 
 STRINGLITERAL :  '"' ( ~('"') )* '"' ;
 
@@ -24,4 +24,3 @@ OPERATORS : (':=') | ('+') | ('-') | ('*') | ('/') | ('=') | ('!=')
 | ('<') | ('>') | ('(') | (')') | (';') | (',') | ('<=') | ('>=') ;
 
 WHITESPACE : [ \t\r\n]+ -> skip;
-

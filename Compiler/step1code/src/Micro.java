@@ -13,7 +13,7 @@ import org.antlr.v4.*;
 public class Micro {
 
 	public static void main(String[] args) throws IOException {
-	        ANTLRFileStream input = new ANTLRFileStream(args[0]);
+	  ANTLRFileStream input = new ANTLRFileStream(args[0]);
 		MicroLexer lexer = new MicroLexer(input);
 		//LexerInterpreter lexer = new LexerInterpreter(input);
 		while(true) {
@@ -21,8 +21,8 @@ public class Micro {
 			if(token.getType() == Lexer.EOF) {
 				break;
 			}
-			System.out.println("Token Type: " + token.getType());
+			System.out.println("Token Type: " + MicroLexer.tokenNames[token.getType()]);
 			System.out.println("Value: " + token.getText());
 		}
 	}
-}	
+}
