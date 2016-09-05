@@ -4,7 +4,7 @@ ANTLR_SCRIPT := Micro.g4
 all: group compiler
 
 group:
-	@echo "lwelter hthatukuru"
+	@echo "group_member1 group_member2"
 compiler:
 	rm -rf build
 	mkdir build

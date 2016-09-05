@@ -1,0 +1,283 @@
+Token Type: 1
+Value: PROGRAM
+Token Type: 5
+Value: fibonacci
+Token Type: 2
+Value: BEGIN
+Token Type: 4
+Value: STRING
+Token Type: 5
+Value: input
+Token Type: 10
+Value: :=
+Token Type: 9
+Value: "Please input an integer number: "
+Token Type: 10
+Value: ;
+Token Type: 4
+Value: STRING
+Token Type: 5
+Value: space
+Token Type: 10
+Value: :=
+Token Type: 9
+Value: " "
+Token Type: 10
+Value: ;
+Token Type: 4
+Value: STRING
+Token Type: 5
+Value: eol
+Token Type: 10
+Value: :=
+Token Type: 9
+Value: "\n"
+Token Type: 10
+Value: ;
+Token Type: 4
+Value: FUNCTION
+Token Type: 4
+Value: INT
+Token Type: 5
+Value: F
+Token Type: 10
+Value: (
+Token Type: 4
+Value: INT
+Token Type: 5
+Value: n
+Token Type: 10
+Value: )
+Token Type: 2
+Value: BEGIN
+Token Type: 4
+Value: IF
+Token Type: 10
+Value: (
+Token Type: 5
+Value: n
+Token Type: 10
+Value: >
+Token Type: 6
+Value: 2
+Token Type: 10
+Value: )
+Token Type: 4
+Value: RETURN
+Token Type: 5
+Value: F
+Token Type: 10
+Value: (
+Token Type: 5
+Value: n
+Token Type: 10
+Value: -
+Token Type: 6
+Value: 1
+Token Type: 10
+Value: )
+Token Type: 10
+Value: +
+Token Type: 5
+Value: F
+Token Type: 10
+Value: (
+Token Type: 5
+Value: n
+Token Type: 10
+Value: -
+Token Type: 6
+Value: 2
+Token Type: 10
+Value: )
+Token Type: 10
+Value: ;
+Token Type: 4
+Value: ELSIF
+Token Type: 10
+Value: (
+Token Type: 5
+Value: n
+Token Type: 10
+Value: =
+Token Type: 6
+Value: 0
+Token Type: 10
+Value: )
+Token Type: 8
+Value: --This is a comment			
+
+Token Type: 4
+Value: RETURN
+Token Type: 6
+Value: 0
+Token Type: 10
+Value: ;
+Token Type: 4
+Value: ELSIF
+Token Type: 10
+Value: (
+Token Type: 5
+Value: n
+Token Type: 10
+Value: =
+Token Type: 6
+Value: 1
+Token Type: 10
+Value: )
+Token Type: 4
+Value: RETURN
+Token Type: 6
+Value: 1
+Token Type: 10
+Value: ;
+Token Type: 4
+Value: ELSIF
+Token Type: 10
+Value: (
+Token Type: 5
+Value: n
+Token Type: 10
+Value: =
+Token Type: 6
+Value: 2
+Token Type: 10
+Value: )
+Token Type: 4
+Value: RETURN
+Token Type: 6
+Value: 1
+Token Type: 10
+Value: ;
+Token Type: 4
+Value: ENDIF
+Token Type: 3
+Value: END
+Token Type: 4
+Value: FUNCTION
+Token Type: 4
+Value: VOID
+Token Type: 5
+Value: main
+Token Type: 10
+Value: (
+Token Type: 10
+Value: )
+Token Type: 2
+Value: BEGIN
+Token Type: 4
+Value: INT
+Token Type: 5
+Value: i
+Token Type: 10
+Value: ,
+Token Type: 5
+Value: end
+Token Type: 10
+Value: ,
+Token Type: 5
+Value: result
+Token Type: 10
+Value: ;
+Token Type: 4
+Value: WRITE
+Token Type: 10
+Value: (
+Token Type: 5
+Value: input
+Token Type: 10
+Value: )
+Token Type: 10
+Value: ;
+Token Type: 4
+Value: READ
+Token Type: 10
+Value: (
+Token Type: 5
+Value: end
+Token Type: 10
+Value: )
+Token Type: 10
+Value: ;
+Token Type: 5
+Value: i
+Token Type: 10
+Value: :=
+Token Type: 6
+Value: 0
+Token Type: 10
+Value: ;
+Token Type: 4
+Value: DO
+Token Type: 5
+Value: result
+Token Type: 10
+Value: :=
+Token Type: 5
+Value: F
+Token Type: 10
+Value: (
+Token Type: 5
+Value: i
+Token Type: 10
+Value: )
+Token Type: 10
+Value: ;
+Token Type: 4
+Value: WRITE
+Token Type: 10
+Value: (
+Token Type: 5
+Value: i
+Token Type: 10
+Value: ,
+Token Type: 5
+Value: space
+Token Type: 10
+Value: )
+Token Type: 10
+Value: ;
+Token Type: 4
+Value: WRITE
+Token Type: 10
+Value: (
+Token Type: 5
+Value: result
+Token Type: 10
+Value: ,
+Token Type: 5
+Value: eol
+Token Type: 10
+Value: )
+Token Type: 10
+Value: ;
+Token Type: 5
+Value: i
+Token Type: 10
+Value: :=
+Token Type: 5
+Value: i
+Token Type: 10
+Value: +
+Token Type: 6
+Value: 1
+Token Type: 10
+Value: ;
+Token Type: 4
+Value: WHILE
+Token Type: 10
+Value: (
+Token Type: 5
+Value: i
+Token Type: 10
+Value: !=
+Token Type: 5
+Value: end
+Token Type: 10
+Value: )
+Token Type: 10
+Value: ;
+Token Type: 3
+Value: END
+Token Type: 3
+Value: END
