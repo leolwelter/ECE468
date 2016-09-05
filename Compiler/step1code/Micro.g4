@@ -6,7 +6,7 @@ id: IDENTIFIER;
 
 pgm_body: ;
 
-KEYWORDS :	('PROGRAM') | ('BEGIN') | ('END') | ('FUNCTION') | ('READ') | ('WRITE')
+KEYWORD :	('PROGRAM') | ('BEGIN') | ('END') | ('FUNCTION') | ('READ') | ('WRITE')
 	|	('IF') | ('ELSIF') | ('ENDIF') | ('DO') | ('WHILE') | ('CONTINUE') | ('BREAK')
 	| ('RETURN') | ('INT') | ('VOID') | ('STRING') | ('FLOAT') | ('TRUE') | ('FALSE');
 
@@ -20,7 +20,7 @@ COMMENT :   '--'  ~('\n')* '\n' -> skip;
 
 STRINGLITERAL :  '"' ( ~('"') )* '"' ;
 
-OPERATORS : (':=') | ('+') | ('-') | ('*') | ('/') | ('=') | ('!=')
+OPERATOR : (':=') | ('+') | ('-') | ('*') | ('/') | ('=') | ('!=')
 | ('<') | ('>') | ('(') | (')') | (';') | (',') | ('<=') | ('>=') ;
 
 WHITESPACE : [ \t\r\n]+ -> skip;

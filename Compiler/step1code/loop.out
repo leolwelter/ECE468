@@ -1,155 +1,83 @@
 Token Type: KEYWORD
 Value: PROGRAM
 Token Type: IDENTIFIER
-Value: fibonacci
+Value: loop
 Token Type: KEYWORD
 Value: BEGIN
 Token Type: KEYWORD
 Value: STRING
 Token Type: IDENTIFIER
-Value: input
+Value: guess
 Token Type: OPERATOR
 Value: :=
 Token Type: STRINGLITERAL
-Value: "Please input an integer number: "
+Value: "Guess a number: "
 Token Type: OPERATOR
 Value: ;
 Token Type: KEYWORD
 Value: STRING
 Token Type: IDENTIFIER
-Value: space
+Value: correct
 Token Type: OPERATOR
 Value: :=
 Token Type: STRINGLITERAL
-Value: " "
+Value: "Correct!\n"
 Token Type: OPERATOR
 Value: ;
 Token Type: KEYWORD
 Value: STRING
 Token Type: IDENTIFIER
-Value: eol
+Value: wrong
 Token Type: OPERATOR
 Value: :=
 Token Type: STRINGLITERAL
-Value: "\n"
+Value: "Wrong!\n"
 Token Type: OPERATOR
 Value: ;
 Token Type: KEYWORD
-Value: FUNCTION
+Value: STRING
+Token Type: IDENTIFIER
+Value: out1
+Token Type: OPERATOR
+Value: :=
+Token Type: STRINGLITERAL
+Value: "It took you "
+Token Type: OPERATOR
+Value: ;
+Token Type: KEYWORD
+Value: STRING
+Token Type: IDENTIFIER
+Value: out2
+Token Type: OPERATOR
+Value: :=
+Token Type: STRINGLITERAL
+Value: " guesses"
+Token Type: OPERATOR
+Value: ;
 Token Type: KEYWORD
 Value: INT
 Token Type: IDENTIFIER
-Value: F
+Value: i
 Token Type: OPERATOR
-Value: (
+Value: ;
 Token Type: KEYWORD
 Value: INT
 Token Type: IDENTIFIER
-Value: n
+Value: j
 Token Type: OPERATOR
-Value: )
+Value: ;
+Token Type: IDENTIFIER
+Value: PROTO
 Token Type: KEYWORD
-Value: BEGIN
-Token Type: KEYWORD
-Value: IF
+Value: VOID
+Token Type: IDENTIFIER
+Value: main
 Token Type: OPERATOR
 Value: (
-Token Type: IDENTIFIER
-Value: n
-Token Type: OPERATOR
-Value: >
-Token Type: INTLITERAL
-Value: 2
-Token Type: OPERATOR
-Value: )
-Token Type: KEYWORD
-Value: RETURN
-Token Type: IDENTIFIER
-Value: F
-Token Type: OPERATOR
-Value: (
-Token Type: IDENTIFIER
-Value: n
-Token Type: OPERATOR
-Value: -
-Token Type: INTLITERAL
-Value: 1
-Token Type: OPERATOR
-Value: )
-Token Type: OPERATOR
-Value: +
-Token Type: IDENTIFIER
-Value: F
-Token Type: OPERATOR
-Value: (
-Token Type: IDENTIFIER
-Value: n
-Token Type: OPERATOR
-Value: -
-Token Type: INTLITERAL
-Value: 2
 Token Type: OPERATOR
 Value: )
 Token Type: OPERATOR
 Value: ;
-Token Type: KEYWORD
-Value: ELSIF
-Token Type: OPERATOR
-Value: (
-Token Type: IDENTIFIER
-Value: n
-Token Type: OPERATOR
-Value: =
-Token Type: INTLITERAL
-Value: 0
-Token Type: OPERATOR
-Value: )
-Token Type: KEYWORD
-Value: RETURN
-Token Type: INTLITERAL
-Value: 0
-Token Type: OPERATOR
-Value: ;
-Token Type: KEYWORD
-Value: ELSIF
-Token Type: OPERATOR
-Value: (
-Token Type: IDENTIFIER
-Value: n
-Token Type: OPERATOR
-Value: =
-Token Type: INTLITERAL
-Value: 1
-Token Type: OPERATOR
-Value: )
-Token Type: KEYWORD
-Value: RETURN
-Token Type: INTLITERAL
-Value: 1
-Token Type: OPERATOR
-Value: ;
-Token Type: KEYWORD
-Value: ELSIF
-Token Type: OPERATOR
-Value: (
-Token Type: IDENTIFIER
-Value: n
-Token Type: OPERATOR
-Value: =
-Token Type: INTLITERAL
-Value: 2
-Token Type: OPERATOR
-Value: )
-Token Type: KEYWORD
-Value: RETURN
-Token Type: INTLITERAL
-Value: 1
-Token Type: OPERATOR
-Value: ;
-Token Type: KEYWORD
-Value: ENDIF
-Token Type: KEYWORD
-Value: END
 Token Type: KEYWORD
 Value: FUNCTION
 Token Type: KEYWORD
@@ -162,26 +90,38 @@ Token Type: OPERATOR
 Value: )
 Token Type: KEYWORD
 Value: BEGIN
-Token Type: KEYWORD
-Value: INT
 Token Type: IDENTIFIER
 Value: i
 Token Type: OPERATOR
-Value: ,
-Token Type: IDENTIFIER
-Value: end
-Token Type: OPERATOR
-Value: ,
-Token Type: IDENTIFIER
-Value: result
+Value: :=
+Token Type: INTLITERAL
+Value: 17
 Token Type: OPERATOR
 Value: ;
+Token Type: IDENTIFIER
+Value: j
+Token Type: OPERATOR
+Value: :=
+Token Type: INTLITERAL
+Value: 0
+Token Type: OPERATOR
+Value: ;
+Token Type: IDENTIFIER
+Value: k
+Token Type: OPERATOR
+Value: :=
+Token Type: INTLITERAL
+Value: 0
+Token Type: OPERATOR
+Value: ;
+Token Type: KEYWORD
+Value: DO
 Token Type: KEYWORD
 Value: WRITE
 Token Type: OPERATOR
 Value: (
 Token Type: IDENTIFIER
-Value: input
+Value: guess
 Token Type: OPERATOR
 Value: )
 Token Type: OPERATOR
@@ -191,75 +131,65 @@ Value: READ
 Token Type: OPERATOR
 Value: (
 Token Type: IDENTIFIER
-Value: end
+Value: j
 Token Type: OPERATOR
 Value: )
 Token Type: OPERATOR
 Value: ;
 Token Type: IDENTIFIER
-Value: i
-Token Type: OPERATOR
-Value: :=
-Token Type: INTLITERAL
-Value: 0
-Token Type: OPERATOR
-Value: ;
-Token Type: KEYWORD
-Value: DO
-Token Type: IDENTIFIER
-Value: result
+Value: k
 Token Type: OPERATOR
 Value: :=
 Token Type: IDENTIFIER
-Value: F
-Token Type: OPERATOR
-Value: (
-Token Type: IDENTIFIER
-Value: i
-Token Type: OPERATOR
-Value: )
-Token Type: OPERATOR
-Value: ;
-Token Type: KEYWORD
-Value: WRITE
-Token Type: OPERATOR
-Value: (
-Token Type: IDENTIFIER
-Value: i
-Token Type: OPERATOR
-Value: ,
-Token Type: IDENTIFIER
-Value: space
-Token Type: OPERATOR
-Value: )
-Token Type: OPERATOR
-Value: ;
-Token Type: KEYWORD
-Value: WRITE
-Token Type: OPERATOR
-Value: (
-Token Type: IDENTIFIER
-Value: result
-Token Type: OPERATOR
-Value: ,
-Token Type: IDENTIFIER
-Value: eol
-Token Type: OPERATOR
-Value: )
-Token Type: OPERATOR
-Value: ;
-Token Type: IDENTIFIER
-Value: i
-Token Type: OPERATOR
-Value: :=
-Token Type: IDENTIFIER
-Value: i
+Value: k
 Token Type: OPERATOR
 Value: +
 Token Type: INTLITERAL
 Value: 1
 Token Type: OPERATOR
 Value: ;
+Token Type: KEYWORD
+Value: IF
+Token Type: OPERATOR
+Value: (
+Token Type: IDENTIFIER
+Value: i
+Token Type: OPERATOR
+Value: =
+Token Type: IDENTIFIER
+Value: j
+Token Type: OPERATOR
+Value: )
+Token Type: KEYWORD
+Value: WRITE
+Token Type: OPERATOR
+Value: (
+Token Type: IDENTIFIER
+Value: correct
+Token Type: OPERATOR
+Value: )
+Token Type: OPERATOR
+Value: ;
+Token Type: KEYWORD
+Value: ELSIF
+Token Type: OPERATOR
+Value: (
+Token Type: KEYWORD
+Value: TRUE
+Token Type: OPERATOR
+Value: )
+Token Type: KEYWORD
+Value: WRITE
+Token Type: OPERATOR
+Value: (
+Token Type: IDENTIFIER
+Value: wrong
+Token Type: OPERATOR
+Value: )
+Token Type: OPERATOR
+Value: ;
+Token Type: KEYWORD
+Value: ENDIF
 Token Type: KEYWORD
 Value: WHILE
 Token Type: OPERATOR
@@ -269,7 +199,25 @@ Value: i
 Token Type: OPERATOR
 Value: !=
 Token Type: IDENTIFIER
-Value: end
+Value: j
+Token Type: OPERATOR
+Value: )
+Token Type: OPERATOR
+Value: ;
+Token Type: KEYWORD
+Value: WRITE
+Token Type: OPERATOR
+Value: (
+Token Type: IDENTIFIER
+Value: out1
+Token Type: OPERATOR
+Value: ,
+Token Type: IDENTIFIER
+Value: k
+Token Type: OPERATOR
+Value: ,
+Token Type: IDENTIFIER
+Value: out2
 Token Type: OPERATOR
 Value: )
 Token Type: OPERATOR
