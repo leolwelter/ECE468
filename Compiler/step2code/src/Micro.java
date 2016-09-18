@@ -19,6 +19,7 @@ public class Micro {
 		//LexerInterpreter lexer = new LexerInterpreter(input);
 
 		//step2 code
+		int errflag = 0;
 
 		//lists matched tokens
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -26,17 +27,25 @@ public class Micro {
 		//tokens -> parser
 		MicroParser parser = new MicroParser(tokens);
 
+		ANTLRErrorStrategy es = new DefaultErrorStrategy();
+		parser.setErrorHandler(es);
+
 		try{
 		parser.program(); //start parser
 
 		}
 		catch(ParseCancellationException err)
 		{
-			System.out.print("Not Accepted");
+			errflag = 1;
 		}
-		System.out.print("Accepted");
 
+		if (errflag == 1) {
+			System.out.println("Not Accepted");
+		}else{
+			System.out.println("Accepted");			
+		}
 
+		return;
 		//step1 code
 		// while(true) {
 		// 	Token token = lexer.nextToken();
