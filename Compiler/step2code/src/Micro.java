@@ -12,14 +12,12 @@ import org.antlr.v4.*;
 
 
 public class Micro {
-
 	public static void main(String[] args) throws IOException {
 	  ANTLRFileStream input = new ANTLRFileStream(args[0]);
 		MicroLexer lexer = new MicroLexer(input);
 		//LexerInterpreter lexer = new LexerInterpreter(input);
 
 		//step2 code
-		int errflag = 0;
 
 		//lists matched tokens
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -27,25 +25,24 @@ public class Micro {
 		//tokens -> parser
 		MicroParser parser = new MicroParser(tokens);
 
-		ANTLRErrorStrategy es = new DefaultErrorStrategy();
+		boolean isAccepted = true;
+
+		ANTLRErrorStrategy es = new CustomErrorStrategy(); 
 		parser.setErrorHandler(es);
 
 		try{
 		parser.program(); //start parser
 
 		}
-		catch(ParseCancellationException err)
+		catch(Exception err)
 		{
-			errflag = 1;
-		}
-
-		if (errflag == 1) {
+		    isAccepted = false;
 			System.out.println("Not Accepted");
-		}else{
-			System.out.println("Accepted");			
+		}
+		if(isAccepted){
+		    System.out.println("Accepted");
 		}
 
-		return;
 		//step1 code
 		// while(true) {
 		// 	Token token = lexer.nextToken();
@@ -57,3 +54,5 @@ public class Micro {
 		// }
 	}
 }
+
+//problems: 17, 2, 3
