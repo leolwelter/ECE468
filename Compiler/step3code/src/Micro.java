@@ -27,12 +27,11 @@ public class Micro {
 
 		boolean isAccepted = true;
 
-		ANTLRErrorStrategy es = new CustomErrorStrategy(); 
+		ANTLRErrorStrategy es = new CustomErrorStrategy();
 		parser.setErrorHandler(es);
 
 		try{
-		parser.program(); //start parser
-
+			parser.program(); //start parser
 		}
 		catch(Exception err)
 		{
