@@ -56,7 +56,7 @@ public class SymbolTable{
   public void addChild(SymbolTable child){
     this.children.add(child);
   }
-  public ArrayList<String> getChildren(){
+  public ArrayList<SymbolTable> getChildren(){
     return this.children;
   }
 
