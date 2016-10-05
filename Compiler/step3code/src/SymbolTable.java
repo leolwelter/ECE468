@@ -31,7 +31,8 @@ public class SymbolTable{
   private SymbolTable parent; //parent scope
   private ArrayList<SymbolTable> children; //child scopes
   private String scope = null; //used to keep track of new scopes
-  private LinkedHashMap<String, ArrayList<String>> varList = new LinkedHashMap();
+  private LinkedHashMap<String, ArrayList<String>> varList = 
+          new LinkedHashMap<String, ArrayList<String>>();
 
   //Constructors
   public SymbolTable(){

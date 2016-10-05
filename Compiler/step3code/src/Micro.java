@@ -30,6 +30,18 @@ public class Micro {
 		ANTLRErrorStrategy es = new CustomErrorStrategy();
 		parser.setErrorHandler(es);
 
+/*	Step1 code
+*/		
+		while(true) {
+			Token token = lexer.nextToken();
+			if(token.getType() == Lexer.EOF) {
+				break;
+			}
+			System.out.println("Token Type: " + MicroLexer.tokenNames[token.getType()]);
+			System.out.println("Value: " + token.getText());
+		}
+
+/* Step2 code
 		try{
 			parser.program(); //start parser
 		}
@@ -41,16 +53,9 @@ public class Micro {
 		if(isAccepted){
 		    System.out.println("Accepted");
 		}
-
-		//step1 code
-		// while(true) {
-		// 	Token token = lexer.nextToken();
-		// 	if(token.getType() == Lexer.EOF) {
-		// 		break;
-		// 	}
-		// 	System.out.println("Token Type: " + MicroLexer.tokenNames[token.getType()]);
-		// 	System.out.println("Value: " + token.getText());
-		// }
+*/
+		
+		
 	}
 }
 
