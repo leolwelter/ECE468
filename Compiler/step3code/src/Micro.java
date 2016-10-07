@@ -32,11 +32,17 @@ public class Micro {
 		MicroParser.ProgramContext programContext = parser.program();
 
 		//Walk the parser & attach listener
-		System.out.println("Symbol table GLOBAL");
 		ParseTreeWalker walker = new ParseTreeWalker();	
 		AntlrMicroListener mlistener = new AntlrMicroListener();
 	 	walker.walk(mlistener, programContext);
-	
+		
+		//Prints results
+	 	if(mlistener.declError != null){
+	 		System.out.println(mlistener.declError);
+	 	}else{
+			System.out.println("Symbol table GLOBAL");
+			System.out.print(mlistener.pOut);	 	
+	 	}
 	}
 }
 // private void printDrink(String drinkSentence) {
