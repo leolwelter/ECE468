@@ -2,23 +2,33 @@ import java.lang.*;
 
 public class AntlrMicroListener extends MicroBaseListener {
 
+	//Used to interface with SymbolTable functions
+	SymbolTable st = new SymbolTable();
+
 	//Prints the scopes as they're entered
 	//Functions
-	@Override public void enterFunc_declarations(MicroParser.Func_declarationsContext ctx) { 
-		System.out.println(ctx.getText().split("BEGIN")[0] + "\n");
+	@Override public void enterFunc_decl(MicroParser.Func_declContext ctx) { 
+		if(ctx.getText().compareTo("END") != 0){	
+			String txt = ctx.getText().split("BEGIN")[0];
+			txt = txt.split("INT|FLOAT|VOID|STRING")[1];
+			txt = txt.split("\\(")[0];
+			System.out.println("\nSymbol table " + txt + "\n");
+		}
 	}
 	//Loops
 	@Override public void enterDo_while_stmt(MicroParser.Do_while_stmtContext ctx) { 
-		System.out.println("Entering DO WHILE block\n");
+		System.out.println("\nSymbol table BLOCK " + st.getBlockNumber());
 	}
 	//IFs
 	@Override public void enterIf_stmt(MicroParser.If_stmtContext ctx) { 
-		System.out.println("Entering IF \n");
+		System.out.println("\nSymbol table BLOCK " + st.getBlockNumber());
 	}
 	//ELSIFs
 	@Override public void enterElse_part(MicroParser.Else_partContext ctx) { 
-		if(ctx.getText().compareTo("") != 0)
-			System.out.println(ctx.getText() + "\n");
+		if((ctx.getText().compareTo("") != 0) && 
+			(ctx.getText().compareTo("ENDIF") != 0)){	
+			System.out.println("\nSymbol table BLOCK " + st.getBlockNumber());
+		}
 	}	
 
 	/* PRINTS OUT VARIABLE INFORMATION */
