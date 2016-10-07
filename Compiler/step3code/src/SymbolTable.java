@@ -31,13 +31,15 @@ public class SymbolTable{
   private SymbolTable parent; //parent scope
   private ArrayList<SymbolTable> children; //child scopes
   private String scope = null; //used to keep track of new scopes
-  private LinkedHashMap<String, ArrayList<String>> varList = new LinkedHashMap();
+  private LinkedHashMap<String, ArrayList<String>> varList = 
+          new LinkedHashMap<String, ArrayList<String>>();
 
   //Constructors
   public SymbolTable(){
     this.setParent(null);
     this.children = null;
     this.scope = "GLOBAL";
+    this.blockNo = 0;
   }
 
   public SymbolTable(String scope, SymbolTable pNode){
@@ -58,6 +60,10 @@ public class SymbolTable{
   }
   public ArrayList<SymbolTable> getChildren(){
     return this.children;
+  }
+  public int getBlockNumber(){
+    blockNo += 1;
+    return blockNo;
   }
 
 }

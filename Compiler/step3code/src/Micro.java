@@ -13,11 +13,10 @@ import org.antlr.v4.*;
 
 public class Micro {
 	public static void main(String[] args) throws IOException {
-	  ANTLRFileStream input = new ANTLRFileStream(args[0]);
+	/*Step3 code
+	*/		
+	  	ANTLRFileStream input = new ANTLRFileStream(args[0]);
 		MicroLexer lexer = new MicroLexer(input);
-		//LexerInterpreter lexer = new LexerInterpreter(input);
-
-		//step2 code
 
 		//lists matched tokens
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -25,10 +24,84 @@ public class Micro {
 		//tokens -> parser
 		MicroParser parser = new MicroParser(tokens);
 
-		boolean isAccepted = true;
+
+		ANTLRErrorStrategy es = new CustomErrorStrategy();
+		parser.setErrorHandler(es);	
+
+		//Entry point
+		MicroParser.ProgramContext programContext = parser.program();
+
+		//Walk the parser & attach listener
+		ParseTreeWalker walker = new ParseTreeWalker();	
+		AntlrMicroListener mlistener = new AntlrMicroListener();
+	 	walker.walk(mlistener, programContext);
+		
+		//Prints results
+	 	if(mlistener.declError != null){
+	 		System.out.println(mlistener.declError);
+	 	}else{
+			System.out.println("Symbol table GLOBAL");
+			System.out.print(mlistener.pOut);	 	
+	 	}
+	}
+}
+// private void printDrink(String drinkSentence) {
+//     // Get our lexer
+//     DrinkLexer lexer = new DrinkLexer(new ANTLRInputStream(drinkSentence));
+ 
+//     // Get a list of matched tokens
+//     CommonTokenStream tokens = new CommonTokenStream(lexer);
+ 
+//     // Pass the tokens to the parser
+//     DrinkParser parser = new DrinkParser(tokens);
+ 
+//     // Specify our entry point
+//     DrinkSentenceContext drinkSentenceContext = parser.drinkSentence();
+ 
+//     // Walk it and attach our listener
+//     ParseTreeWalker walker = new ParseTreeWalker();
+//     AntlrDrinkListener listener = new AntlrDrinkListener();
+//     walker.walk(listener, drinkSentenceContext);
+// }
+
+/*	Step1 code
+	  ANTLRFileStream input = new ANTLRFileStream(args[0]);
+		MicroLexer lexer = new MicroLexer(input);
+
+		//lists matched tokens
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+
+		//tokens -> parser
+		MicroParser parser = new MicroParser(tokens);
+
 
 		ANTLRErrorStrategy es = new CustomErrorStrategy();
 		parser.setErrorHandler(es);
+		while(true) {
+			Token token = lexer.nextToken();
+			if(token.getType() == Lexer.EOF) {
+				break;
+			}
+			System.out.println("Token Type: " + MicroLexer.tokenNames[token.getType()]);
+			System.out.println("Value: " + token.getText());
+		}
+*/		
+
+/* Step2 code
+	  ANTLRFileStream input = new ANTLRFileStream(args[0]);
+		MicroLexer lexer = new MicroLexer(input);
+
+		//lists matched tokens
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+
+		//tokens -> parser
+		MicroParser parser = new MicroParser(tokens);
+
+
+		ANTLRErrorStrategy es = new CustomErrorStrategy();
+		parser.setErrorHandler(es);
+
+		boolean isAccepted = true;
 
 		try{
 			parser.program(); //start parser
@@ -41,17 +114,6 @@ public class Micro {
 		if(isAccepted){
 		    System.out.println("Accepted");
 		}
+*/
 
-		//step1 code
-		// while(true) {
-		// 	Token token = lexer.nextToken();
-		// 	if(token.getType() == Lexer.EOF) {
-		// 		break;
-		// 	}
-		// 	System.out.println("Token Type: " + MicroLexer.tokenNames[token.getType()]);
-		// 	System.out.println("Value: " + token.getText());
-		// }
-	}
-}
 
-//problems: 17, 2, 3
