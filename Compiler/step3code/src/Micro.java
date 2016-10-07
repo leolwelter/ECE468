@@ -32,6 +32,7 @@ public class Micro {
 		MicroParser.ProgramContext programContext = parser.program();
 
 		//Walk the parser & attach listener
+		System.out.println("Entering GLOBAL scope\n");
 		ParseTreeWalker walker = new ParseTreeWalker();	
 		AntlrMicroListener mlistener = new AntlrMicroListener();
 	 	walker.walk(mlistener, programContext);
