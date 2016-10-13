@@ -61,11 +61,10 @@ public class SymbolTable{
 
   public void printTable(){
     System.out.println("Symbol table " + scope);
-    if(varMap != null){      
-      for (Map.Entry<String,ArrayList<String>> entry : varMap.entrySet()) {
-        String key = entry.getKey();
-        String value = entry.getValue().toString();
-        System.out.println("key: " + key + " val: " + value);  
+    ArrayList<String> val = varMap.get(scope); 
+    if(val != null){  
+      for(String var : val){
+        System.out.println(var);
       }
     }
   }
