@@ -28,17 +28,21 @@ FUNCTION<name>,
 public class SymbolTable{
 
   //Fields
-  public static int blockNo; //used to keep track of block scopes
-  public SymbolTable next; //next scope
+  //@field Counter keeping track of block numbers
+  public static int blockNo; 
+
+  //@field Shared hashtable mapping SCOPE : VARLIST
+  public static LinkedHashMap<String, ArrayList<String>> varMap;
+  
+  public SymbolTable next; //next node
   public String scope = null; //this node's scope
-  public LinkedHashMap<String, ArrayList<String>> varMap = 
-          new LinkedHashMap<String, ArrayList<String>>();
 
   //Constructors
   public SymbolTable(){
     this.next = null;
     this.scope = "GLOBAL";
     this.blockNo = 0;
+    this.varMap = new LinkedHashMap<String, ArrayList<String>>();
   }
 
   public SymbolTable(String scope){
@@ -50,21 +54,19 @@ public class SymbolTable{
   }  
 
   //Instance Methods
-  // public void setNext(SymbolTable pNode){
-  //   this.next = pNode;
-  // }
-  // public SymbolTable getNext(){
-  //   return this.next;
-  // }
+
   public int getBlockNumber(){
     return ++blockNo;
   }
+
   public void printTable(){
     System.out.println("Symbol table " + scope);
-    for(Map.Entry<String, ArrayList<String>> entry : varMap.entrySet()){
-      String key = entry.getKey();
-      String val = entry.getValue().toString();
-      System.out.println("Key: " + key + " Value: " + val);
+    if(varMap != null){      
+      for (Map.Entry<String,ArrayList<String>> entry : varMap.entrySet()) {
+        String key = entry.getKey();
+        String value = entry.getValue().toString();
+        System.out.println("key: " + key + " val: " + value);  
+      }
     }
   }
 }

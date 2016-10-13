@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.io.File;
 import java.lang.Object;
+import java.util.*;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
@@ -33,19 +34,26 @@ public class Micro {
 
 		//Walk the parser & attach listener
 		ParseTreeWalker walker = new ParseTreeWalker();	
-		AntlrMicroListener mlistener = new AntlrMicroListener();
+
+		SymbolTable st = new SymbolTable();
+		AntlrMicroListener mlistener = new AntlrMicroListener(st);
 	 	walker.walk(mlistener, programContext);
 		
 		//Prints results
 	 	if(mlistener.declError != null){
 	 		System.out.println(mlistener.declError);
 	 	}else{
-			System.out.println("Symbol table GLOBAL");
-			System.out.print(mlistener.pOut);	 	
+	 		SymbolTable dummy = st;
+			while(dummy != null){
+				dummy.printTable();
+				dummy = dummy.next;
+				System.out.println("\n");
+			}
 	 	}
 
+	 	//Testing SymbolTable Class ////////////////
+	 	/*
 	 	System.out.println("\n");
-	 	//Testing SymbolTable Class
 	 	SymbolTable global = new SymbolTable();
 	 	SymbolTable block1 = new SymbolTable("BLOCK");
 	 	SymbolTable block2 = new SymbolTable("BLOCK");
@@ -60,6 +68,16 @@ public class Micro {
 	 		dummy.printTable();
 	 		dummy = dummy.next;
 	 	}
+
+	 	LinkedHashMap<String, ArrayList<String>> dumMap = new LinkedHashMap<String, ArrayList<String>>();
+	 	ArrayList<String> dumList = new ArrayList<String>();
+	 	dumList.add("name a type INT");
+	 	dumList.add("name b type INT");
+	 	dumMap.put("GLOBAL", dumList);
+	 	global.varMap = dumMap;
+	 	global.printTable();
+	 	*/
+	 	////////////////////////////////////////////
 	}
 }
 
