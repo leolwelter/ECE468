@@ -5,11 +5,13 @@ public class AntlrMicroListener extends MicroBaseListener {
   	public static int blockNo = 1; //used to keep track of block scopes
 
 	//Used to interface with HashMap functions
+	public SymbolTable sym = new SymbolTable();
 	public HashMap<String, String> st = new HashMap<String, String>();
 	public String pOut = "";
 	public String declError = null;
 
 	//Prints the scopes as they're entered
+
 	//Functions
 	@Override public void enterFunc_decl(MicroParser.Func_declContext ctx) { 
 		if(ctx.getText().compareTo("END") != 0){
@@ -20,18 +22,21 @@ public class AntlrMicroListener extends MicroBaseListener {
 			this.pOut += "\nSymbol table " + txt + "\n";
 		}
 	}
+
 	//Loops
 	@Override public void enterDo_while_stmt(MicroParser.Do_while_stmtContext ctx) { 
 		this.st = new HashMap<String, String>();		
 		this.pOut += "\nSymbol table BLOCK " + blockNo + "\n";
 		blockNo++;	
 	}
+
 	//IFs
 	@Override public void enterIf_stmt(MicroParser.If_stmtContext ctx) { 
 		this.st = new HashMap<String, String>();		
 		this.pOut += "\nSymbol table BLOCK " + blockNo + "\n";
 		blockNo++;
 	}
+
 	//ELSIFs
 	@Override public void enterElse_part(MicroParser.Else_partContext ctx) { 
 		this.st = new HashMap<String, String>();		
@@ -79,6 +84,7 @@ public class AntlrMicroListener extends MicroBaseListener {
 	    	this.pOut += "name " + ids[i] + " type " + type + "\n";
 	    }
 	}
+
 	//STRING
 	@Override public void enterString_decl(MicroParser.String_declContext ctx) { 
 		String txt = ctx.getText();

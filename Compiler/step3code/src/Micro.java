@@ -43,49 +43,26 @@ public class Micro {
 			System.out.println("Symbol table GLOBAL");
 			System.out.print(mlistener.pOut);	 	
 	 	}
+
+	 	System.out.println("\n");
+	 	//Testing SymbolTable Class
+	 	SymbolTable global = new SymbolTable();
+	 	SymbolTable block1 = new SymbolTable("BLOCK");
+	 	SymbolTable block2 = new SymbolTable("BLOCK");
+	 	SymbolTable funct = new SymbolTable("myFunc");
+
+	 	global.next = block1;
+	 	block1.next = block2;
+	 	block2.next = funct;
+
+	 	SymbolTable dummy = global;
+	 	while(dummy != null){
+	 		dummy.printTable();
+	 		dummy = dummy.next;
+	 	}
 	}
 }
-// private void printDrink(String drinkSentence) {
-//     // Get our lexer
-//     DrinkLexer lexer = new DrinkLexer(new ANTLRInputStream(drinkSentence));
- 
-//     // Get a list of matched tokens
-//     CommonTokenStream tokens = new CommonTokenStream(lexer);
- 
-//     // Pass the tokens to the parser
-//     DrinkParser parser = new DrinkParser(tokens);
- 
-//     // Specify our entry point
-//     DrinkSentenceContext drinkSentenceContext = parser.drinkSentence();
- 
-//     // Walk it and attach our listener
-//     ParseTreeWalker walker = new ParseTreeWalker();
-//     AntlrDrinkListener listener = new AntlrDrinkListener();
-//     walker.walk(listener, drinkSentenceContext);
-// }
 
-/*	Step1 code
-	  ANTLRFileStream input = new ANTLRFileStream(args[0]);
-		MicroLexer lexer = new MicroLexer(input);
-
-		//lists matched tokens
-		CommonTokenStream tokens = new CommonTokenStream(lexer);
-
-		//tokens -> parser
-		MicroParser parser = new MicroParser(tokens);
-
-
-		ANTLRErrorStrategy es = new CustomErrorStrategy();
-		parser.setErrorHandler(es);
-		while(true) {
-			Token token = lexer.nextToken();
-			if(token.getType() == Lexer.EOF) {
-				break;
-			}
-			System.out.println("Token Type: " + MicroLexer.tokenNames[token.getType()]);
-			System.out.println("Value: " + token.getText());
-		}
-*/		
 
 /* Step2 code
 	  ANTLRFileStream input = new ANTLRFileStream(args[0]);
@@ -116,4 +93,26 @@ public class Micro {
 		}
 */
 
+/*	Step1 code
+	  ANTLRFileStream input = new ANTLRFileStream(args[0]);
+		MicroLexer lexer = new MicroLexer(input);
+
+		//lists matched tokens
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+
+		//tokens -> parser
+		MicroParser parser = new MicroParser(tokens);
+
+
+		ANTLRErrorStrategy es = new CustomErrorStrategy();
+		parser.setErrorHandler(es);
+		while(true) {
+			Token token = lexer.nextToken();
+			if(token.getType() == Lexer.EOF) {
+				break;
+			}
+			System.out.println("Token Type: " + MicroLexer.tokenNames[token.getType()]);
+			System.out.println("Value: " + token.getText());
+		}
+*/		
 

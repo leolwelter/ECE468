@@ -26,44 +26,45 @@ BEGIN<block x>,
 FUNCTION<name>,
 */
 public class SymbolTable{
-  public static int blockNo; //used to keep track of block scopes
 
-  private SymbolTable parent; //parent scope
-  private ArrayList<SymbolTable> children; //child scopes
-  private String scope = null; //used to keep track of new scopes
-  private LinkedHashMap<String, ArrayList<String>> varList = 
+  //Fields
+  public static int blockNo; //used to keep track of block scopes
+  public SymbolTable next; //next scope
+  public String scope = null; //this node's scope
+  public LinkedHashMap<String, ArrayList<String>> varMap = 
           new LinkedHashMap<String, ArrayList<String>>();
 
   //Constructors
   public SymbolTable(){
-    this.setParent(null);
-    this.children = null;
+    this.next = null;
     this.scope = "GLOBAL";
     this.blockNo = 0;
   }
 
-  public SymbolTable(String scope, SymbolTable pNode){
-    this.scope = scope;
-    this.setParent(pNode);
-    pNode.addChild(this);
-  }
+  public SymbolTable(String scope){
+    if(scope.equals("BLOCK")){
+      this.scope = "BLOCK " + getBlockNumber();
+    }else{
+      this.scope = scope;      
+    } 
+  }  
 
   //Instance Methods
-  public void setParent(SymbolTable pNode){
-    this.parent = pNode;
-  }
-  public SymbolTable getParent(){
-    return this.parent;
-  }
-  public void addChild(SymbolTable child){
-    this.children.add(child);
-  }
-  public ArrayList<SymbolTable> getChildren(){
-    return this.children;
-  }
+  // public void setNext(SymbolTable pNode){
+  //   this.next = pNode;
+  // }
+  // public SymbolTable getNext(){
+  //   return this.next;
+  // }
   public int getBlockNumber(){
-    blockNo += 1;
-    return blockNo;
+    return ++blockNo;
   }
-
+  public void printTable(){
+    System.out.println("Symbol table " + scope);
+    for(Map.Entry<String, ArrayList<String>> entry : varMap.entrySet()){
+      String key = entry.getKey();
+      String val = entry.getValue().toString();
+      System.out.println("Key: " + key + " Value: " + val);
+    }
+  }
 }
