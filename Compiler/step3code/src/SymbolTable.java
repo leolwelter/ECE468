@@ -26,44 +26,50 @@ BEGIN<block x>,
 FUNCTION<name>,
 */
 public class SymbolTable{
-  public static int blockNo; //used to keep track of block scopes
 
-  private SymbolTable parent; //parent scope
-  private ArrayList<SymbolTable> children; //child scopes
-  private String scope = null; //used to keep track of new scopes
-  private LinkedHashMap<String, ArrayList<String>> varList = 
-          new LinkedHashMap<String, ArrayList<String>>();
+  //Fields
+  //@field Counter keeping track of block numbers
+  public static int blockNo; 
+
+  //@field Shared hashtable mapping SCOPE : VARLIST
+  public static LinkedHashMap<String, ArrayList<List<String>>> varMap;
+  
+  public SymbolTable next; //next node
+  public String scope = null; //this node's scope
 
   //Constructors
   public SymbolTable(){
-    this.setParent(null);
-    this.children = null;
+    this.next = null;
     this.scope = "GLOBAL";
     this.blockNo = 0;
+    this.varMap = new LinkedHashMap<String, ArrayList<List<String>>>();
   }
 
-  public SymbolTable(String scope, SymbolTable pNode){
-    this.scope = scope;
-    this.setParent(pNode);
-    pNode.addChild(this);
-  }
+  public SymbolTable(String scope){
+    if(scope.equals("BLOCK")){
+      this.scope = "BLOCK " + getBlockNumber();
+    }else{
+      this.scope = scope;      
+    } 
+  }  
 
   //Instance Methods
-  public void setParent(SymbolTable pNode){
-    this.parent = pNode;
-  }
-  public SymbolTable getParent(){
-    return this.parent;
-  }
-  public void addChild(SymbolTable child){
-    this.children.add(child);
-  }
-  public ArrayList<SymbolTable> getChildren(){
-    return this.children;
-  }
+
   public int getBlockNumber(){
-    blockNo += 1;
-    return blockNo;
+    return ++blockNo;
   }
 
+  public void printTable(){
+    System.out.println("Symbol table " + scope);
+    ArrayList<List<String>> varList = varMap.get(scope); 
+    if(varList != null){  
+      for(List<String> varData : varList){
+        System.out.print("name " + varData.get(0) + " type " + varData.get(1));
+        if(varData.size() == 3){
+          System.out.print(" value " + varData.get(2));
+        }
+        System.out.println();
+      }
+    }
+  }
 }
