@@ -10,6 +10,7 @@ import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.misc.*;
 import org.antlr.v4.*;
 
+//java -cp lib/antlr.jar:classes/ Micro [path to test.micro] > [output file]
 
 
 public class Micro {

@@ -32,7 +32,7 @@ public class SymbolTable{
   public static int blockNo; 
 
   //@field Shared hashtable mapping SCOPE : VARLIST
-  public static LinkedHashMap<String, ArrayList<String>> varMap;
+  public static LinkedHashMap<String, ArrayList<List<String>>> varMap;
   
   public SymbolTable next; //next node
   public String scope = null; //this node's scope
@@ -42,7 +42,7 @@ public class SymbolTable{
     this.next = null;
     this.scope = "GLOBAL";
     this.blockNo = 0;
-    this.varMap = new LinkedHashMap<String, ArrayList<String>>();
+    this.varMap = new LinkedHashMap<String, ArrayList<List<String>>>();
   }
 
   public SymbolTable(String scope){
@@ -61,10 +61,14 @@ public class SymbolTable{
 
   public void printTable(){
     System.out.println("Symbol table " + scope);
-    ArrayList<String> val = varMap.get(scope); 
-    if(val != null){  
-      for(String var : val){
-        System.out.println(var);
+    ArrayList<List<String>> varList = varMap.get(scope); 
+    if(varList != null){  
+      for(List<String> varData : varList){
+        System.out.print("name " + varData.get(0) + " type " + varData.get(1));
+        if(varData.size() == 3){
+          System.out.print(" value " + varData.get(2));
+        }
+        System.out.println();
       }
     }
   }

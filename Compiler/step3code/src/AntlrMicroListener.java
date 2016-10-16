@@ -64,9 +64,11 @@ public class AntlrMicroListener extends MicroBaseListener {
 				String type = vars[i].split(name)[0];
 
 				//Add variable info to current scope's val
-				ArrayList<String> temp = st.varMap.get(st.scope);
-				temp.add(name + " " + type);
-				st.varMap.put(st.scope, temp);
+				ArrayList<String> temp = new ArrayList<String>();
+				temp.add(name);
+				temp.add(type);
+				ArrayList<List<String>> stHash = st.varMap.get(st.scope);
+				st.varMap.put(st.scope, stHash);
 			}
 		}
 	}
@@ -80,9 +82,12 @@ public class AntlrMicroListener extends MicroBaseListener {
 	    String [] ids = idlist.split(","); //split the ids into separate fields
 	    for (int i = 0; i < ids.length; i++) {
 	    	//Add variable info to current scope's val   	
-	    	ArrayList<String> temp = st.varMap.get(st.scope);
-	    	temp.add(ids[i] + " " + type);
-			st.varMap.put(st.scope, temp);
+				ArrayList<String> temp = new ArrayList<String>();
+				temp.add(ids[i]);
+				temp.add(type);
+				ArrayList<List<String>> stHash = st.varMap.get(st.scope);
+				stHash.add(temp);
+				st.varMap.put(st.scope, stHash);
 	    }
 	}
 
@@ -94,12 +99,16 @@ public class AntlrMicroListener extends MicroBaseListener {
 		String id = id_val[0].split("STRING")[1];
 
 		//Add variable info to current scope's val
-		ArrayList<String> temp = st.varMap.get(st.scope);
-		if(temp == null){
-			temp = new ArrayList<String>();
+		ArrayList<List<String>> table = st.varMap.get(st.scope);
+		if(table == null){
+			table = new ArrayList<List<String>>();
 		}
-		temp.add(id + " STRING " + val);
-		st.varMap.put(st.scope, temp);
+		ArrayList<String> temp = new ArrayList<String>();
+		temp.add(id);
+		temp.add("STRING");
+		temp.add(val);
+		table.add(temp); //add the constructed vardata
+		st.varMap.put(st.scope, table);
 	}
 
 }
