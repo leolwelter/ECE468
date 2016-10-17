@@ -5,7 +5,6 @@ public class AntlrMicroListener extends MicroBaseListener {
 	//Fields
 	public SymbolTable st;
 	public String pOut = "";
-	public String declError = null;
 
 
 	//Custom Constructor
@@ -68,6 +67,11 @@ public class AntlrMicroListener extends MicroBaseListener {
 				temp.add(name);
 				temp.add(type);
 				ArrayList<List<String>> stHash = st.varMap.get(st.scope);
+				if(stHash == null){
+					stHash = new ArrayList<List<String>>();
+				}
+				st.checkDeclError(name);				
+				stHash.add(temp);
 				st.varMap.put(st.scope, stHash);
 			}
 		}
@@ -86,6 +90,10 @@ public class AntlrMicroListener extends MicroBaseListener {
 				temp.add(ids[i]);
 				temp.add(type);
 				ArrayList<List<String>> stHash = st.varMap.get(st.scope);
+				if(stHash == null){
+					stHash = new ArrayList<List<String>>();
+				}
+				st.checkDeclError(ids[i]);				
 				stHash.add(temp);
 				st.varMap.put(st.scope, stHash);
 	    }
@@ -107,6 +115,7 @@ public class AntlrMicroListener extends MicroBaseListener {
 		temp.add(id);
 		temp.add("STRING");
 		temp.add(val);
+		st.checkDeclError(id);
 		table.add(temp); //add the constructed vardata
 		st.varMap.put(st.scope, table);
 	}

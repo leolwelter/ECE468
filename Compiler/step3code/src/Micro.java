@@ -39,10 +39,12 @@ public class Micro {
 		SymbolTable st = new SymbolTable();
 		AntlrMicroListener mlistener = new AntlrMicroListener(st);
 	 	walker.walk(mlistener, programContext);
-		
+
+
+
 		//Prints results
-	 	if(mlistener.declError != null){
-	 		System.out.println(mlistener.declError);
+	 	if(st.declErr != null){
+	 		System.out.println(st.declErr);
 	 	}else{
 	 		SymbolTable dummy = st;
 			while(dummy != null){
@@ -51,34 +53,6 @@ public class Micro {
 				System.out.println("\n");
 			}
 	 	}
-
-	 	//Testing SymbolTable Class ////////////////
-	 	/*
-	 	System.out.println("\n");
-	 	SymbolTable global = new SymbolTable();
-	 	SymbolTable block1 = new SymbolTable("BLOCK");
-	 	SymbolTable block2 = new SymbolTable("BLOCK");
-	 	SymbolTable funct = new SymbolTable("myFunc");
-
-	 	global.next = block1;
-	 	block1.next = block2;
-	 	block2.next = funct;
-
-	 	SymbolTable dummy = global;
-	 	while(dummy != null){
-	 		dummy.printTable();
-	 		dummy = dummy.next;
-	 	}
-
-	 	LinkedHashMap<String, ArrayList<String>> dumMap = new LinkedHashMap<String, ArrayList<String>>();
-	 	ArrayList<String> dumList = new ArrayList<String>();
-	 	dumList.add("name a type INT");
-	 	dumList.add("name b type INT");
-	 	dumMap.put("GLOBAL", dumList);
-	 	global.varMap = dumMap;
-	 	global.printTable();
-	 	*/
-	 	////////////////////////////////////////////
 	}
 }
 

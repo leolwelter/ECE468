@@ -30,6 +30,7 @@ public class SymbolTable{
   //Fields
   //@field Counter keeping track of block numbers
   public static int blockNo; 
+  public static String declErr = null; //set if decl error
 
   //@field Shared hashtable mapping SCOPE : VARLIST
   public static LinkedHashMap<String, ArrayList<List<String>>> varMap;
@@ -71,5 +72,16 @@ public class SymbolTable{
         System.out.println();
       }
     }
+  }
+
+  public void checkDeclError(String id){
+    ArrayList<List<String>> varList = varMap.get(scope); 
+    if(varList != null){  
+      for(List<String> varData : varList){
+        if((varData.get(0).equals(id)) && (declErr == null)){
+          declErr = "DECLARATION ERROR " + id;
+        }
+      }
+    }    
   }
 }
