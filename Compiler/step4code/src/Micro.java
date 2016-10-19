@@ -42,17 +42,28 @@ public class Micro {
 
 
 
-		//Prints results
-	 	if(st.declErr != null){
-	 		System.out.println(st.declErr);
-	 	}else{
-	 		SymbolTable dummy = st;
-			while(dummy != null){
-				dummy.printTable();
-				dummy = dummy.next;
-				System.out.println("\n");
-			}
+		//Prints results of Symbol Table parsing
+	 	// if(st.declErr != null){
+	 	// 	System.out.println(st.declErr);
+	 	// }else{
+	 	// 	SymbolTable dummy = st;
+			// while(dummy != null){
+			// 	dummy.printTable();
+			// 	dummy = dummy.next;
+			// 	System.out.println("\n");
+			// }
+	 	// }
+
+	 	//Step 4 stuff: IR generation and printing
+	 	LinkedList<IRNode> meIRL = new LinkedList<IRNode>();
+	 	meIRL.add(new IRNode());
+
+	 	for(int i = 0; i < meIRL.size(); i++){
+	 		meIRL.get(i).printNode();	 		
 	 	}
+
+
+
 	}
 }
 

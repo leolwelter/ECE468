@@ -55,7 +55,6 @@ public class SymbolTable{
   }  
 
   //Instance Methods
-
   public int getBlockNumber(){
     return ++blockNo;
   }
