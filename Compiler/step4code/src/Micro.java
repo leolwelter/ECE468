@@ -36,23 +36,60 @@ public class Micro {
 		//Walk the parser & attach listener
 		ParseTreeWalker walker = new ParseTreeWalker();	
 
+		//Intermediate Representation List
+	 	LinkedList<IRNode> meIRL = new LinkedList<IRNode>();
+		
+		//Symbol Table for parser
 		SymbolTable st = new SymbolTable();
-		AntlrMicroListener mlistener = new AntlrMicroListener(st);
+
+		AntlrMicroListener mlistener = new AntlrMicroListener(st, meIRL);
 	 	walker.walk(mlistener, programContext);
 
-
-
-		//Prints results
-	 	if(st.declErr != null){
-	 		System.out.println(st.declErr);
-	 	}else{
-	 		SymbolTable dummy = st;
-			while(dummy != null){
-				dummy.printTable();
-				dummy = dummy.next;
-				System.out.println("\n");
-			}
+	 	//Prints Intermediate Representation List
+	 	for(int i = 0; i < meIRL.size(); i++){
+	 		meIRL.get(i).printNode();	 		
 	 	}
+
+	 	/*Harika: !!!
+	 		So far I have:
+	 			defined the IR node type
+	 			created a list of IR nodes
+	 			found an algorithm to parse complex expressions
+	 		To do:
+	 			use that algorithm (found in ShuntingYard) to
+	 			actually parse the expressions found in the IR
+	 			(IR store the expressions in "IRNode.result")
+
+	 			use the parsed expressions to make new IRNodes (i.e. a := 2 + 3 -> (intermediate code))
+
+	 			write a method (in IRNode) to create an equivalent "Tiny" instruction node(s) based on its fields
+
+	 			Good luck! and don't worry about finishing tonight, we have tomorrow as well!
+	 	*/
+
+	 	/*
+	 	Notes:
+	 	Expression node{
+			Expression op1, op2
+			String val, //literal, symbol name, operator
+	 	}
+	 	create tree based on the AST (look up Shunting-yard)
+	 								 ("how to make an AST")
+	 	the point is to keep PEMDAS in assignments
+	 	*/
+
+	 	//STEP 3 TESTING
+		//Prints results of Symbol Table parsing
+	 	// if(st.declErr != null){
+	 	// 	System.out.println(st.declErr);
+	 	// }else{
+	 	// 	SymbolTable dummy = st;
+			// while(dummy != null){
+			// 	dummy.printTable();
+			// 	dummy = dummy.next;
+			// 	System.out.println("\n");
+			// }
+	 	// }
 	}
 }
 
