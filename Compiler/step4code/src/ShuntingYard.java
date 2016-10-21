@@ -72,6 +72,10 @@ public class ShuntingYard {
         }
       }
 
+      while(!s.isEmpty()) {
+        sb.append(s.pop()).append(' ');
+      }
+
       return sb.toString();
     }
 
