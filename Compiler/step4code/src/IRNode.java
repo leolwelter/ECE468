@@ -2,11 +2,11 @@ import java.util.*;
 
 public class IRNode {
 	//fields
-	private IRNode bTarget;
-	private String opcode;
-	private String op1;
-	private String op2;
-	private String result;
+	public  IRNode bTarget;
+	public  String opcode;
+	public  String op1;
+	public  String op2;
+	public  String result;
 	public static int regNo;
 
 	//constructors
@@ -18,14 +18,6 @@ public class IRNode {
 		this.result = null;
 	}
 
-	// public IRNode(String opcode, String op1, String op2, String result){
-	// 	this.bTarget = null;
-	// 	this.opcode = opcode;
-	// 	this.op1 = op1;
-	// 	this.op2 = op2;
-	// 	this.result = result;
-	// }
-
 	public IRNode(ArrayList<String> token, String type){
 		setParams(token, type);
 	}
@@ -33,11 +25,11 @@ public class IRNode {
 	//instance methods
 	public void printNode(){
 		System.out.println("\nINSTRUCTION:");
-		System.out.print("opcode: " + opcode);
-		System.out.print(" op1: " + op1);
-		System.out.print(" op2: " + op2);
-		//System.out.print(" result: " + ShuntingYard.infixToPostfix(result));
-		System.out.println(" bTarget: " + bTarget);
+		System.out.print("opcode:" + opcode);
+		System.out.print(" op1:" + op1);
+		System.out.print(" op2:" + op2);
+		System.out.print(" result:" + result);
+		System.out.println(" bTarget:" + bTarget);
 	}
 
 	public void setbTarget(IRNode bTarget){
@@ -77,5 +69,22 @@ public class IRNode {
 				result	= tdata.get(2);
 				break;
 		}
+	}
+
+	public void treeToIR(PostfixTreeNode node, PostfixTreeNode left, PostfixTreeNode right){
+		//TODO: actually create IR from tree data
+		switch (node.value){
+			case("*"):
+				opcode = "MULTI"; break;
+			case("/"):
+				opcode = "DIVI"; break;
+			case("+"):
+				opcode = "ADDI"; break;
+			case("-"):
+				opcode = "SUBI"; break;
+		}
+		op1     = left.value;
+		op2     = right.value;
+		result  = "T" + regNo++; 		
 	}
 }

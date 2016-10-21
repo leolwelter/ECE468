@@ -153,7 +153,7 @@ public class AntlrMicroListener extends MicroBaseListener {
 			if(id.equals(vardata.get(0))){
 				tdata.add(id);
 				tdata.add(expr);
-				meIRL.add(new IRNode(tdata, "storei"));
+				//meIRL.add(new IRNode(tdata, "storei"));
 			}
 		}
 	}

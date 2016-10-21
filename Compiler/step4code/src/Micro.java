@@ -45,42 +45,26 @@ public class Micro {
 		AntlrMicroListener mlistener = new AntlrMicroListener(st, meIRL);
 	 	walker.walk(mlistener, programContext);
 
-	 	//Prints Intermediate Representation List
-	 	for(int i = 0; i < meIRL.size(); i++){
-	 		//meIRL.get(i).printNode();
-	 	}
 
 		// To test Infix to Postfix
 		ArrayList<String> infixS = new ArrayList<String>(Arrays.asList("c", "+", "a", "*", "b", "+", "(", "a", "*", "b", "+", "c", ")", "/", "a", "+", "d" ));
 		ShuntingYard sy = new ShuntingYard();
 		String postfixS = sy.infixToPostfix(infixS);
-		System.out.println(infixS);
-		System.out.println(postfixS);
 
 		// To test Postfix Tree
 		PostfixTree pfTree = new PostfixTree();
 		PostfixTreeNode root = pfTree.createTree(postfixS);
 
-		// Print Tree to Check
+		//Testing tree structure
+		//root.printTree(root);
 
+		//testing subexpression elimination
+		root.toIRList(root, meIRL);
 
-
-	 	/*Harika: !!!
-	 		So far I have:
-	 			defined the IR node type
-	 			created a list of IR nodes
-	 			found an algorithm to parse complex expressions
-	 		To do:
-	 			use that algorithm (found in ShuntingYard) to
-	 			actually parse the expressions found in the IR
-	 			(IR store the expressions in "IRNode.result")
-
-	 			use the parsed expressions to make new IRNodes (i.e. a := 2 + 3 -> (intermediate code))
-
-	 			write a method (in IRNode) to create an equivalent "Tiny" instruction node(s) based on its fields
-
-	 			Good luck! and don't worry about finishing tonight, we have tomorrow as well!
-	 	*/
+	 	//Prints Intermediate Representation List
+	 	for(int i = 0; i < meIRL.size(); i++){
+	 		meIRL.get(i).printNode();
+	 	}
 
 	 	/*
 	 	Notes:
