@@ -7,6 +7,7 @@ public class IRNode {
 	private String op1;
 	private String op2;
 	private String result;
+	public static int regNo;
 
 	//constructors
 	public IRNode(){
@@ -17,25 +18,64 @@ public class IRNode {
 		this.result = null;
 	}
 
-	public IRNode(String opcode, String op1, String op2, String result){
-		this.bTarget = null;
-		this.opcode = opcode;
-		this.op1 = op1;
-		this.op2 = op2;
-		this.result = result;		
+	// public IRNode(String opcode, String op1, String op2, String result){
+	// 	this.bTarget = null;
+	// 	this.opcode = opcode;
+	// 	this.op1 = op1;
+	// 	this.op2 = op2;
+	// 	this.result = result;		
+	// }
+
+	public IRNode(ArrayList<String> token, String type){
+		setParams(token, type);
 	}
 
 	//instance methods
 	public void printNode(){
-		System.out.println("INSTRUCTION:");
-		System.out.println("bTarget: " + bTarget);
-		System.out.println("opcode : " + opcode);
-		System.out.println("op1    : " + op1);
-		System.out.println("op2    : " + op2);
-		System.out.println("result : " + result);
+		System.out.println("\nINSTRUCTION:");
+		System.out.print("opcode: " + opcode);
+		System.out.print(" op1: " + op1);
+		System.out.print(" op2: " + op2);
+		System.out.print(" result: " + ShuntingYard.infixToPostfix(result));
+		System.out.println(" bTarget: " + bTarget);
 	}
 
 	public void setbTarget(IRNode bTarget){
 		this.bTarget = bTarget;
+	}
+
+	public void setParams(ArrayList<String> tdata, String type){
+		//Takes token string from listener
+		//then interprets the IR fields based on instr "type"
+		switch(type){
+			case "str":
+				bTarget = null;
+				opcode  = "str";
+				op1     = tdata.get(0);
+				op2     = null;
+				result  = tdata.get(1);
+				break;
+			case "var":
+				bTarget = null;
+				opcode  = "var";
+				op1     = null;
+				op2     = null;
+				result  = tdata.get(0);		
+				break;
+			case "storei":
+				bTarget = null;
+				opcode  = "STOREI";
+				op1     = tdata.get(0);
+				op2		= null;
+				result  = tdata.get(1);
+				break;
+			case "addi":
+				bTarget = null;
+				opcode  = "ADDI";
+				op1     = tdata.get(0);
+				op2		= tdata.get(1);
+				result	= tdata.get(2);
+				break;
+		}
 	}
 }
