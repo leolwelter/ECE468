@@ -50,12 +50,20 @@ public class Micro {
 	 		//meIRL.get(i).printNode();
 	 	}
 
-		//To test Infix to Postfix
+		// To test Infix to Postfix
 		ArrayList<String> infixS = new ArrayList<String>(Arrays.asList("c", "+", "a", "*", "b", "+", "(", "a", "*", "b", "+", "c", ")", "/", "a", "+", "d" ));
 		ShuntingYard sy = new ShuntingYard();
 		String postfixS = sy.infixToPostfix(infixS);
 		System.out.println(infixS);
 		System.out.println(postfixS);
+
+		// To test Postfix Tree
+		PostfixTree pfTree = new PostfixTree();
+		PostfixTreeNode root = pfTree.createTree(postfixS);
+
+		// Print Tree to Check
+
+
 
 	 	/*Harika: !!!
 	 		So far I have:
