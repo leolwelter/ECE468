@@ -23,7 +23,7 @@ public class IRNode {
 	// 	this.opcode = opcode;
 	// 	this.op1 = op1;
 	// 	this.op2 = op2;
-	// 	this.result = result;		
+	// 	this.result = result;
 	// }
 
 	public IRNode(ArrayList<String> token, String type){
@@ -36,7 +36,7 @@ public class IRNode {
 		System.out.print("opcode: " + opcode);
 		System.out.print(" op1: " + op1);
 		System.out.print(" op2: " + op2);
-		System.out.print(" result: " + ShuntingYard.infixToPostfix(result));
+		//System.out.print(" result: " + ShuntingYard.infixToPostfix(result));
 		System.out.println(" bTarget: " + bTarget);
 	}
 
@@ -60,7 +60,7 @@ public class IRNode {
 				opcode  = "var";
 				op1     = null;
 				op2     = null;
-				result  = tdata.get(0);		
+				result  = tdata.get(0);
 				break;
 			case "storei":
 				bTarget = null;

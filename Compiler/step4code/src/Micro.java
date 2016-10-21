@@ -16,7 +16,7 @@ import org.antlr.v4.*;
 public class Micro {
 	public static void main(String[] args) throws IOException {
 	/*Step3 code
-	*/		
+	*/
 	  	ANTLRFileStream input = new ANTLRFileStream(args[0]);
 		MicroLexer lexer = new MicroLexer(input);
 
@@ -28,17 +28,17 @@ public class Micro {
 
 
 		ANTLRErrorStrategy es = new CustomErrorStrategy();
-		parser.setErrorHandler(es);	
+		parser.setErrorHandler(es);
 
 		//Entry point
 		MicroParser.ProgramContext programContext = parser.program();
 
 		//Walk the parser & attach listener
-		ParseTreeWalker walker = new ParseTreeWalker();	
+		ParseTreeWalker walker = new ParseTreeWalker();
 
 		//Intermediate Representation List
 	 	LinkedList<IRNode> meIRL = new LinkedList<IRNode>();
-		
+
 		//Symbol Table for parser
 		SymbolTable st = new SymbolTable();
 
@@ -47,8 +47,15 @@ public class Micro {
 
 	 	//Prints Intermediate Representation List
 	 	for(int i = 0; i < meIRL.size(); i++){
-	 		meIRL.get(i).printNode();	 		
+	 		//meIRL.get(i).printNode();
 	 	}
+
+		//To test Infix to Postfix
+		ArrayList<String> infixS = new ArrayList<String>(Arrays.asList("c", "+", "a", "*", "b", "+", "(", "a", "*", "b", "+", "c", ")", "/", "a", "+", "d" ));
+		ShuntingYard sy = new ShuntingYard();
+		String postfixS = sy.infixToPostfix(infixS);
+		System.out.println(infixS);
+		System.out.println(postfixS);
 
 	 	/*Harika: !!!
 	 		So far I have:
@@ -144,5 +151,4 @@ public class Micro {
 			System.out.println("Token Type: " + MicroLexer.tokenNames[token.getType()]);
 			System.out.println("Value: " + token.getText());
 		}
-*/		
-
+*/
