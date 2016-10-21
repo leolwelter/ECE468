@@ -5,7 +5,7 @@ public class AntlrMicroListener extends MicroBaseListener {
 	//Fields
 	public SymbolTable st;
 	public LinkedList<IRNode> meIRL;
-
+	public ArrayList<String> infixS = new ArrayList<String>();
 
 	//Custom Constructor
 	public AntlrMicroListener(SymbolTable st, LinkedList<IRNode> irList){
@@ -142,19 +142,71 @@ public class AntlrMicroListener extends MicroBaseListener {
 	}
 
 	@Override public void enterAssign_stmt(MicroParser.Assign_stmtContext ctx) { 
-		String txt = ctx.getText();
+		infixS.clear();
+	}
+
+	@Override public void exitAssign_stmt(MicroParser.Assign_stmtContext ctx) { 		String txt = ctx.getText();
 		String id = txt.split(":=")[0];
 		String expr = txt.split(":=")[1].split(";")[0];
 
-		ArrayList<String> tdata = new ArrayList<String>();
-
+		// System.out.println(expr);
 		//if the variable was declared, add its data
-		for (List<String> vardata : st.varMap.get("GLOBAL")){
-			if(id.equals(vardata.get(0))){
-				tdata.add(id);
-				tdata.add(expr);
-				//meIRL.add(new IRNode(tdata, "storei"));
+		try{
+			if(Integer.valueOf(expr) instanceof Integer){
+				for (List<String> vardata : st.varMap.get("GLOBAL")){
+					if(id.equals(vardata.get(0))){
+						IRNode.tempCnt++;
+						this.meIRL.add(new IRNode("STOREI", expr, "", "$T" + IRNode.tempCnt, null));
+						this.meIRL.add(new IRNode("STOREI", "$T" + IRNode.tempCnt, "", id, null));
+					}
+				}
 			}
+		} catch(Exception e){			
+				//Tests Infix to Postfix
+				//ArrayList<String> infixS = new ArrayList<String>(Arrays.asList("c", "+", "a", "*", "b", "+", "(", "a", "*", "b", "+", "c", ")", "/", "a", "+", "d" ));
+
+				// for (char c : abc.toCharArray()) {
+				//   charList.add(c);
+				// }
+				ShuntingYard sy = new ShuntingYard();
+				String postfixS = sy.infixToPostfix(infixS);
+
+				//Tests Postfix Tree
+				PostfixTree pfTree = new PostfixTree();
+				PostfixTreeNode root = pfTree.createTree(postfixS);
+
+				//adds tree to IRList
+				root.toIRList(root, this.meIRL);
+			  	this.meIRL.add(new IRNode("STOREI", "$T"+ IRNode.tempCnt, "", id, null));
+			  							
 		}
 	}
+
+	@Override public void enterAddop(MicroParser.AddopContext ctx) { 
+		infixS.add(ctx.getText());
+	}
+	@Override public void enterMulop(MicroParser.MulopContext ctx) { 
+		infixS.add(ctx.getText());
+	}
+	@Override public void enterPrimary(MicroParser.PrimaryContext ctx) { 
+		if(ctx.getText().toCharArray()[0] == '('){
+			infixS.add("(");
+		} else{
+			infixS.add(ctx.getText());	
+		}	
+	}	
+
+	@Override public void exitPrimary(MicroParser.PrimaryContext ctx) { 
+		if(ctx.getText().toCharArray()[0] == '('){
+			infixS.add(")");
+		}
+	}	
+
+	@Override public void enterWrite_stmt(MicroParser.Write_stmtContext ctx) { 
+		//TODO: split based on LIST of ids
+		String txt = ctx.getText();
+		String id = txt.split("\\(")[1].split("\\)")[0];
+		this.meIRL.add(new IRNode("WRITEI", id, "", "", null));
+	}
+
 }

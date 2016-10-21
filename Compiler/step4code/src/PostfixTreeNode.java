@@ -38,9 +38,9 @@ public class PostfixTreeNode {
   }
 
   public void toIRList(PostfixTreeNode node, LinkedList<IRNode> meTooThanks){
-
   	PostfixTreeNode left = node.left;
   	PostfixTreeNode right = node.right;
+
   	if(left != null)
   		toIRList(left, meTooThanks);
   	if(right != null)
@@ -49,7 +49,7 @@ public class PostfixTreeNode {
   	//Post-order Processing:
   	if(isleaf(left) && isleaf(right)){
   		//This is a subexpression; merge it
-  		System.out.println("subexpression: " + left.value + node.value + right.value);
+  		// System.out.println("subexpression: " + left.value + node.value + right.value);
   		mergeTreeNodes(node, left, right, meTooThanks);
   	}
   }

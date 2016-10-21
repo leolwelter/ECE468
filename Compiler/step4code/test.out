@@ -1,0 +1,33 @@
+;var   a
+;var   b
+;var   c
+;STOREI 20  $T1
+;STOREI $T1  a
+;STOREI 30  $T2
+;STOREI $T2  b
+;STOREI 40  $T3
+;STOREI $T3  c
+;MULTI b a $T4
+;ADDI c $T4 $T5
+;DIVI a $T5 $T6
+;MULTI b a $T7
+;ADDI $T7 c $T8
+;ADDI $T6 $T8 $T9
+;ADDI d $T9 $T10
+;MULTI b a $T11
+;ADDI c $T11 $T12
+;DIVI a $T12 $T13
+;MULTI b a $T14
+;ADDI $T14 c $T15
+;ADDI $T13 $T15 $T16
+;ADDI d $T16 $T17
+;MULTI b a $T18
+;ADDI c $T18 $T19
+;DIVI a $T19 $T20
+;MULTI b a $T21
+;ADDI $T21 c $T22
+;ADDI $T20 $T22 $T23
+;ADDI d $T23 $T24
+;WRITEI c  
+;WRITEI b  
+;WRITEI a  

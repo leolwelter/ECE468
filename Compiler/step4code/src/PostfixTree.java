@@ -12,8 +12,8 @@ public class PostfixTree {
       //check if it is an operator
       String c = postfixArray.get(i);
       if (c.equals("+") || c.equals("-") || c.equals("*") || c.equals("/")) {
-        PostfixTreeNode left = s.pop();
         PostfixTreeNode right = s.pop();
+        PostfixTreeNode left = s.pop();
 
         PostfixTreeNode newNode = new PostfixTreeNode(c, left, right);
         // System.out.println("Val: " + c);

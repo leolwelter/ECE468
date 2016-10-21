@@ -15,8 +15,7 @@ import org.antlr.v4.*;
 
 public class Micro {
 	public static void main(String[] args) throws IOException {
-	/*Step3 code
-	*/
+
 	  	ANTLRFileStream input = new ANTLRFileStream(args[0]);
 		MicroLexer lexer = new MicroLexer(input);
 
@@ -39,32 +38,50 @@ public class Micro {
 		//Intermediate Representation List
 	 	LinkedList<IRNode> meIRL = new LinkedList<IRNode>();
 
+	 	//Tiny Instruction List
+	 	LinkedList<TinyNode> tinyList = new LinkedList<TinyNode>();
+
 		//Symbol Table for parser
 		SymbolTable st = new SymbolTable();
 
+		IRNode.regNo = 0;
+		IRNode.tempCnt = 0;
+
 		AntlrMicroListener mlistener = new AntlrMicroListener(st, meIRL);
 	 	walker.walk(mlistener, programContext);
-
-
-		// To test Infix to Postfix
-		ArrayList<String> infixS = new ArrayList<String>(Arrays.asList("c", "+", "a", "*", "b", "+", "(", "a", "*", "b", "+", "c", ")", "/", "a", "+", "d" ));
-		ShuntingYard sy = new ShuntingYard();
-		String postfixS = sy.infixToPostfix(infixS);
-
-		// To test Postfix Tree
-		PostfixTree pfTree = new PostfixTree();
-		PostfixTreeNode root = pfTree.createTree(postfixS);
-
-		//Testing tree structure
-		//root.printTree(root);
-
-		//testing subexpression elimination
-		root.toIRList(root, meIRL);
 
 	 	//Prints Intermediate Representation List
 	 	for(int i = 0; i < meIRL.size(); i++){
 	 		meIRL.get(i).printNode();
 	 	}
+
+	 	//Prints Tiny List
+	 	for(int i = 0; i < meIRL.size(); i++){
+	 		meIRL.get(i).irToTiny(tinyList);
+	 		// tinyList.add(new TinyNode(meIRL.get(i)));
+	 	}
+	 	for (int i = 0; i < tinyList.size(); i++) {
+	 		tinyList.get(i).printNode();	 		
+	 	}
+
+	 	/*
+	 	//**** ABSTRACT SYNTAX TREE TESTING****
+		//Tests Infix to Postfix
+		ArrayList<String> infixS = new ArrayList<String>(Arrays.asList("c", "+", "a", "*", "b", "+", "(", "a", "*", "b", "+", "c", ")", "/", "a", "+", "d" ));
+		ShuntingYard sy = new ShuntingYard();
+		String postfixS = sy.infixToPostfix(infixS);
+
+		//Tests Postfix Tree
+		PostfixTree pfTree = new PostfixTree();
+		PostfixTreeNode root = pfTree.createTree(postfixS);
+
+		//Tests tree structure
+		// root.printTree(root);
+
+		//Tests subexpression elimination
+		root.toIRList(root, meIRL);
+		*/
+
 
 	 	/*
 	 	Notes:

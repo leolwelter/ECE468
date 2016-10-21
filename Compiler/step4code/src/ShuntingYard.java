@@ -32,7 +32,7 @@ public class ShuntingYard {
           }
           else {
             String top = s.peek();
-            if (top == "(" || top == ")") {
+            if (top.equals("(") || top.equals(")")) {
               s.push(c);
             }
             else {
@@ -42,7 +42,7 @@ public class ShuntingYard {
               while (!s.isEmpty() && currLevel <= sTopLevel) {
                 sb.append(s.pop()).append(' ');
                 if (!s.isEmpty()) {
-                  if (s.peek() == "(" || s.peek() == ")") {
+                  if (s.peek().equals("(") || s.peek().equals(")")) {
                     sTopLevel = 0;
                   }
                   else {
@@ -54,14 +54,14 @@ public class ShuntingYard {
             }
           }
         }
-        else if (c == "(") {
+        else if (c.equals("(")) {
           // is opening parenthesis
           s.push(c);
         }
-        else if (c == ")") {
+        else if (c.equals(")")) {
           // is closing parenthesis
           String top = s.peek();
-          while(top != "(") {
+          while(!top.equals("(")) {
             sb.append(s.pop()).append(' ');
             top = s.peek();
           }
