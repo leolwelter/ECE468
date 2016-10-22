@@ -60,6 +60,8 @@ public class Micro {
 	 		meIRL.get(i).irToTiny(tinyList);
 	 		// tinyList.add(new TinyNode(meIRL.get(i)));
 	 	}
+	 	tinyList.add(new TinyNode("sys", "halt", ""));
+	 	
 	 	for (int i = 0; i < tinyList.size(); i++) {
 	 		tinyList.get(i).printNode();	 		
 	 	}

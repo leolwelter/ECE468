@@ -61,3 +61,4 @@ move r13 a
 sys writei c
 sys writei b
 sys writei a
+sys halt 

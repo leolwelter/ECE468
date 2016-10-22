@@ -160,39 +160,43 @@ public class AntlrMicroListener extends MicroBaseListener {
 						this.meIRL.add(new IRNode("STOREI", "$T" + IRNode.tempCnt, "", id, null));
 					}
 				}
-			}else if(Float.valueOf(expr) instanceof Float){
-				for (List<String> vardata : st.varMap.get("GLOBAL")){
-					if(id.equals(vardata.get(0))){
-						IRNode.tempCnt++;
-						this.meIRL.add(new IRNode("STOREF", expr, "", "$T" + IRNode.tempCnt, null));
-						this.meIRL.add(new IRNode("STOREF", "$T" + IRNode.tempCnt, "", id, null));
+			}
+		} catch (Exception err1){
+			try{					
+				if(Float.valueOf(expr) instanceof Float){
+					for (List<String> vardata : st.varMap.get("GLOBAL")){
+						if(id.equals(vardata.get(0))){
+							IRNode.tempCnt++;
+							this.meIRL.add(new IRNode("STOREF", expr, "", "$T" + IRNode.tempCnt, null));
+							this.meIRL.add(new IRNode("STOREF", "$T" + IRNode.tempCnt, "", id, null));
+						}
 					}
-				}
-			}			
-		} catch(Exception e){	
-				String type = "";
-				ArrayList<List<String>> varList = st.varMap.get("GLOBAL"); 
-			    if(varList != null){  
-			      for(List<String> varData : varList){
-			      	if(varData.get(0).equals(id)){
-			      		type = varData.get(1);
-			      	}
-			      }
-			    }
+				}			
+			}
+			catch(Exception err2){	
+					String type = "";
+					ArrayList<List<String>> varList = st.varMap.get("GLOBAL"); 
+				    if(varList != null){  
+				      for(List<String> varData : varList){
+				      	if(varData.get(0).equals(id)){
+				      		type = varData.get(1);
+				      	}
+				      }
+				    }
 
+					ShuntingYard sy = new ShuntingYard();
+					String postfixS = sy.infixToPostfix(infixS);
 
-				ShuntingYard sy = new ShuntingYard();
-				String postfixS = sy.infixToPostfix(infixS);
+					//Tests Postfix Tree
+					PostfixTree pfTree = new PostfixTree();
+					PostfixTreeNode root = pfTree.createTree(postfixS);
 
-				//Tests Postfix Tree
-				PostfixTree pfTree = new PostfixTree();
-				PostfixTreeNode root = pfTree.createTree(postfixS);
-
-				//adds tree to IRList
-				root.toIRList(root, this.meIRL, type);
-			  	this.meIRL.add(new IRNode("STOREI", "$T"+ IRNode.tempCnt, "", id, null));
-			  							
-		}
+					//adds tree to IRList
+					root.toIRList(root, this.meIRL, type);
+				  	this.meIRL.add(new IRNode("STOREI", "$T"+ IRNode.tempCnt, "", id, null));
+				  							
+			}
+		} 
 	}
 
 	@Override public void enterAddop(MicroParser.AddopContext ctx) { 
@@ -229,7 +233,7 @@ public class AntlrMicroListener extends MicroBaseListener {
 	      	}
 	      }
 	    }		
-	    
+
 		if(type.equals("INT"))
 			this.meIRL.add(new IRNode("WRITEI", id, "", "", null));
 		if(type.equals("FLOAT"))
