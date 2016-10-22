@@ -160,14 +160,27 @@ public class AntlrMicroListener extends MicroBaseListener {
 						this.meIRL.add(new IRNode("STOREI", "$T" + IRNode.tempCnt, "", id, null));
 					}
 				}
-			}
-		} catch(Exception e){			
-				//Tests Infix to Postfix
-				//ArrayList<String> infixS = new ArrayList<String>(Arrays.asList("c", "+", "a", "*", "b", "+", "(", "a", "*", "b", "+", "c", ")", "/", "a", "+", "d" ));
+			}else if(Float.valueOf(expr) instanceof Float){
+				for (List<String> vardata : st.varMap.get("GLOBAL")){
+					if(id.equals(vardata.get(0))){
+						IRNode.tempCnt++;
+						this.meIRL.add(new IRNode("STOREF", expr, "", "$T" + IRNode.tempCnt, null));
+						this.meIRL.add(new IRNode("STOREF", "$T" + IRNode.tempCnt, "", id, null));
+					}
+				}
+			}			
+		} catch(Exception e){	
+				String type = "";
+				ArrayList<List<String>> varList = st.varMap.get("GLOBAL"); 
+			    if(varList != null){  
+			      for(List<String> varData : varList){
+			      	if(varData.get(0).equals(id)){
+			      		type = varData.get(1);
+			      	}
+			      }
+			    }
 
-				// for (char c : abc.toCharArray()) {
-				//   charList.add(c);
-				// }
+
 				ShuntingYard sy = new ShuntingYard();
 				String postfixS = sy.infixToPostfix(infixS);
 
@@ -176,7 +189,7 @@ public class AntlrMicroListener extends MicroBaseListener {
 				PostfixTreeNode root = pfTree.createTree(postfixS);
 
 				//adds tree to IRList
-				root.toIRList(root, this.meIRL);
+				root.toIRList(root, this.meIRL, type);
 			  	this.meIRL.add(new IRNode("STOREI", "$T"+ IRNode.tempCnt, "", id, null));
 			  							
 		}
@@ -206,7 +219,21 @@ public class AntlrMicroListener extends MicroBaseListener {
 		//TODO: split based on LIST of ids
 		String txt = ctx.getText();
 		String id = txt.split("\\(")[1].split("\\)")[0];
-		this.meIRL.add(new IRNode("WRITEI", id, "", "", null));
+
+		String type = "";
+		ArrayList<List<String>> varList = st.varMap.get("GLOBAL"); 
+	    if(varList != null){  
+	      for(List<String> varData : varList){
+	      	if(varData.get(0).equals(id)){
+	      		type = varData.get(1);
+	      	}
+	      }
+	    }		
+	    
+		if(type.equals("INT"))
+			this.meIRL.add(new IRNode("WRITEI", id, "", "", null));
+		if(type.equals("FLOAT"))
+			this.meIRL.add(new IRNode("WRITEF", id, "", "", null));			
 	}
 
 }

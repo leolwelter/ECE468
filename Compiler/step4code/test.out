@@ -7,27 +7,57 @@
 ;STOREI $T2  b
 ;STOREI 40  $T3
 ;STOREI $T3  c
-;MULTI b a $T4
+;MULTI a b $T4
 ;ADDI c $T4 $T5
-;DIVI a $T5 $T6
-;MULTI b a $T7
-;ADDI $T7 c $T8
-;ADDI $T6 $T8 $T9
-;ADDI d $T9 $T10
-;MULTI b a $T11
-;ADDI c $T11 $T12
-;DIVI a $T12 $T13
-;MULTI b a $T14
-;ADDI $T14 c $T15
-;ADDI $T13 $T15 $T16
-;ADDI d $T16 $T17
-;MULTI b a $T18
-;ADDI c $T18 $T19
-;DIVI a $T19 $T20
-;MULTI b a $T21
-;ADDI $T21 c $T22
-;ADDI $T20 $T22 $T23
-;ADDI d $T23 $T24
+;MULTI a b $T6
+;ADDI $T6 c $T7
+;DIVI $T7 a $T8
+;ADDI $T5 $T8 $T9
+;ADDI $T9 20 $T10
+;STOREI $T10  c
+;MULTI b b $T11
+;ADDI $T11 a $T12
+;STOREI $T12  b
+;MULTI b a $T13
+;DIVI $T13 a $T14
+;STOREI $T14  a
 ;WRITEI c  
 ;WRITEI b  
 ;WRITEI a  
+var a 
+var b 
+var c 
+move 20 r0
+move r0 a
+move 30 r1
+move r1 b
+move 40 r2
+move r2 c
+move a r3
+muli b r3
+move c r4
+addi r3 r4
+move a r5
+muli b r5
+move r5 r6
+addi c r6
+move r6 r7
+divi a r7
+move r4 r8
+addi r7 r8
+move r8 r9
+addi 20 r9
+move r9 c
+move b r10
+muli b r10
+move r10 r11
+addi a r11
+move r11 b
+move b r12
+muli a r12
+move r12 r13
+divi a r13
+move r13 a
+sys writei c
+sys writei b
+sys writei a

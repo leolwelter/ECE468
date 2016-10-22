@@ -69,34 +69,33 @@ public class IRNode {
 				op2     = "";
 				result  = tdata.get(0);
 				break;
-			case "storei":
-				bTarget = null;
-				opcode  = "STOREI";
-				op1     = tdata.get(0);
-				op2		= "";
-				result  = tdata.get(1);
-				break;
-			case "addi":
-				bTarget = null;
-				opcode  = "ADDI";
-				op1     = tdata.get(0);
-				op2		= tdata.get(1);
-				result	= tdata.get(2);
-				break;
 		}
 	}
 
-	public void treeToIR(PostfixTreeNode node, PostfixTreeNode left, PostfixTreeNode right){
+	public void treeToIR(PostfixTreeNode node, PostfixTreeNode left, PostfixTreeNode right, String type){
 		//TODO: actually create IR from tree data
-		switch (node.value){
-			case("*"):
-				opcode = "MULTI"; break;
-			case("/"):
-				opcode = "DIVI"; break;
-			case("+"):
-				opcode = "ADDI"; break;
-			case("-"):
-				opcode = "SUBI"; break;
+		if(type.equals("INT")){			
+			switch (node.value){
+				case("*"):
+					opcode = "MULTI"; break;
+				case("/"):
+					opcode = "DIVI"; break;
+				case("+"):
+					opcode = "ADDI"; break;
+				case("-"):
+					opcode = "SUBI"; break;
+			}
+		} else if(type.equals("FLOAT")){
+			switch (node.value){
+				case("*"):
+					opcode = "MULTF"; break;
+				case("/"):
+					opcode = "DIVF"; break;
+				case("+"):
+					opcode = "ADDF"; break;
+				case("-"):
+					opcode = "SUBF"; break;
+			}			
 		}
 		op1     = left.value;
 		op2     = right.value;
@@ -108,7 +107,12 @@ public class IRNode {
 		char [] irResult = result.toCharArray();
 		char [] irOp1    = op1.toCharArray();
 		char [] irOp2	 = op2.toCharArray();
+		int temp1 = -1;
+		int temp2 = -1;
 
+		// temp1 = Integer.parseInt(op1.split("T")[1]) - 1;
+		// temp1 = Integer.parseInt(result.split("T")[1]) - 1;
+	
 		switch(opcode){
 			case("var"):
 				topcode = "var";
@@ -119,15 +123,15 @@ public class IRNode {
 			case("STOREI"):
 				topcode = "move";
 				if(irOp1[0] == '$'){
-					top1 = "r" + regNo; //?
-				} else{
-					top1 = op1;
+					top1 = "r" + (Integer.parseInt(op1.split("T")[1]) - 1);
+				} else {
+					top1 = op1;					
 				}
 				if(irResult[0] == '$'){
-					top2 = "r" + ++regNo;
-				} else{
-					top2 = result;
-				}
+					top2 = "r" + (Integer.parseInt(result.split("T")[1]) - 1);
+				} else {
+					top2 	= result;					
+				}	
 				tinyList.add(new TinyNode(topcode, top1, top2));				
 				break;
 			case("WRITEI"):
@@ -136,13 +140,206 @@ public class IRNode {
 				top2 	= op1;
 				tinyList.add(new TinyNode(topcode, top1, top2));				
 				break;
-			case("MULTI"):
-				topcode = "muli";
+			case("ADDI"):
+				topcode = "move";
 				if(irOp1[0] == '$'){
-					top1 = 	
+					top1 = "r" + (Integer.parseInt(op1.split("T")[1]) - 1);
+				} else {
+					top1 = op1;					
 				}
+				if(irResult[0] == '$'){
+					top2 = "r" + (Integer.parseInt(result.split("T")[1]) - 1);
+				} else {
+					top2 	= result;					
+				}				
+				tinyList.add(new TinyNode(topcode, top1, top2));								
+				
+				topcode = "addi";
+				// temp1 = Integer.parseInt(op1.split("T")[1]) - 1;
+				// temp1 = Integer.parseInt(result.split("T")[1]) - 1;
+				if(irOp2[0] == '$'){
+					top1 = "r" + (Integer.parseInt(op2.split("T")[1]) - 1);
+				} else {
+					top1 = op2;					
+				}
+				if(irResult[0] == '$'){
+					top2 = "r" + (Integer.parseInt(result.split("T")[1]) - 1);
+				} else {
+					top2 	= result;					
+				}
+				tinyList.add(new TinyNode(topcode, top1, top2));				
+				break;
 
+				case("MULTI"):
+				topcode = "move";
+				if(irOp1[0] == '$'){
+					top1 = "r" + (Integer.parseInt(op1.split("T")[1]) - 1);
+				} else {
+					top1 = op1;					
+				}
+				if(irResult[0] == '$'){
+					top2 = "r" + (Integer.parseInt(result.split("T")[1]) - 1);
+				} else {
+					top2 	= result;					
+				}				
+				tinyList.add(new TinyNode(topcode, top1, top2));								
+				
+				topcode = "muli";
+				// temp1 = Integer.parseInt(op1.split("T")[1]) - 1;
+				// temp1 = Integer.parseInt(result.split("T")[1]) - 1;
+				if(irOp2[0] == '$'){
+					top1 = "r" + (Integer.parseInt(op2.split("T")[1]) - 1);
+				} else {
+					top1 = op2;					
+				}
+				if(irResult[0] == '$'){
+					top2 = "r" + (Integer.parseInt(result.split("T")[1]) - 1);
+				} else {
+					top2 	= result;					
+				}
+				tinyList.add(new TinyNode(topcode, top1, top2));				
+				break;	
 
+				case("DIVI"):
+				topcode = "move";
+				if(irOp1[0] == '$'){
+					top1 = "r" + (Integer.parseInt(op1.split("T")[1]) - 1);
+				} else {
+					top1 = op1;					
+				}
+				if(irResult[0] == '$'){
+					top2 = "r" + (Integer.parseInt(result.split("T")[1]) - 1);
+				} else {
+					top2 	= result;					
+				}				
+				tinyList.add(new TinyNode(topcode, top1, top2));								
+				
+				topcode = "divi";
+				// temp1 = Integer.parseInt(op1.split("T")[1]) - 1;
+				// temp1 = Integer.parseInt(result.split("T")[1]) - 1;
+				if(irOp2[0] == '$'){
+					top1 = "r" + (Integer.parseInt(op2.split("T")[1]) - 1);
+				} else {
+					top1 = op2;					
+				}
+				if(irResult[0] == '$'){
+					top2 = "r" + (Integer.parseInt(result.split("T")[1]) - 1);
+				} else {
+					top2 	= result;					
+				}
+				tinyList.add(new TinyNode(topcode, top1, top2));				
+				break;	
+
+			//******* Float OPERATIONS ********//
+			case("STOREF"):
+				topcode = "move";
+				if(irOp1[0] == '$'){
+					top1 = "r" + (Integer.parseInt(op1.split("T")[1]) - 1);
+				} else {
+					top1 = op1;					
+				}
+				if(irResult[0] == '$'){
+					top2 = "r" + (Integer.parseInt(result.split("T")[1]) - 1);
+				} else {
+					top2 	= result;					
+				}	
+				tinyList.add(new TinyNode(topcode, top1, top2));				
+				break;
+			case("WRITEF"):
+				topcode = "sys";
+				top1 	= "writer";
+				top2 	= op1;
+				tinyList.add(new TinyNode(topcode, top1, top2));				
+				break;
+			case("ADDF"):
+				topcode = "move";
+				if(irOp1[0] == '$'){
+					top1 = "r" + (Integer.parseInt(op1.split("T")[1]) - 1);
+				} else {
+					top1 = op1;					
+				}
+				if(irResult[0] == '$'){
+					top2 = "r" + (Integer.parseInt(result.split("T")[1]) - 1);
+				} else {
+					top2 	= result;					
+				}				
+				tinyList.add(new TinyNode(topcode, top1, top2));								
+				
+				topcode = "addr";
+				// temp1 = Integer.parseInt(op1.split("T")[1]) - 1;
+				// temp1 = Integer.parseInt(result.split("T")[1]) - 1;
+				if(irOp2[0] == '$'){
+					top1 = "r" + (Integer.parseInt(op2.split("T")[1]) - 1);
+				} else {
+					top1 = op2;					
+				}
+				if(irResult[0] == '$'){
+					top2 = "r" + (Integer.parseInt(result.split("T")[1]) - 1);
+				} else {
+					top2 	= result;					
+				}
+				tinyList.add(new TinyNode(topcode, top1, top2));				
+				break;
+
+				case("MULTF"):
+				topcode = "move";
+				if(irOp1[0] == '$'){
+					top1 = "r" + (Integer.parseInt(op1.split("T")[1]) - 1);
+				} else {
+					top1 = op1;					
+				}
+				if(irResult[0] == '$'){
+					top2 = "r" + (Integer.parseInt(result.split("T")[1]) - 1);
+				} else {
+					top2 	= result;					
+				}				
+				tinyList.add(new TinyNode(topcode, top1, top2));								
+				
+				topcode = "mulr";
+				// temp1 = Integer.parseInt(op1.split("T")[1]) - 1;
+				// temp1 = Integer.parseInt(result.split("T")[1]) - 1;
+				if(irOp2[0] == '$'){
+					top1 = "r" + (Integer.parseInt(op2.split("T")[1]) - 1);
+				} else {
+					top1 = op2;					
+				}
+				if(irResult[0] == '$'){
+					top2 = "r" + (Integer.parseInt(result.split("T")[1]) - 1);
+				} else {
+					top2 	= result;					
+				}
+				tinyList.add(new TinyNode(topcode, top1, top2));				
+				break;	
+
+				case("DIVF"):
+				topcode = "move";
+				if(irOp1[0] == '$'){
+					top1 = "r" + (Integer.parseInt(op1.split("T")[1]) - 1);
+				} else {
+					top1 = op1;					
+				}
+				if(irResult[0] == '$'){
+					top2 = "r" + (Integer.parseInt(result.split("T")[1]) - 1);
+				} else {
+					top2 	= result;					
+				}				
+				tinyList.add(new TinyNode(topcode, top1, top2));								
+				
+				topcode = "divr";
+				// temp1 = Integer.parseInt(op1.split("T")[1]) - 1;
+				// temp1 = Integer.parseInt(result.split("T")[1]) - 1;
+				if(irOp2[0] == '$'){
+					top1 = "r" + (Integer.parseInt(op2.split("T")[1]) - 1);
+				} else {
+					top1 = op2;					
+				}
+				if(irResult[0] == '$'){
+					top2 = "r" + (Integer.parseInt(result.split("T")[1]) - 1);
+				} else {
+					top2 	= result;					
+				}
+				tinyList.add(new TinyNode(topcode, top1, top2));				
+				break;								
 		}
 	}
 }
