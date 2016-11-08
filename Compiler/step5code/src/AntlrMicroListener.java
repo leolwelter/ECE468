@@ -6,13 +6,18 @@ public class AntlrMicroListener extends MicroBaseListener {
 	public SymbolTable st;
 	public LinkedList<IRNode> meIRL;
 	public ArrayList<String> infixS = new ArrayList<String>();
+	public Stack<String> enterStack;
+	public Stack<String> endStack;
+	public static int condCount = 0; //conditional count
+	public static int tf_flag = 0;
 
 	//Custom Constructor
 	public AntlrMicroListener(SymbolTable st, LinkedList<IRNode> irList){
 		this.st = st;
 		this.meIRL = irList;
+		this.enterStack = new Stack<String>();
+		this.endStack = new Stack<String>();
 	}
-
 
 	//Prints the scopes as they're entered
 	//Functions
@@ -31,7 +36,10 @@ public class AntlrMicroListener extends MicroBaseListener {
 	@Override public void enterDo_while_stmt(MicroParser.Do_while_stmtContext ctx) { 
 		//Set new SymbolTable scope
 		st.next = new SymbolTable("BLOCK");
-		st = st.next;		
+		st = st.next;	
+
+		//Push while to cond stack
+
 	}
 
 	//IFs
@@ -39,6 +47,11 @@ public class AntlrMicroListener extends MicroBaseListener {
 		//Set new SymbolTable scope
 		st.next = new SymbolTable("BLOCK");
 		st = st.next;
+
+		//Conditional State Tracking
+		endStack.push("if_" + ++condCount);
+		enterStack.push("if_" + condCount);
+		
 	}
 
 	//ELSIFs
@@ -49,8 +62,41 @@ public class AntlrMicroListener extends MicroBaseListener {
 			st.next = new SymbolTable("BLOCK");
 			st = st.next;			
 		}
+
+		//Conditional State Tracking
+		meIRL.add(new IRNode("JUMP", "", "", endStack.peek(), null));
+		meIRL.add(new IRNode("LABEL", "", "", enterStack.pop(), null));		
+		enterStack.push("if_" + ++condCount);
 	}
 
+	//ENDIF handling
+	@Override public void exitIf_stmt(MicroParser.If_stmtContext ctx) { 
+		//Create IRNodes related to ENDIF statements
+		meIRL.add(new IRNode("JUMP", "", "", endStack.peek(), null));
+		meIRL.add(new IRNode("LABEL", "", "", endStack.pop(), null));
+	}
+	//IRNode( opcode,  op1,  op2,  result,  bTarget){
+
+	@Override public void enterCond(MicroParser.CondContext ctx) { 
+		//clear the infix (make way for more expressions)
+		infixS.clear();
+	}
+
+	//1. eval LHS (infixS)
+	//2. add IRNode(s)    
+	//3. infixS.clear();
+	@Override public void enterCompop(MicroParser.CompopContext ctx) { 
+		System.out.println(infixS);
+	}
+
+
+	//1. eval RHS (infixS)  
+	//2. add IRNode(s) (like exitAssign_stmt)   
+	//3. infixS.clear();
+	//OR if tf_flag == 1, just evaluate TRUE/FALSE
+	@Override public void exitCond(MicroParser.CondContext ctx) { 
+		System.out.println(infixS);
+	}
 
 
 	/* ********* PRINTS OUT VARIABLE INFORMATION ******* */

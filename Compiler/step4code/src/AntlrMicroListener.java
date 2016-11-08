@@ -6,11 +6,14 @@ public class AntlrMicroListener extends MicroBaseListener {
 	public SymbolTable st;
 	public LinkedList<IRNode> meIRL;
 	public ArrayList<String> infixS = new ArrayList<String>();
+	public Stack<IRNode> endStack;
 
 	//Custom Constructor
 	public AntlrMicroListener(SymbolTable st, LinkedList<IRNode> irList){
 		this.st = st;
 		this.meIRL = irList;
+		this.endStack = new Stack<IRNode>();
+		this.enterStack = new Stack<IRNode>();
 	}
 
 
