@@ -1,0 +1,95 @@
+Enter compop: [diff]
+Exit cond: [0.0]
+Enter compop: [diff]
+Exit cond: [tolerance]
+Exit cond: [TRUE]
+Enter compop: [diff]
+Exit cond: [(, 0.0, -, tolerance, )]
+Enter compop: [enough]
+Exit cond: [1]
+;var   count
+;var   enough
+;var   newapprox
+;var   approx
+;var   num
+;var   tolerance
+;var   diff
+;STOREF 0.0001  $T1
+;STOREF $T1  tolerance
+;STOREF 7.0  $T2
+;STOREF $T2  num
+;STOREI $T2  approx
+;STOREI 0  $T3
+;STOREI $T3  count
+;STOREF 0.0  $T4
+;STOREF $T4  diff
+;STOREI 0  $T5
+;STOREI $T5  enough
+;ADDI count 1 $T6
+;STOREI $T6  count
+;DIVF num approx $T7
+;ADDF approx $T7 $T8
+;MULTF 0.5 $T8 $T9
+;STOREI $T9  newapprox
+;SUBF approx newapprox $T10
+;STOREI $T10  diff
+;STOREI 1  $T11
+;STOREI $T11  enough
+;JUMP   if_2
+;LABEL   if_2
+;JUMP   if_2
+;LABEL   if_2
+;JUMP   if_1
+;LABEL   if_3
+;STOREI 1  $T12
+;STOREI $T12  enough
+;JUMP   if_5
+;LABEL   if_5
+;JUMP   if_5
+;LABEL   if_5
+;JUMP   if_1
+;LABEL   if_6
+;JUMP   if_1
+;LABEL   if_1
+;STOREI $T12  approx
+;WRITEF approx  
+;WRITEI count  
+var count 
+var enough 
+var newapprox 
+var approx 
+var num 
+var tolerance 
+var diff 
+move 0.0001 r0
+move r0 tolerance
+move 7.0 r1
+move r1 num
+move r1 approx
+move 0 r2
+move r2 count
+move 0.0 r3
+move r3 diff
+move 0 r4
+move r4 enough
+move count r5
+addi 1 r5
+move r5 count
+move num r6
+divr approx r6
+move approx r7
+addr r6 r7
+move 0.5 r8
+mulr r7 r8
+move r8 newapprox
+move approx r9
+subr newapprox r9
+move r9 diff
+move 1 r10
+move r10 enough
+move 1 r11
+move r11 enough
+move r11 approx
+sys writer approx
+sys writei count
+sys halt 
