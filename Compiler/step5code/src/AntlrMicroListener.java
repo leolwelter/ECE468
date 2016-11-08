@@ -80,14 +80,28 @@ public class AntlrMicroListener extends MicroBaseListener {
 	@Override public void enterCond(MicroParser.CondContext ctx) { 
 		//clear the infix (make way for more expressions)
 		infixS.clear();
+		if (ctx.getText().equals("TRUE")) {
+			infixS.add("TRUE");
+		}else if(ctx.getText().equals("FALSE")){
+			infixS.add("FALSE");
+		}
+
 	}
 
 	//1. eval LHS (infixS)
 	//2. add IRNode(s)    
 	//3. infixS.clear();
 	@Override public void enterCompop(MicroParser.CompopContext ctx) { 
-		System.out.println(infixS);
+		System.out.println("Enter compop: " + infixS);
+		//1:
+		
+
 	}
+
+	@Override public void exitCompop(MicroParser.CompopContext ctx) { 
+		infixS.clear(); //make way for RHS		
+	}
+
 
 
 	//1. eval RHS (infixS)  
@@ -95,7 +109,7 @@ public class AntlrMicroListener extends MicroBaseListener {
 	//3. infixS.clear();
 	//OR if tf_flag == 1, just evaluate TRUE/FALSE
 	@Override public void exitCond(MicroParser.CondContext ctx) { 
-		System.out.println(infixS);
+		System.out.println("Exit cond: " + infixS);
 	}
 
 

@@ -1,12 +1,12 @@
-[diff]
-[diff, 0.0]
-[diff]
-[diff, tolerance]
-[]
-[diff]
-[diff, (, 0.0, -, tolerance, )]
-[enough]
-[enough, 1]
+Enter compop: [diff]
+Exit cond: [0.0]
+Enter compop: [diff]
+Exit cond: [tolerance]
+Exit cond: [TRUE]
+Enter compop: [diff]
+Exit cond: [(, 0.0, -, tolerance, )]
+Enter compop: [enough]
+Exit cond: [1]
 ;var   count
 ;var   enough
 ;var   newapprox
