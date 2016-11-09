@@ -5,7 +5,7 @@
 ;STOREI $T2 i
 ;STOREI 42 $T3
 ;STOREI $T3 a
-;STOREI 5 $T4
+;STOREI 5 $T4      #IF IRNodes
 ;GE i $T4 label1
 ;ADDI num a $T5
 ;STOREI $T5 num

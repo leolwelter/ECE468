@@ -64,7 +64,7 @@ public class Micro {
 	 	
 	 	for (int i = 0; i < tinyList.size(); i++) {
 	 		tinyList.get(i).printNode();	 		
-	 	}
+	 	} 	
 
 	 	/*
 	 	//**** ABSTRACT SYNTAX TREE TESTING****

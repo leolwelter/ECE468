@@ -7,6 +7,9 @@ public class IRNode {
 	public  String op1;
 	public  String op2;
 	public  String result;
+
+	public String opType; //conditional flag (FALSE if int)
+
 	public static int tempCnt;
 	public static int regNo;
 
@@ -17,19 +20,30 @@ public class IRNode {
 		this.op1 = null;
 		this.op2 = null;
 		this.result = null;
+		this.opType = null;
 	}
 
 	public IRNode(ArrayList<String> token, String type){
 		setParams(token, type);
 	}
 
-	public IRNode(String opcode, String op1, String op2, String result, IRNode bTarget){
+	public IRNode(String opcode, String op1, String op2, String result){
 		this.opcode = opcode;
 		this.op1 = op1;
 		this.op2 = op2;
 		this.result = result;		
 		this.bTarget = bTarget;
+		this.opType = null;
 	}
+
+	public IRNode(String opcode, String op1, String op2, String result, String opType){
+		this.opcode = opcode;
+		this.op1 = op1;
+		this.op2 = op2;
+		this.result = result;		
+		this.bTarget = null;
+		this.opType = opType;
+	}	
 
 	//instance methods
 	public void printNode(){
@@ -114,12 +128,76 @@ public class IRNode {
 		// temp1 = Integer.parseInt(result.split("T")[1]) - 1;
 	
 		switch(opcode){
+			//******* CONDITIONAL(int) OPERATIONS ******//
+			case("GT"):
+				if(this.opType.equals("FLOAT")){
+					tinyList.add(new TinyNode("cmpr", op1, op2)); //comparison
+				}else{
+					tinyList.add(new TinyNode("cmpi", op1, op2)); //comparison					
+				}
+				tinyList.add(new TinyNode("jgt", result, "")); //jump	
+				break;
+			case("GE"):
+				if(this.opType.equals("FLOAT")){
+					tinyList.add(new TinyNode("cmpr", op1, op2)); //comparison
+				}else{
+					tinyList.add(new TinyNode("cmpi", op1, op2)); //comparison					
+				}
+				tinyList.add(new TinyNode("jge", result, "")); //jump				
+				break;
+			case("LT"):
+				if(this.opType.equals("FLOAT")){
+					tinyList.add(new TinyNode("cmpr", op1, op2)); //comparison
+				}else{
+					tinyList.add(new TinyNode("cmpi", op1, op2)); //comparison					
+				}
+				tinyList.add(new TinyNode("jlt", result, "")); //jump	
+				break;
+			case("LE"):
+				if(this.opType.equals("FLOAT")){
+					tinyList.add(new TinyNode("cmpr", op1, op2)); //comparison
+				}else{
+					tinyList.add(new TinyNode("cmpi", op1, op2)); //comparison					
+				}
+				tinyList.add(new TinyNode("jle", result, "")); //jump					
+				break;
+			case("NE"):
+				if(this.opType.equals("FLOAT")){
+					tinyList.add(new TinyNode("cmpr", op1, op2)); //comparison
+				}else{
+					tinyList.add(new TinyNode("cmpi", op1, op2)); //comparison					
+				}
+				tinyList.add(new TinyNode("jne", result, "")); //jump	
+				break;
+			case("EQ"):
+				if(this.opType.equals("FLOAT")){
+					tinyList.add(new TinyNode("cmpr", op1, op2)); //comparison
+				}else{
+					tinyList.add(new TinyNode("cmpi", op1, op2)); //comparison					
+				}
+				tinyList.add(new TinyNode("jeq", result, "")); //jump			
+				break;
+			case("JUMP"):
+				topcode = "jmp";
+				top1 	= result;
+				top2	= "";
+				tinyList.add(new TinyNode(topcode, top1, top2));
+				break;
+			case("LABEL"):
+				topcode = "label";
+				top1 	= result; 
+				top2	= "";
+				tinyList.add(new TinyNode(topcode, top1, top2));
+				break;			
+
+			//********* VARIABLE DECLARATIONS *****//
 			case("var"):
 				topcode = "var";
 				top1 	= result;
 				top2 	= "";
 				tinyList.add(new TinyNode(topcode, top1, top2));
 				break;
+
 			//******* INTEGER OPERATIONS ******//
 			case("STOREI"):
 				topcode = "move";
