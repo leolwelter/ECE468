@@ -94,7 +94,6 @@ public class AntlrMicroListener extends MicroBaseListener {
 	@Override public void enterCompop(MicroParser.CompopContext ctx) { 
 		System.out.println("Enter compop: " + infixS);
 		//1:
-		
 
 	}
 
