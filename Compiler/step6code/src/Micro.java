@@ -50,21 +50,29 @@ public class Micro {
 		AntlrMicroListener mlistener = new AntlrMicroListener(st, meIRL);
 	 	walker.walk(mlistener, programContext);
 
-	 	//Prints Intermediate Representation List
-	 	for(int i = 0; i < meIRL.size(); i++){
-	 		meIRL.get(i).printNode();
+	 	//Print Function information
+	 	//System.out.println(mlistener.functionTable);
+	 	for(Function func : mlistener.functionTable.values()){		 		
+		 	//Prints Intermediate Representation List
+		 	for(int i = 0; i < func.meIRL.size(); i++){
+		 		func.meIRL.get(i).printNode();
+		 	} 	
+
+		 	//func.st.printTable();
 	 	}
 
-	 	//Prints Tiny List
-	 	for(int i = 0; i < meIRL.size(); i++){
-	 		meIRL.get(i).irToTiny(tinyList);
-	 		// tinyList.add(new TinyNode(meIRL.get(i)));
+	 	for(Function func : mlistener.functionTable.values()){		 		
+		 	//Prints Tiny List
+		 	for(int i = 0; i < func.meIRL.size(); i++){
+		 		func.meIRL.get(i).irToTiny(tinyList);
+		 		// tinyList.add(new TinyNode(meIRL.get(i)));
+		 	}
+		 	
+		 	for (int i = 0; i < tinyList.size(); i++) {
+		 		tinyList.get(i).printNode();	 		
+		 	} 	
 	 	}
-	 	tinyList.add(new TinyNode("sys", "halt", ""));
-	 	
-	 	for (int i = 0; i < tinyList.size(); i++) {
-	 		tinyList.get(i).printNode();	 		
-	 	} 	
+		tinyList.add(new TinyNode("sys", "halt", ""));
 	 	
 	 	/*
 		System.out.println("ENTER Stack");

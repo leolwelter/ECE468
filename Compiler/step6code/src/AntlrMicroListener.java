@@ -11,9 +11,10 @@ public class AntlrMicroListener extends MicroBaseListener {
 	public String cmp;
 	public String lhsType, rhsType;
 	public int lhsTemp;
-
+	public LinkedHashMap<String, Function> functionTable;
 	public static int condCount = 0; //conditional count
 	public static int tf_flag = 0;
+	public static Stack<String> programStack = null;
 
 	//Custom Constructor
 	public AntlrMicroListener(SymbolTable st, LinkedList<IRNode> irList){
@@ -21,6 +22,8 @@ public class AntlrMicroListener extends MicroBaseListener {
 		this.meIRL = irList;
 		this.enterStack = new Stack<String>();
 		this.endStack = new Stack<String>();
+		this.functionTable = new LinkedHashMap<String, Function>();
+		this.functionTable.put("GLOBAL", new Function(st, meIRL, "GLOBAL"));
 	}
 
 	//Prints the scopes as they're entered
@@ -31,8 +34,22 @@ public class AntlrMicroListener extends MicroBaseListener {
 			txt = txt.split("INT|FLOAT|VOID|STRING")[1];
 			txt = txt.split("\\(")[0];
 			//Set new SymbolTable scope
-			st.next = new SymbolTable(txt);
-			st = st.next;
+			st = new SymbolTable(txt);
+			//Make new IRList and SymbolTable for new Function
+			meIRL = new LinkedList<IRNode>();
+
+			//CLEAR ALL INSTANCE/GLOBALS
+			infixS = new ArrayList<String>();
+			enterStack.clear();
+			endStack.clear();
+			cmp = null;
+			lhsType = null;
+			rhsType = null;
+			lhsTemp = 0;
+			condCount = 0; 
+			tf_flag = 0;			
+			functionTable.put(txt, new Function(st, meIRL, txt));
+			//st = st.next;
 		}
 	}
 
@@ -518,4 +535,20 @@ public class AntlrMicroListener extends MicroBaseListener {
 			this.meIRL.add(new IRNode("READF", id, "", ""));
 	}
 
+	@Override public void enterCall_expr(MicroParser.Call_exprContext ctx) {
+		//Push onto stack
+		//meIRL.add(new IRNode("PUSH", "", "", ""));
+		System.out.println(ctx.getText());
+	}
+
+	@Override public void enterExpr_list(MicroParser.Expr_listContext ctx) { 
+		//Only happens in Function calls
+		//separated like: "something", "something else", "this"
+		ArrayList<String> params = new ArrayList<>(Arrays.asList(ctx.getText().split(",")));
+		System.out.println(params);
+	}
+
 }
+
+
+
