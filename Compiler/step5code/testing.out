@@ -1,0 +1,140 @@
+;var   count
+;var   enough
+;var   newapprox
+;var   approx
+;var   num
+;var   tolerance
+;var   diff
+;STOREF 0.0001  $T1
+;STOREF $T1  tolerance
+;STOREF 7.0  $T2
+;STOREF $T2  num
+;STOREF num  $T2
+;STOREF $T2  approx
+;STOREI 0  $T3
+;STOREI $T3  count
+;STOREF 0.0  $T4
+;STOREF $T4  diff
+;STOREI 0  $T5
+;STOREI $T5  enough
+;LABEL   label1
+;ADDI count 1 $T6
+;STOREI $T6  count
+;DIVF num approx $T7
+;ADDF approx $T7 $T8
+;MULTF 0.5 $T8 $T9
+;STOREF $T9  newapprox
+;SUBF approx newapprox $T10
+;STOREF $T10  diff
+;STOREF diff  $T10
+;STOREF 0.0  $T11
+;LE $T10 $T11 label2
+;STOREF diff  $T11
+;STOREF tolerance  $T12
+;GE $T11 $T12 label4
+;STOREI 1  $T13
+;STOREI $T13  enough
+;JUMP   label5
+;LABEL   label5
+;LABEL   label4
+;JUMP   label3
+;LABEL   label2
+;STOREI 1  $T14
+;STOREI 1  $T15
+;NE $T15 $T14 label6
+;STOREF diff  $T15
+;SUBF 0.0 tolerance $T17
+;LE $T15 $T17 label7
+;STOREI 1  $T18
+;STOREI $T18  enough
+;JUMP   label8
+;LABEL   label8
+;LABEL   label7
+;JUMP   label3
+;LABEL   label3
+;LABEL   label6
+;STOREF newapprox  $T18
+;STOREF $T18  approx
+;STOREI enough  $T18
+;STOREI 1  $T19
+;EQ $T18 $T19 label0
+;JUMP   label1
+;LABEL   label0
+;WRITEF approx  
+;WRITEI count  
+var count 
+var enough 
+var newapprox 
+var approx 
+var num 
+var tolerance 
+var diff 
+move 0.0001 r0
+move r0 tolerance
+move 7.0 r1
+move r1 num
+move num r1
+move r1 approx
+move 0 r2
+move r2 count
+move 0.0 r3
+move r3 diff
+move 0 r4
+move r4 enough
+label label1 
+move count r5
+addi 1 r5
+move r5 count
+move num r6
+divr approx r6
+move approx r7
+addr r6 r7
+move 0.5 r8
+mulr r7 r8
+move r8 newapprox
+move approx r9
+subr newapprox r9
+move r9 diff
+move diff r9
+move 0.0 r10
+cmpr r9 r10
+jle label2 
+move diff r10
+move tolerance r11
+cmpr r10 r11
+jge label4 
+move 1 r12
+move r12 enough
+jmp label5 
+label label5 
+label label4 
+jmp label3 
+label label2 
+move 1 r13
+move 1 r14
+cmpi r14 r13
+jne label6 
+move diff r14
+move 0.0 r16
+subr tolerance r16
+cmpr r14 r16
+jle label7 
+move 1 r17
+move r17 enough
+jmp label8 
+label label8 
+label label7 
+jmp label3 
+label label3 
+label label6 
+move newapprox r17
+move r17 approx
+move enough r17
+move 1 r18
+cmpi r17 r18
+jeq label0 
+jmp label1 
+label label0 
+sys writer approx
+sys writei count
+sys halt 

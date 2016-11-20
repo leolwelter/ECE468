@@ -130,50 +130,116 @@ public class IRNode {
 		switch(opcode){
 			//******* CONDITIONAL(int) OPERATIONS ******//
 			case("GT"):
+				//If operands are $T's, make them registers
+				if(irOp1[0] == '$'){
+					top1 = "r" + (Integer.parseInt(op1.split("T")[1]) - 1);
+				} else {
+					top1 = op1;					
+				}
+				if(irOp2[0] == '$'){
+					top2 = "r" + (Integer.parseInt(op2.split("T")[1]) - 1);
+				} else {
+					top2 	= op2;					
+				}
 				if(this.opType.equals("FLOAT")){
-					tinyList.add(new TinyNode("cmpr", op1, op2)); //comparison
+					tinyList.add(new TinyNode("cmpr", top1, top2)); //comparison
 				}else{
-					tinyList.add(new TinyNode("cmpi", op1, op2)); //comparison					
+					tinyList.add(new TinyNode("cmpi", top1, top2)); //comparison					
 				}
 				tinyList.add(new TinyNode("jgt", result, "")); //jump	
 				break;
 			case("GE"):
+				//If operands are $T's, make them registers
+				if(irOp1[0] == '$'){
+					top1 = "r" + (Integer.parseInt(op1.split("T")[1]) - 1);
+				} else {
+					top1 = op1;					
+				}
+				if(irOp2[0] == '$'){
+					top2 = "r" + (Integer.parseInt(op2.split("T")[1]) - 1);
+				} else {
+					top2 	= op2;					
+				}
 				if(this.opType.equals("FLOAT")){
-					tinyList.add(new TinyNode("cmpr", op1, op2)); //comparison
+					tinyList.add(new TinyNode("cmpr", top1, top2)); //comparison
 				}else{
-					tinyList.add(new TinyNode("cmpi", op1, op2)); //comparison					
+					tinyList.add(new TinyNode("cmpi", top1, top2)); //comparison					
 				}
 				tinyList.add(new TinyNode("jge", result, "")); //jump				
 				break;
 			case("LT"):
+				//If operands are $T's, make them registers
+				if(irOp1[0] == '$'){
+					top1 = "r" + (Integer.parseInt(op1.split("T")[1]) - 1);
+				} else {
+					top1 = op1;					
+				}
+				if(irOp2[0] == '$'){
+					top2 = "r" + (Integer.parseInt(op2.split("T")[1]) - 1);
+				} else {
+					top2 	= op2;					
+				}
 				if(this.opType.equals("FLOAT")){
-					tinyList.add(new TinyNode("cmpr", op1, op2)); //comparison
+					tinyList.add(new TinyNode("cmpr", top1, top2)); //comparison
 				}else{
-					tinyList.add(new TinyNode("cmpi", op1, op2)); //comparison					
+					tinyList.add(new TinyNode("cmpi", top1, top2)); //comparison					
 				}
 				tinyList.add(new TinyNode("jlt", result, "")); //jump	
 				break;
 			case("LE"):
+				//If operands are $T's, make them registers
+				if(irOp1[0] == '$'){
+					top1 = "r" + (Integer.parseInt(op1.split("T")[1]) - 1);
+				} else {
+					top1 = op1;					
+				}
+				if(irOp2[0] == '$'){
+					top2 = "r" + (Integer.parseInt(op2.split("T")[1]) - 1);
+				} else {
+					top2 	= op2;					
+				}
 				if(this.opType.equals("FLOAT")){
-					tinyList.add(new TinyNode("cmpr", op1, op2)); //comparison
+					tinyList.add(new TinyNode("cmpr", top1, top2)); //comparison
 				}else{
-					tinyList.add(new TinyNode("cmpi", op1, op2)); //comparison					
+					tinyList.add(new TinyNode("cmpi", top1, top2)); //comparison					
 				}
 				tinyList.add(new TinyNode("jle", result, "")); //jump					
 				break;
 			case("NE"):
+				//If operands are $T's, make them registers
+				if(irOp1[0] == '$'){
+					top1 = "r" + (Integer.parseInt(op1.split("T")[1]) - 1);
+				} else {
+					top1 = op1;					
+				}
+				if(irOp2[0] == '$'){
+					top2 = "r" + (Integer.parseInt(op2.split("T")[1]) - 1);
+				} else {
+					top2 	= op2;					
+				}
 				if(this.opType.equals("FLOAT")){
-					tinyList.add(new TinyNode("cmpr", op1, op2)); //comparison
+					tinyList.add(new TinyNode("cmpr", top1, top2)); //comparison
 				}else{
-					tinyList.add(new TinyNode("cmpi", op1, op2)); //comparison					
+					tinyList.add(new TinyNode("cmpi", top1, top2)); //comparison					
 				}
 				tinyList.add(new TinyNode("jne", result, "")); //jump	
 				break;
 			case("EQ"):
+				//If operands are $T's, make them registers
+				if(irOp1[0] == '$'){
+					top1 = "r" + (Integer.parseInt(op1.split("T")[1]) - 1);
+				} else {
+					top1 = op1;					
+				}
+				if(irOp2[0] == '$'){
+					top2 = "r" + (Integer.parseInt(op2.split("T")[1]) - 1);
+				} else {
+					top2 	= op2;					
+				}
 				if(this.opType.equals("FLOAT")){
-					tinyList.add(new TinyNode("cmpr", op1, op2)); //comparison
+					tinyList.add(new TinyNode("cmpr", top1, top2)); //comparison
 				}else{
-					tinyList.add(new TinyNode("cmpi", op1, op2)); //comparison					
+					tinyList.add(new TinyNode("cmpi", top1, top2)); //comparison					
 				}
 				tinyList.add(new TinyNode("jeq", result, "")); //jump			
 				break;
@@ -219,6 +285,12 @@ public class IRNode {
 				top2 	= op1;
 				tinyList.add(new TinyNode(topcode, top1, top2));				
 				break;
+			case("READI"):
+				topcode = "sys";
+				top1 	= "readi";
+				top2 	= op1;
+				tinyList.add(new TinyNode(topcode, top1, top2));				
+				break;				
 			case("ADDI"):
 				topcode = "move";
 				if(irOp1[0] == '$'){
@@ -358,6 +430,12 @@ public class IRNode {
 				top2 	= op1;
 				tinyList.add(new TinyNode(topcode, top1, top2));				
 				break;
+			case("READF"):
+				topcode = "sys";
+				top1 	= "readr";
+				top2 	= op1;
+				tinyList.add(new TinyNode(topcode, top1, top2));				
+				break;								
 			case("ADDF"):
 				topcode = "move";
 				if(irOp1[0] == '$'){

@@ -40,7 +40,7 @@ public class PostfixTreeNode {
   public void toIRList(PostfixTreeNode node, LinkedList<IRNode> meTooThanks, String type){
   	PostfixTreeNode left = node.left;
   	PostfixTreeNode right = node.right;
-
+    //System.out.println(node.value);
   	if(left != null)
   		toIRList(left, meTooThanks, type);
   	if(right != null)
@@ -65,7 +65,8 @@ public class PostfixTreeNode {
   public void mergeTreeNodes(PostfixTreeNode node, PostfixTreeNode left, PostfixTreeNode right, LinkedList<IRNode> meIRL, String type){
   	IRNode ir = new IRNode();
   	ir.treeToIR(node, left, right, type); //creates ir from subexpression
-  	meIRL.add(ir); 
+    //ir.printNode();
+    meIRL.add(ir); 
   	node.value = ir.result;
   	node.left = null;
   	node.right = null;

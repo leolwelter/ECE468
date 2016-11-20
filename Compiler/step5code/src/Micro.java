@@ -65,6 +65,21 @@ public class Micro {
 	 	for (int i = 0; i < tinyList.size(); i++) {
 	 		tinyList.get(i).printNode();	 		
 	 	} 	
+	 	
+	 	/*
+		System.out.println("ENTER Stack");
+	 	for (String s : mlistener.enterStack){
+	 		System.out.println(s);
+	 	}
+
+	 	System.out.println("END Stack");
+	 	for (String s : mlistener.endStack){
+	 		System.out.println(s);
+	 	}	 	
+	 	*/
+
+
+
 
 	 	/*
 	 	//**** ABSTRACT SYNTAX TREE TESTING****

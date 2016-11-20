@@ -69,10 +69,10 @@ public class AntlrMicroListener extends MicroBaseListener {
 
 	//ELSIFs
 	@Override public void enterElse_part(MicroParser.Else_partContext ctx) {
-		System.out.println("THIS IS ELSE PART:");
-		System.out.println(ctx.getText().split("\\(")[0]);
-
-		if ((ctx.getText().compareTo("ENDIF") != 0)){
+		//System.out.println("THIS IS ELSE PART:");
+		//System.out.println(ctx.getText().split("\\(")[0]);
+		//System.out.println(ctx.getText());
+		if ((ctx.getText().compareTo("ENDIF") != 0) && (ctx.getText().compareTo("") !=0)){
 
 			//Set new SymbolTable scope
 			st.next = new SymbolTable("BLOCK");
@@ -85,7 +85,7 @@ public class AntlrMicroListener extends MicroBaseListener {
 			enterStack.push("label" + condCount++);
 		}
 
-		else{
+		/*
 			st.next = new SymbolTable("BLOCK");
 			st = st.next;
 
@@ -96,7 +96,8 @@ public class AntlrMicroListener extends MicroBaseListener {
 			}
 
 			enterStack.push("label" + condCount++);
-		}
+			*/
+		
 	}
 
 	//ENDIF handling
@@ -104,8 +105,9 @@ public class AntlrMicroListener extends MicroBaseListener {
 		//Stack Handling
 
 		//Create IRNodes related to ENDIF statements
+		meIRL.add(new IRNode("JUMP", "", "", endStack.peek(), null));
 		meIRL.add(new IRNode("LABEL", "", "", endStack.pop()));
-		// meIRL.add(new IRNode("JUMP", "", "", endStack.peek(), null));
+		meIRL.add(new IRNode("LABEL", "", "", enterStack.pop()));
 	}
 	//IRNode( opcode,  op1,  op2,  result,  bTarget){
 
@@ -126,8 +128,8 @@ public class AntlrMicroListener extends MicroBaseListener {
 	//2. add IRNode(s)
 	//3. infixS.clear(); (done in exitCompop)
 	@Override public void enterCompop(MicroParser.CompopContext ctx) {
-		System.out.println("Enter compop: " + infixS);
-		System.out.println(ctx.getText());
+//		System.out.println("Enter compop: " + infixS);
+//		System.out.println(ctx.getText());
 
 		String lhs = infixS.get(0); //WILL NOT WORK WITH EXPRESSIONS
 
@@ -167,7 +169,11 @@ public class AntlrMicroListener extends MicroBaseListener {
 
 					//adds tree to IRList
 					root.toIRList(root, this.meIRL, type);
-				  	this.meIRL.add(new IRNode("STOREI", lhs, "", "$T"+ IRNode.tempCnt));
+					if(type.compareTo("FLOAT") == 0){
+				  		this.meIRL.add(new IRNode("STOREF", lhs, "", "$T"+ IRNode.tempCnt));						
+					} else {
+						this.meIRL.add(new IRNode("STOREI", lhs, "", "$T"+ IRNode.tempCnt));												
+					}
 				  	lhsType = type;
 				  	lhsTemp = IRNode.tempCnt;
 			}
@@ -187,7 +193,7 @@ public class AntlrMicroListener extends MicroBaseListener {
 	//3. infixS.clear();
 	//OR if tf_flag == 1, just evaluate TRUE/FALSE
 	@Override public void exitCond(MicroParser.CondContext ctx) {
-		System.out.println("Exit cond: " + infixS);
+		//System.out.println("Exit cond: " + infixS);
 
 		if ((tf_flag == 1) && (infixS.get(0).equals("1"))) {
 			IRNode.tempCnt++;
@@ -224,12 +230,18 @@ public class AntlrMicroListener extends MicroBaseListener {
 					}
 				}
 				catch(Exception err2){
-						String type = "";
+						String type = "FLOAT";
+						IRNode.tempCnt++;
 						ArrayList<List<String>> varList = st.varMap.get("GLOBAL");
 					    if(varList != null){
 					      for(List<String> varData : varList){
 					      	if(varData.get(0).equals(rhs)){
 					      		type = varData.get(1);
+								if(type.compareTo("FLOAT") == 0){
+							  		this.meIRL.add(new IRNode("STOREF", rhs, "", "$T"+ IRNode.tempCnt));							
+								} else {
+									this.meIRL.add(new IRNode("STOREI", rhs, "", "$T"+ IRNode.tempCnt));							
+								}					      		
 					      	}
 					      }
 					    }
@@ -238,12 +250,15 @@ public class AntlrMicroListener extends MicroBaseListener {
 						String postfixS = sy.infixToPostfix(infixS);
 
 						//Tests Postfix Tree
+						//System.out.println("postfixS: " + postfixS);
 						PostfixTree pfTree = new PostfixTree();
 						PostfixTreeNode root = pfTree.createTree(postfixS);
 
 						//adds tree to IRList
+						//System.out.println("Type: " + type);
 						root.toIRList(root, this.meIRL, type);
-					  	this.meIRL.add(new IRNode("STOREI", rhs, "", "$T"+ IRNode.tempCnt));
+
+						//RHS is an expression (no store manual necessary)
 					  	rhsType = type;
 				}
 			}
@@ -411,16 +426,31 @@ public class AntlrMicroListener extends MicroBaseListener {
 				      }
 				    }
 
-					ShuntingYard sy = new ShuntingYard();
-					String postfixS = sy.infixToPostfix(infixS);
+				    if(infixS.size() != 1){
+						ShuntingYard sy = new ShuntingYard();
+						String postfixS = sy.infixToPostfix(infixS);
 
-					//Tests Postfix Tree
-					PostfixTree pfTree = new PostfixTree();
-					PostfixTreeNode root = pfTree.createTree(postfixS);
+						//Tests Postfix Tree
+						PostfixTree pfTree = new PostfixTree();
+						PostfixTreeNode root = pfTree.createTree(postfixS);
 
-					//adds tree to IRList
-					root.toIRList(root, this.meIRL, type);
-				  	this.meIRL.add(new IRNode("STOREI", "$T"+ IRNode.tempCnt, "", id));
+						//adds tree to IRList
+						root.toIRList(root, this.meIRL, type);
+						if(type.compareTo("FLOAT") == 0){
+					  		this.meIRL.add(new IRNode("STOREF", "$T"+ IRNode.tempCnt, "", id));						
+						} else {
+					 		this.meIRL.add(new IRNode("STOREI", "$T"+ IRNode.tempCnt, "", id));						
+						}
+				    } else {
+				    	if(type.compareTo("FLOAT") == 0){
+					  		this.meIRL.add(new IRNode("STOREF", expr, "", "$T"+ IRNode.tempCnt));						
+					  		this.meIRL.add(new IRNode("STOREF", "$T"+ IRNode.tempCnt, "", id));											  		
+						} else {
+					 		this.meIRL.add(new IRNode("STOREI", expr, "", "$T"+ IRNode.tempCnt));						
+					 		this.meIRL.add(new IRNode("STOREI", "$T"+ IRNode.tempCnt, "", id));											 		
+						}
+				    }
+
 
 			}
 		}
@@ -465,6 +495,27 @@ public class AntlrMicroListener extends MicroBaseListener {
 			this.meIRL.add(new IRNode("WRITEI", id, "", ""));
 		if(type.equals("FLOAT"))
 			this.meIRL.add(new IRNode("WRITEF", id, "", ""));
+	}
+
+	@Override public void enterRead_stmt(MicroParser.Read_stmtContext ctx) { 
+		//TODO: split based on LIST of ids
+		String txt = ctx.getText();
+		String id = txt.split("\\(")[1].split("\\)")[0];
+
+		String type = "";
+		ArrayList<List<String>> varList = st.varMap.get("GLOBAL");
+	    if(varList != null){
+	      for(List<String> varData : varList){
+	      	if(varData.get(0).equals(id)){
+	      		type = varData.get(1);
+	      	}
+	      }
+	    }
+
+		if(type.equals("INT"))
+			this.meIRL.add(new IRNode("READI", id, "", ""));
+		if(type.equals("FLOAT"))
+			this.meIRL.add(new IRNode("READF", id, "", ""));
 	}
 
 }
