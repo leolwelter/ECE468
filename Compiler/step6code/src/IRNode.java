@@ -128,6 +128,7 @@ public class IRNode {
 		// temp1 = Integer.parseInt(result.split("T")[1]) - 1;
 	
 		switch(opcode){
+			//******* STACK OPERATIONS            ******//
 			//******* CONDITIONAL(int) OPERATIONS ******//
 			case("GT"):
 				//If operands are $T's, make them registers
