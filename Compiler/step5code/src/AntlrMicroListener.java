@@ -12,7 +12,7 @@ public class AntlrMicroListener extends MicroBaseListener {
 	public String lhsType, rhsType;
 	public int lhsTemp;
 
-	public static int condCount = 1; //conditional count
+	public static int condCount = 0; //conditional count
 	public static int tf_flag = 0;
 
 	//Custom Constructor
@@ -25,7 +25,7 @@ public class AntlrMicroListener extends MicroBaseListener {
 
 	//Prints the scopes as they're entered
 	//Functions
-	@Override public void enterFunc_decl(MicroParser.Func_declContext ctx) { 
+	@Override public void enterFunc_decl(MicroParser.Func_declContext ctx) {
 		if(ctx.getText().compareTo("END") != 0){
 			String txt = ctx.getText().split("BEGIN")[0];
 			txt = txt.split("INT|FLOAT|VOID|STRING")[1];
@@ -37,48 +37,71 @@ public class AntlrMicroListener extends MicroBaseListener {
 	}
 
 	//Loops
-	@Override public void enterDo_while_stmt(MicroParser.Do_while_stmtContext ctx) { 
+	@Override public void enterDo_while_stmt(MicroParser.Do_while_stmtContext ctx) {
 		//Set new SymbolTable scope
 		st.next = new SymbolTable("BLOCK");
-		st = st.next;	
+		st = st.next;
 
 		//TODO: Push while to cond stack
+		enterStack.push("label" + condCount++);
+		endStack.push("label" + condCount++);
+
+		meIRL.add(new IRNode("LABEL", "", "", endStack.peek()));
 
 	}
 
+	@Override public void exitDo_while_stmt(MicroParser.Do_while_stmtContext ctx){
+		meIRL.add(new IRNode("JUMP", "", "", endStack.pop()));
+		meIRL.add(new IRNode("LABEL", "", "", enterStack.pop()));
+	}
+
 	//IFs
-	@Override public void enterIf_stmt(MicroParser.If_stmtContext ctx) { 
+	@Override public void enterIf_stmt(MicroParser.If_stmtContext ctx) {
 		//Set new SymbolTable scope
 		st.next = new SymbolTable("BLOCK");
 		st = st.next;
 
 		//Conditional State Tracking
-		enterStack.push("label" + condCount++); 
+		enterStack.push("label" + condCount++);
 		endStack.push("label" + condCount++);
-		
+
 	}
 
 	//ELSIFs
-	@Override public void enterElse_part(MicroParser.Else_partContext ctx) { 	
-		if((ctx.getText().compareTo("") != 0) && 
-			(ctx.getText().compareTo("ENDIF") != 0)){	
+	@Override public void enterElse_part(MicroParser.Else_partContext ctx) {
+		System.out.println("THIS IS ELSE PART:");
+		System.out.println(ctx.getText().split("\\(")[0]);
+
+		if ((ctx.getText().compareTo("ENDIF") != 0)){
 
 			//Set new SymbolTable scope
 			st.next = new SymbolTable("BLOCK");
-			st = st.next;			
-
+			st = st.next;
 
 			//Conditional State Tracking
 			meIRL.add(new IRNode("JUMP", "", "", endStack.peek()));
-			meIRL.add(new IRNode("LABEL", "", "", enterStack.pop()));		
+			meIRL.add(new IRNode("LABEL", "", "", enterStack.pop()));
+
+			enterStack.push("label" + condCount++);
+		}
+
+		else{
+			st.next = new SymbolTable("BLOCK");
+			st = st.next;
+
+			//Conditional State Tracking
+			meIRL.add(new IRNode("JUMP", "", "", endStack.peek()));
+			while(enterStack.empty() == false){
+				meIRL.add(new IRNode("LABEL", "", "", enterStack.pop()));
+			}
+
 			enterStack.push("label" + condCount++);
 		}
 	}
 
 	//ENDIF handling
-	@Override public void exitIf_stmt(MicroParser.If_stmtContext ctx) { 
+	@Override public void exitIf_stmt(MicroParser.If_stmtContext ctx) {
 		//Stack Handling
-		
 
 		//Create IRNodes related to ENDIF statements
 		meIRL.add(new IRNode("LABEL", "", "", endStack.pop()));
@@ -86,24 +109,26 @@ public class AntlrMicroListener extends MicroBaseListener {
 	}
 	//IRNode( opcode,  op1,  op2,  result,  bTarget){
 
-	@Override public void enterCond(MicroParser.CondContext ctx) { 
+	@Override public void enterCond(MicroParser.CondContext ctx) {
 		//clear the infix (make way for more expressions)
 		infixS.clear();
 		if (ctx.getText().equals("TRUE")) {
 			infixS.add("1");
+			tf_flag = 1;
 		}else if(ctx.getText().equals("FALSE")){
 			infixS.add("0");
+			tf_flag = 1;
 		}
 
 	}
 
 	//1. eval LHS (infixS)
-	//2. add IRNode(s)    
+	//2. add IRNode(s)
 	//3. infixS.clear(); (done in exitCompop)
-	@Override public void enterCompop(MicroParser.CompopContext ctx) { 
+	@Override public void enterCompop(MicroParser.CompopContext ctx) {
 		System.out.println("Enter compop: " + infixS);
 		System.out.println(ctx.getText());
-		
+
 		String lhs = infixS.get(0); //WILL NOT WORK WITH EXPRESSIONS
 
 		//Determine the type of var on LHS
@@ -113,19 +138,19 @@ public class AntlrMicroListener extends MicroBaseListener {
 				this.meIRL.add(new IRNode("STOREI", lhs, "", "$T" + IRNode.tempCnt));
 				lhsType = "INT";
 			}
-		} 
+		}
 		catch (Exception err1){
-			try{					
+			try{
 				if(Float.valueOf(lhs) instanceof Float){
 					IRNode.tempCnt++;
 					this.meIRL.add(new IRNode("STOREF", lhs, "", "$T" + IRNode.tempCnt));
 					lhsType = "FLOAT";
-				}			
+				}
 			}
-			catch(Exception err2){	
+			catch(Exception err2){
 					String type = "";
-					ArrayList<List<String>> varList = st.varMap.get("GLOBAL"); 
-				    if(varList != null){  
+					ArrayList<List<String>> varList = st.varMap.get("GLOBAL");
+				    if(varList != null){
 				      for(List<String> varData : varList){
 				      	if(varData.get(0).equals(lhs)){
 				      		type = varData.get(1);
@@ -142,40 +167,42 @@ public class AntlrMicroListener extends MicroBaseListener {
 
 					//adds tree to IRList
 					root.toIRList(root, this.meIRL, type);
-				  	this.meIRL.add(new IRNode("STOREI", "$T"+ IRNode.tempCnt, "", lhs));
+				  	this.meIRL.add(new IRNode("STOREI", lhs, "", "$T"+ IRNode.tempCnt));
 				  	lhsType = type;
-				  	lhsTemp = IRNode.tempCnt;					
+				  	lhsTemp = IRNode.tempCnt;
 			}
-		}		
+		}
 
 	}
 
-	@Override public void exitCompop(MicroParser.CompopContext ctx) { 
-		infixS.clear(); //make way for RHS	
-		cmp = ctx.getText();	
+	@Override public void exitCompop(MicroParser.CompopContext ctx) {
+		infixS.clear(); //make way for RHS
+		cmp = ctx.getText();
 	}
 
 
 
-	//1. eval RHS (infixS)  
-	//2. add IRNode(s) (like exitAssign_stmt)   
+	//1. eval RHS (infixS)
+	//2. add IRNode(s) (like exitAssign_stmt)
 	//3. infixS.clear();
 	//OR if tf_flag == 1, just evaluate TRUE/FALSE
-	@Override public void exitCond(MicroParser.CondContext ctx) { 
+	@Override public void exitCond(MicroParser.CondContext ctx) {
 		System.out.println("Exit cond: " + infixS);
 
 		if ((tf_flag == 1) && (infixS.get(0).equals("1"))) {
 			IRNode.tempCnt++;
-			this.meIRL.add(new IRNode("STOREI", "$T"+ IRNode.tempCnt, "", "1"));
+			this.meIRL.add(new IRNode("STOREI", "1", "", "$T"+ IRNode.tempCnt));
 			IRNode.tempCnt++;
-		  	this.meIRL.add(new IRNode("STOREI", "$T"+ IRNode.tempCnt, "", "1"));
+		  	this.meIRL.add(new IRNode("STOREI", "1", "", "$T"+ IRNode.tempCnt));
 		  	this.meIRL.add(new IRNode("NE", "$T"+IRNode.tempCnt, "$T"+(IRNode.tempCnt - 1), enterStack.peek(), lhsType));
+				tf_flag = 0;
 		} else if ((tf_flag == 1) && (infixS.get(0).equals("0"))) {
 			IRNode.tempCnt++;
-			this.meIRL.add(new IRNode("STOREI", "$T"+ IRNode.tempCnt, "", "0"));
+			this.meIRL.add(new IRNode("STOREI", "0", "", "$T"+ IRNode.tempCnt));
 			IRNode.tempCnt++;
-		  	this.meIRL.add(new IRNode("STOREI", "$T"+ IRNode.tempCnt, "", "1"));
+		  	this.meIRL.add(new IRNode("STOREI", "1", "", "$T"+ IRNode.tempCnt));
 		  	this.meIRL.add(new IRNode("NE", "$T"+IRNode.tempCnt, "$T"+(IRNode.tempCnt - 1), enterStack.peek(), lhsType));
+				tf_flag = 0;
 		} else {
 			//Evaluate RHS
 			String rhs = infixS.get(0); //WILL NOT WORK WITH EXPRESSIONS
@@ -187,19 +214,19 @@ public class AntlrMicroListener extends MicroBaseListener {
 					this.meIRL.add(new IRNode("STOREI", rhs, "", "$T" + IRNode.tempCnt));
 					rhsType = "INT";
 				}
-			} 
+			}
 			catch (Exception err1){
-				try{					
+				try{
 					if(Float.valueOf(rhs) instanceof Float){
 						IRNode.tempCnt++;
 						this.meIRL.add(new IRNode("STOREF", rhs, "", "$T" + IRNode.tempCnt));
 						rhsType = "FLOAT";
-					}			
+					}
 				}
-				catch(Exception err2){	
+				catch(Exception err2){
 						String type = "";
-						ArrayList<List<String>> varList = st.varMap.get("GLOBAL"); 
-					    if(varList != null){  
+						ArrayList<List<String>> varList = st.varMap.get("GLOBAL");
+					    if(varList != null){
 					      for(List<String> varData : varList){
 					      	if(varData.get(0).equals(rhs)){
 					      		type = varData.get(1);
@@ -216,8 +243,8 @@ public class AntlrMicroListener extends MicroBaseListener {
 
 						//adds tree to IRList
 						root.toIRList(root, this.meIRL, type);
-					  	this.meIRL.add(new IRNode("STOREI", "$T"+ IRNode.tempCnt, "", rhs));
-					  	rhsType = type;					
+					  	this.meIRL.add(new IRNode("STOREI", rhs, "", "$T"+ IRNode.tempCnt));
+					  	rhsType = type;
 				}
 			}
 
@@ -253,9 +280,9 @@ public class AntlrMicroListener extends MicroBaseListener {
 
 	/* ********* PRINTS OUT VARIABLE INFORMATION ******* */
 	//Parameter Declarations
-	@Override public void enterParam_decl_list(MicroParser.Param_decl_listContext ctx) { 
+	@Override public void enterParam_decl_list(MicroParser.Param_decl_listContext ctx) {
 		String txt = ctx.getText();
-		if(txt.compareTo("") != 0) {			
+		if(txt.compareTo("") != 0) {
 			String [] vars = txt.split(",");
 			ArrayList<String> tdata = new ArrayList<String>();
 
@@ -276,7 +303,7 @@ public class AntlrMicroListener extends MicroBaseListener {
 				if(stHash == null){
 					stHash = new ArrayList<List<String>>();
 				}
-				st.checkDeclError(name);				
+				st.checkDeclError(name);
 				stHash.add(temp);
 				st.varMap.put(st.scope, stHash);
 			}
@@ -292,7 +319,7 @@ public class AntlrMicroListener extends MicroBaseListener {
 	    idlist = idlist.split(";")[0];
 	    String [] ids = idlist.split(","); //split the ids into separate fields
 	    for (int i = 0; i < ids.length; i++) {
-	    	//Add variable info to current scope's val   	
+	    	//Add variable info to current scope's val
 			ArrayList<String> temp = new ArrayList<String>();
 			temp.add(ids[i]);
 			temp.add(type);
@@ -306,14 +333,14 @@ public class AntlrMicroListener extends MicroBaseListener {
 			if(stHash == null){
 				stHash = new ArrayList<List<String>>();
 			}
-			st.checkDeclError(ids[i]);				
+			st.checkDeclError(ids[i]);
 			stHash.add(temp);
 			st.varMap.put(st.scope, stHash);
 	    }
 	}
 
 	//STRING
-	@Override public void enterString_decl(MicroParser.String_declContext ctx) { 
+	@Override public void enterString_decl(MicroParser.String_declContext ctx) {
 		String txt = ctx.getText();
 		String [] id_val = txt.split(":=");
 		String val = id_val[1].split(";")[0];
@@ -339,11 +366,11 @@ public class AntlrMicroListener extends MicroBaseListener {
 		st.varMap.put(st.scope, table);
 	}
 
-	@Override public void enterAssign_stmt(MicroParser.Assign_stmtContext ctx) { 
+	@Override public void enterAssign_stmt(MicroParser.Assign_stmtContext ctx) {
 		infixS.clear();
 	}
 
-	@Override public void exitAssign_stmt(MicroParser.Assign_stmtContext ctx) { 		
+	@Override public void exitAssign_stmt(MicroParser.Assign_stmtContext ctx) {
 		String txt = ctx.getText();
 		String id = txt.split(":=")[0];
 		String expr = txt.split(":=")[1].split(";")[0];
@@ -360,9 +387,9 @@ public class AntlrMicroListener extends MicroBaseListener {
 					}
 				}
 			}
-		} 
+		}
 		catch (Exception err1){
-			try{					
+			try{
 				if(Float.valueOf(expr) instanceof Float){
 					for (List<String> vardata : st.varMap.get("GLOBAL")){
 						if(id.equals(vardata.get(0))){
@@ -371,12 +398,12 @@ public class AntlrMicroListener extends MicroBaseListener {
 							this.meIRL.add(new IRNode("STOREF", "$T" + IRNode.tempCnt, "", id));
 						}
 					}
-				}			
+				}
 			}
-			catch(Exception err2){	
+			catch(Exception err2){
 					String type = "";
-					ArrayList<List<String>> varList = st.varMap.get("GLOBAL"); 
-				    if(varList != null){  
+					ArrayList<List<String>> varList = st.varMap.get("GLOBAL");
+				    if(varList != null){
 				      for(List<String> varData : varList){
 				      	if(varData.get(0).equals(id)){
 				      		type = varData.get(1);
@@ -394,50 +421,50 @@ public class AntlrMicroListener extends MicroBaseListener {
 					//adds tree to IRList
 					root.toIRList(root, this.meIRL, type);
 				  	this.meIRL.add(new IRNode("STOREI", "$T"+ IRNode.tempCnt, "", id));
-				  							
+
 			}
-		} 
+		}
 	}
 
-	@Override public void enterAddop(MicroParser.AddopContext ctx) { 
+	@Override public void enterAddop(MicroParser.AddopContext ctx) {
 		infixS.add(ctx.getText());
 	}
-	@Override public void enterMulop(MicroParser.MulopContext ctx) { 
+	@Override public void enterMulop(MicroParser.MulopContext ctx) {
 		infixS.add(ctx.getText());
 	}
-	@Override public void enterPrimary(MicroParser.PrimaryContext ctx) { 
+	@Override public void enterPrimary(MicroParser.PrimaryContext ctx) {
 		if(ctx.getText().toCharArray()[0] == '('){
 			infixS.add("(");
 		} else{
-			infixS.add(ctx.getText());	
-		}	
-	}	
+			infixS.add(ctx.getText());
+		}
+	}
 
-	@Override public void exitPrimary(MicroParser.PrimaryContext ctx) { 
+	@Override public void exitPrimary(MicroParser.PrimaryContext ctx) {
 		if(ctx.getText().toCharArray()[0] == '('){
 			infixS.add(")");
 		}
-	}	
+	}
 
-	@Override public void enterWrite_stmt(MicroParser.Write_stmtContext ctx) { 
+	@Override public void enterWrite_stmt(MicroParser.Write_stmtContext ctx) {
 		//TODO: split based on LIST of ids
 		String txt = ctx.getText();
 		String id = txt.split("\\(")[1].split("\\)")[0];
 
 		String type = "";
-		ArrayList<List<String>> varList = st.varMap.get("GLOBAL"); 
-	    if(varList != null){  
+		ArrayList<List<String>> varList = st.varMap.get("GLOBAL");
+	    if(varList != null){
 	      for(List<String> varData : varList){
 	      	if(varData.get(0).equals(id)){
 	      		type = varData.get(1);
 	      	}
 	      }
-	    }		
+	    }
 
 		if(type.equals("INT"))
 			this.meIRL.add(new IRNode("WRITEI", id, "", ""));
 		if(type.equals("FLOAT"))
-			this.meIRL.add(new IRNode("WRITEF", id, "", ""));			
+			this.meIRL.add(new IRNode("WRITEF", id, "", ""));
 	}
 
 }
