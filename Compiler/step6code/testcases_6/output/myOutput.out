@@ -1,47 +1,86 @@
-;str intro  "You will be asked for three float numbers\n"
-;str first  "Please enter the first float number: "
-;str second  "Please enter the second float number: "
-;str third  "Please enter the third float number: "
+;str input  "Please input an integer number: "
+;str space  " "
 ;str eol  "\n"
-;str star  "*"
-;str plus  "+"
-;str equal  "="
 
-;LABEL   add
+;LABEL   F
 ;LINK   
-;var   a
-;var   b
-;var   result
-;null a b $T1
-;STOREI $T1  
-;null a b $T2
-;STOREI $T2  $R
-;RET   
-
-;LABEL   multiply
-;LINK   
-;var   a
-;var   b
-;var   result
-;null a b $T3
-;STOREI $T3  
-;null a b $T4
-;STOREI $T4  $R
+;var   n
+;var   ret1
+;var   ret2
+;STOREI n  $T0
+;STOREI 2  $T1
+;LE $T0 $T1 label0
+;PUSH   
+;PUSH $T1  
+;JSR   F
+;POP   
+;POP   
+;POP   $T2
+;SUBI $P1 1 $T3
+;STOREI $T3  $L1
+;PUSH   
+;PUSH $T3  
+;JSR   F
+;POP   
+;POP   
+;POP   $T4
+;SUBI $P1 2 $T5
+;STOREI $T5  $L2
+;null $P1 2 $T6
+;STOREI $T6  $R
+;JUMP   label1
+;LABEL   label0
+;STOREI n  $T6
+;STOREI 0  $T7
+;NE $T6 $T7 label2
+;STOREI 0  $T8
+;STOREI $T8  $R
+;JUMP   label1
+;LABEL   label2
+;STOREI n  $T8
+;STOREI 1  $T9
+;NE $T8 $T9 label3
+;STOREI 1  $T10
+;STOREI $T10  $R
+;JUMP   label1
+;LABEL   label3
+;STOREI n  $T10
+;STOREI 2  $T11
+;NE $T10 $T11 label4
+;STOREI 1  $T12
+;STOREI $T12  $R
+;JUMP   label1
+;LABEL   label1
+;LABEL   label4
 ;RET   
 
 ;LABEL   main
 ;LINK   
-;var   a
-;var   b
-;var   c
-;var   addresult
-;var   multiplyresult
-;PUSH $T4  
-;PUSH $T4  
-;STOREI $T4  
-;PUSH $T4  
-;PUSH $T4  
-;STOREI $T4  
-;STOREI 0  $R
+;var   i
+;var   end
+;var   result
+;WRITES input  
+;READI $L2  
+;LABEL   label1
+;PUSH   
+;PUSH $L1  
+;JSR   F
+;POP   
+;POP   
+;POP   $T1
+;STOREI   $T1
+;STOREI $T1  $L3
+;WRITEI $L1  
+;WRITES space  
+;WRITEI $L3  
+;WRITES eol  
+;ADDI $L1 1 $T2
+;STOREI $T2  $L1
+;STOREI i  $T2
+;EQ $T2 $L2 label0
+;JUMP   label1
+;LABEL   label0
+;STOREI 0  $T4
+;STOREI $T4  $R
 ;RET   
 

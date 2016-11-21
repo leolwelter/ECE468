@@ -14,7 +14,7 @@ public class PostfixTreeNode {
     this.left = left;
     this.right = right;
   }
-  
+
   public PostfixTreeNode (String value){
   	this.value = value;
   	this.left = null;
@@ -37,20 +37,20 @@ public class PostfixTreeNode {
     System.out.println("Val: " + node.value);
   }
 
-  public void toIRList(PostfixTreeNode node, LinkedList<IRNode> meTooThanks, String type){
+  public void toIRList(PostfixTreeNode node, LinkedList<IRNode> meTooThanks, String type, Function fy){
   	PostfixTreeNode left = node.left;
   	PostfixTreeNode right = node.right;
     //System.out.println(node.value);
   	if(left != null)
-  		toIRList(left, meTooThanks, type);
+  		toIRList(left, meTooThanks, type, fy);
   	if(right != null)
-  		toIRList(right, meTooThanks, type);
+  		toIRList(right, meTooThanks, type, fy);
 
   	//Post-order Processing:
   	if(isleaf(left) && isleaf(right)){
   		//This is a subexpression; merge it
   		// System.out.println("subexpression: " + left.value + node.value + right.value);
-  		mergeTreeNodes(node, left, right, meTooThanks, type);
+  		mergeTreeNodes(node, left, right, meTooThanks, type, fy);
   	}
   }
 
@@ -60,16 +60,16 @@ public class PostfixTreeNode {
   	if((node.left == null) && (node.right == null))
   		return true;
   	return false;
-  }  
+  }
 
-  public void mergeTreeNodes(PostfixTreeNode node, PostfixTreeNode left, PostfixTreeNode right, LinkedList<IRNode> meIRL, String type){
+  public void mergeTreeNodes(PostfixTreeNode node, PostfixTreeNode left, PostfixTreeNode right, LinkedList<IRNode> meIRL, String type, Function fy){
   	IRNode ir = new IRNode();
-  	ir.treeToIR(node, left, right, type); //creates ir from subexpression
+  	ir.treeToIR(node, left, right, type, fy); //creates ir from subexpression
     //ir.printNode();
-    meIRL.add(ir); 
+    meIRL.add(ir);
   	node.value = ir.result;
   	node.left = null;
   	node.right = null;
-  	
+
   }
 }

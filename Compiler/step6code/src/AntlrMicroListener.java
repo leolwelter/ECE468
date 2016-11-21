@@ -55,6 +55,9 @@ public class AntlrMicroListener extends MicroBaseListener {
 			functionTable.put(txt, fy);
 			//st = st.next;
 
+			IRNode.regNo = 0;
+			IRNode.tempCnt = 0;
+
 			meIRL.add(new IRNode("LABEL", "", "", txt));
 			meIRL.add(new IRNode("LINK", "", "", ""));
 		}
@@ -71,29 +74,33 @@ public class AntlrMicroListener extends MicroBaseListener {
 		try{
 			if(Integer.valueOf(retVar) instanceof Integer){
 				IRNode.tempCnt++;
-				this.meIRL.add(new IRNode("STOREI", retVar, "", "$R"));
+				this.meIRL.add(new IRNode("STOREI", retVar, "", "$T" + IRNode.tempCnt));
+				this.meIRL.add(new IRNode("STOREI", "$T" + IRNode.tempCnt, "", "$R"));
 			}
 		}
 		catch (Exception err1){
 			try{
 				if(Float.valueOf(retVar) instanceof Float){
 					IRNode.tempCnt++;
-					this.meIRL.add(new IRNode("STOREF", retVar, "", "$R"));
+					this.meIRL.add(new IRNode("STOREF", retVar, "", "$T" + IRNode.tempCnt));
+					this.meIRL.add(new IRNode("STOREF", "$T" + IRNode.tempCnt, "", "$R"));
 				}
 			}
 			catch(Exception err2){
 				String type = "";
 				String retReg = "";
-				ArrayList<List<String>> varList = st.varMap.get("GLOBAL");
+				ArrayList<List<String>> varList = st.varMap.get(fy.name);
 					if(varList != null){
 						for(List<String> varData : varList){
 							if(varData.get(0).equals(retVar)){
 								type = varData.get(1);
 								retReg = varData.get(3);
 								if(type.compareTo("FLOAT") == 0){
-							  		this.meIRL.add(new IRNode("STOREF", retReg, "", "$R"));
+									this.meIRL.add(new IRNode("STOREF", retReg, "", "$T" + IRNode.tempCnt));
+									this.meIRL.add(new IRNode("STOREF", "$T" + IRNode.tempCnt, "", "$R"));
 								} else {
-									this.meIRL.add(new IRNode("STOREI", retReg, "", "$R"));
+									this.meIRL.add(new IRNode("STOREI", retReg, "", "$T" + IRNode.tempCnt));
+									this.meIRL.add(new IRNode("STOREI", "$T" + IRNode.tempCnt, "", "$R"));
 								}
 							}
 						}
@@ -107,7 +114,7 @@ public class AntlrMicroListener extends MicroBaseListener {
 						PostfixTreeNode root = pfTree.createTree(postfixS);
 
 						//adds tree to IRList
-						root.toIRList(root, this.meIRL, type);
+						root.toIRList(root, this.meIRL, type, fy);
 						if(type.compareTo("FLOAT") == 0){
 					  		this.meIRL.add(new IRNode("STOREF", "$T"+ IRNode.tempCnt, "", "$R"));
 						} else {
@@ -234,7 +241,7 @@ public class AntlrMicroListener extends MicroBaseListener {
 			}
 			catch(Exception err2){
 					String type = "";
-					ArrayList<List<String>> varList = st.varMap.get("GLOBAL");
+					ArrayList<List<String>> varList = st.varMap.get(fy.name);
 				    if(varList != null){
 				      for(List<String> varData : varList){
 				      	if(varData.get(0).equals(lhs)){
@@ -252,7 +259,7 @@ public class AntlrMicroListener extends MicroBaseListener {
 					PostfixTreeNode root = pfTree.createTree(postfixS);
 
 					//adds tree to IRList
-					root.toIRList(root, this.meIRL, type);
+					root.toIRList(root, this.meIRL, type, fy);
 					if(type.compareTo("FLOAT") == 0){
 				  		this.meIRL.add(new IRNode("STOREF", lhs, "", "$T"+ IRNode.tempCnt));
 					} else {
@@ -317,7 +324,7 @@ public class AntlrMicroListener extends MicroBaseListener {
 				catch(Exception err2){
 						String type = "FLOAT";
 						IRNode.tempCnt++;
-						ArrayList<List<String>> varList = st.varMap.get("GLOBAL");
+						ArrayList<List<String>> varList = st.varMap.get(fy.name);
 					    if(varList != null){
 					      for(List<String> varData : varList){
 					      	if(varData.get(0).equals(rhs)){
@@ -342,7 +349,7 @@ public class AntlrMicroListener extends MicroBaseListener {
 
 						//adds tree to IRList
 						//System.out.println("Type: " + type);
-						root.toIRList(root, this.meIRL, type);
+						root.toIRList(root, this.meIRL, type, fy);
 
 						//RHS is an expression (no store manual necessary)
 					  rhsType = type;
@@ -516,11 +523,15 @@ public class AntlrMicroListener extends MicroBaseListener {
 				}
 			}
 			catch(Exception err2){
+					//IRNode.tempCnt++;
 					String type = "";
-					ArrayList<List<String>> varList = st.varMap.get("GLOBAL");
-				    if(varList != null){
+					ArrayList<List<String>> varList = st.varMap.get(fy.name);
+						//System.out.println(varList);
+						if(varList != null){
+							//System.out.println("VARLIST NOT EMPTY!!!!!!!!!");
 				      for(List<String> varData : varList){
 				      	if(varData.get(0).equals(id)){
+									//System.out.println("GETTING TYPE : " + varData.get(1));
 				      		type = varData.get(1);
 									idReg = varData.get(3);
 				      	}
@@ -539,7 +550,10 @@ public class AntlrMicroListener extends MicroBaseListener {
 							PostfixTreeNode root = pfTree.createTree(postfixS);
 
 							//adds tree to IRList
-							root.toIRList(root, this.meIRL, type);
+							//st.printTable();
+							//System.out.println("ID IS : " + id);
+							//System.out.println("TYPE IS : " + type);
+							root.toIRList(root, this.meIRL, type, fy);
 							if(type.compareTo("FLOAT") == 0){
 						  		this.meIRL.add(new IRNode("STOREF", "$T"+ IRNode.tempCnt, "", idReg));
 							} else {
@@ -584,23 +598,61 @@ public class AntlrMicroListener extends MicroBaseListener {
 	@Override public void enterWrite_stmt(MicroParser.Write_stmtContext ctx) {
 		//TODO: split based on LIST of ids
 		String txt = ctx.getText();
-		String id = txt.split("\\(")[1].split("\\)")[0];
+		ArrayList<String> idList = new ArrayList<String>(Arrays.asList((txt.split("\\(")[1].split("\\)")[0]).split(",")));
 		String idReg = "";
 		String type = "";
-		ArrayList<List<String>> varList = st.varMap.get("GLOBAL");
-	    if(varList != null){
-	      for(List<String> varData : varList){
-	      	if(varData.get(0).equals(id)){
-	      		type = varData.get(1);
-						idReg = varData.get(3);
-	      	}
-	      }
-	    }
+		for(String id : idList){
+			ArrayList<List<String>> varList = st.varMap.get(fy.name);
+		    if(varList != null){
+		      for(List<String> varData : varList){
+							if(varData.get(0).equals(id)){
+			      		type = varData.get(1);
+								idReg = varData.get(3);
+								if(type.equals("INT")){
+									this.meIRL.add(new IRNode("WRITEI", idReg, "", ""));
+								}
+								else if(type.equals("FLOAT")){
+									this.meIRL.add(new IRNode("WRITEF", idReg, "", ""));
+								}
+								else{
+									this.meIRL.add(new IRNode("WRITES", idReg, "", ""));
+								}
+			      	}
+		      }
+		    }
 
-		if(type.equals("INT"))
+				ArrayList<List<String>> varList2 = st.varMap.get("GLOBAL");
+				//System.out.println(id);
+				//System.out.println(varList2);
+					if(varList2 != null){
+			      for(List<String> varData2 : varList2){
+				      	if(varData2.get(0).equals(id)){
+				      		type = varData2.get(1);
+									idReg = varData2.get(0);
+									if(type.equals("INT")){
+										this.meIRL.add(new IRNode("WRITEI", idReg, "", ""));
+									}
+									else if(type.equals("FLOAT")){
+										this.meIRL.add(new IRNode("WRITEF", idReg, "", ""));
+									}
+									else{
+										this.meIRL.add(new IRNode("WRITES", idReg, "", ""));
+									}
+				      	}
+			      }
+			    }
+				}
+		/*
+		if(type.equals("INT")){
 			this.meIRL.add(new IRNode("WRITEI", idReg, "", ""));
-		if(type.equals("FLOAT"))
+		}
+		else if(type.equals("FLOAT")){
 			this.meIRL.add(new IRNode("WRITEF", idReg, "", ""));
+		}
+		else{
+			this.meIRL.add(new IRNode("WRITEF", idReg, "", ""));
+		}
+		*/
 	}
 
 	@Override public void enterRead_stmt(MicroParser.Read_stmtContext ctx) {
@@ -609,7 +661,7 @@ public class AntlrMicroListener extends MicroBaseListener {
 		String id = txt.split("\\(")[1].split("\\)")[0];
 		String idReg = "";
 		String type = "";
-		ArrayList<List<String>> varList = st.varMap.get("GLOBAL");
+		ArrayList<List<String>> varList = st.varMap.get(fy.name);
 	    if(varList != null){
 	      for(List<String> varData : varList){
 	      	if(varData.get(0).equals(id)){
@@ -618,6 +670,16 @@ public class AntlrMicroListener extends MicroBaseListener {
 	      	}
 	      }
 	    }
+
+			ArrayList<List<String>> varList2 = st.varMap.get("GLOBAL");
+		    if(varList2 != null){
+		      for(List<String> varData2 : varList2){
+		      	if(varData2.get(0).equals(id)){
+		      		type = varData2.get(1);
+							idReg = varData2.get(0);
+		      	}
+		      }
+		    }
 
 		if(type.equals("INT"))
 			this.meIRL.add(new IRNode("READI", idReg, "", ""));
@@ -627,8 +689,8 @@ public class AntlrMicroListener extends MicroBaseListener {
 
 	@Override public void enterCall_expr(MicroParser.Call_exprContext ctx) {
 		//Push onto stack
-		//meIRL.add(new IRNode("PUSH", "", "", ""));
 		//System.out.println(ctx.getText());
+		this.meIRL.add(new IRNode("PUSH", "" , "", ""));
 	}
 
 	@Override public void enterExpr_list(MicroParser.Expr_listContext ctx) {
@@ -656,7 +718,7 @@ public class AntlrMicroListener extends MicroBaseListener {
 
 				catch(Exception err2){
 						String type = "";
-						ArrayList<List<String>> varList = st.varMap.get("GLOBAL");
+						ArrayList<List<String>> varList = st.varMap.get(fy.name);
 					    if(varList != null){
 					      for(List<String> varData : varList){
 					      	if(varData.get(0).equals(param)){
@@ -676,7 +738,7 @@ public class AntlrMicroListener extends MicroBaseListener {
 								PostfixTree pfTree = new PostfixTree();
 								PostfixTreeNode root = pfTree.createTree(postfixS);
 								//adds tree to IRList
-								root.toIRList(root, this.meIRL, type);
+								root.toIRList(root, this.meIRL, type, fy);
 						  	this.meIRL.add(new IRNode("PUSH", "$T"+ IRNode.tempCnt, "", ""));
 					    }
 				}
@@ -684,4 +746,15 @@ public class AntlrMicroListener extends MicroBaseListener {
 
 		}
 	}
+
+	@Override public void exitCall_expr(MicroParser.Call_exprContext ctx) {
+		String funcName = ctx.getText().split("\\(")[0];
+		this.meIRL.add(new IRNode("JSR", "" , "", funcName));
+		this.meIRL.add(new IRNode("POP", "" , "", ""));
+		this.meIRL.add(new IRNode("POP", "" , "", ""));
+		IRNode.tempCnt++;
+		this.meIRL.add(new IRNode("POP", "" , "", "$T" + IRNode.tempCnt));
+
+	}
+
 }
