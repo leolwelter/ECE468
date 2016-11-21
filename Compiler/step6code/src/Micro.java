@@ -52,28 +52,31 @@ public class Micro {
 
 	 	//Print Function information
 	 	//System.out.println(mlistener.functionTable);
-	 	for(Function func : mlistener.functionTable.values()){		 		
+	 	for(Function func : mlistener.functionTable.values()){
 		 	//Prints Intermediate Representation List
 		 	for(int i = 0; i < func.meIRL.size(); i++){
 		 		func.meIRL.get(i).printNode();
-		 	} 	
+		 	}
+
+			System.out.println();
 
 		 	//func.st.printTable();
+			//System.out.println("-----End of Symbol Table-----");
 	 	}
-
-	 	for(Function func : mlistener.functionTable.values()){		 		
+		/*
+	 	for(Function func : mlistener.functionTable.values()){
 		 	//Prints Tiny List
 		 	for(int i = 0; i < func.meIRL.size(); i++){
 		 		func.meIRL.get(i).irToTiny(tinyList);
 		 		// tinyList.add(new TinyNode(meIRL.get(i)));
 		 	}
-		 	
+
 		 	for (int i = 0; i < tinyList.size(); i++) {
-		 		tinyList.get(i).printNode();	 		
-		 	} 	
+		 		tinyList.get(i).printNode();
+		 	}
 	 	}
 		tinyList.add(new TinyNode("sys", "halt", ""));
-	 	
+		*/
 	 	/*
 		System.out.println("ENTER Stack");
 	 	for (String s : mlistener.enterStack){
@@ -83,7 +86,7 @@ public class Micro {
 	 	System.out.println("END Stack");
 	 	for (String s : mlistener.endStack){
 	 		System.out.println(s);
-	 	}	 	
+	 	}
 	 	*/
 
 

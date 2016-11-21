@@ -29,12 +29,12 @@ public class SymbolTable{
 
   //Fields
   //@field Counter keeping track of block numbers
-  public static int blockNo; 
+  public static int blockNo;
   public static String declErr = null; //set if decl error
 
   //@field Shared hashtable mapping SCOPE : VARLIST
   public static LinkedHashMap<String, ArrayList<List<String>>> varMap;
-  
+
   public SymbolTable next; //next node
   public String scope = null; //this node's scope
 
@@ -50,9 +50,9 @@ public class SymbolTable{
     if(scope.equals("BLOCK")){
       this.scope = "BLOCK " + getBlockNumber();
     }else{
-      this.scope = scope;      
-    } 
-  }  
+      this.scope = scope;
+    }
+  }
 
   //Instance Methods
   public int getBlockNumber(){
@@ -61,26 +61,35 @@ public class SymbolTable{
 
   public void printTable(){
     System.out.println("Symbol table " + scope);
-    ArrayList<List<String>> varList = varMap.get(scope); 
-    if(varList != null){  
+    ArrayList<List<String>> varList = varMap.get(scope);
+    if(varList != null){
       for(List<String> varData : varList){
-        System.out.print("name " + varData.get(0) + " type " + varData.get(1));
-        if(varData.size() == 3){
+        if(varData.size() == 2){
+          System.out.print("name " + varData.get(0) + " type " + varData.get(1));
+        }
+        else{
+          System.out.print("name " + varData.get(0) + " type " + varData.get(1) + " value " + varData.get(2) + " TypeNum " + varData.get(3));
+        }
+        /*if(varData.size() == 3){
           System.out.print(" value " + varData.get(2));
         }
+        if(varData.size() == 4){
+          System.out.print(" value " + varData.get(2));
+          System.out.print(" $ TypeNum " + varData.get(3));
+        }*/
         System.out.println();
       }
     }
   }
 
   public void checkDeclError(String id){
-    ArrayList<List<String>> varList = varMap.get(scope); 
-    if(varList != null){  
+    ArrayList<List<String>> varList = varMap.get(scope);
+    if(varList != null){
       for(List<String> varData : varList){
         if((varData.get(0).equals(id)) && (declErr == null)){
           declErr = "DECLARATION ERROR " + id;
         }
       }
-    }    
+    }
   }
 }
