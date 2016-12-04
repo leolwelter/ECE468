@@ -1,3 +1,5 @@
+[ret1, +, ret2]
+ret1 ret2 + 
 ;str input  "Please input an integer number: "
 ;str space  " "
 ;str eol  "\n"
@@ -21,7 +23,7 @@
 ;POP $T4  
 ;SUBI $P1 2 $T5
 ;STOREI $T5  $L2
-;null $P1 2 $T6
+;null $L1 $L2 $T6
 ;STOREI $T6  $R
 ;RET   
 ;JUMP   label1

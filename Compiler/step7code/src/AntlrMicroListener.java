@@ -71,6 +71,9 @@ public class AntlrMicroListener extends MicroBaseListener {
 	}
 
 	@Override public void enterReturn_stmt(MicroParser.Return_stmtContext ctx) {
+		infixS.clear();
+	}
+	@Override public void exitReturn_stmt(MicroParser.Return_stmtContext ctx) {
 		String retVar = ctx.getText().split("RETURN")[1];
 		retVar = retVar.split(";")[0];
 
@@ -109,9 +112,10 @@ public class AntlrMicroListener extends MicroBaseListener {
 						}
 					}
 					if(retReg.compareTo("") == 0){
+						System.out.println(infixS);
 						ShuntingYard sy = new ShuntingYard();
 						String postfixS = sy.infixToPostfix(infixS);
-
+						System.out.println(postfixS);
 						//Tests Postfix Tree
 						PostfixTree pfTree = new PostfixTree();
 						PostfixTreeNode root = pfTree.createTree(postfixS);
@@ -126,8 +130,6 @@ public class AntlrMicroListener extends MicroBaseListener {
 					}
 			}
 		}
-	}
-	@Override public void exitReturn_stmt(MicroParser.Return_stmtContext ctx) {
 		this.meIRL.add(new IRNode("RET", "", "", ""));
 	}
 
