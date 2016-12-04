@@ -66,7 +66,8 @@ public class AntlrMicroListener extends MicroBaseListener {
 	}
 
 	@Override public void exitFunc_decl(MicroParser.Func_declContext ctx){
-		meIRL.add(new IRNode("RET", "", "", ""));
+		if(!this.meIRL.get(this.meIRL.size() - 1).opcode.equals("RET"))		
+			meIRL.add(new IRNode("RET", "", "", ""));
 	}
 
 	@Override public void enterReturn_stmt(MicroParser.Return_stmtContext ctx) {
@@ -126,6 +127,11 @@ public class AntlrMicroListener extends MicroBaseListener {
 			}
 		}
 	}
+	@Override public void exitReturn_stmt(MicroParser.Return_stmtContext ctx) {
+		this.meIRL.add(new IRNode("RET", "", "", ""));
+	}
+
+
 
 	//Loops
 	@Override public void enterDo_while_stmt(MicroParser.Do_while_stmtContext ctx) {
@@ -533,20 +539,20 @@ public class AntlrMicroListener extends MicroBaseListener {
 					//IRNode.tempCnt++;
 					String type = "";
 					ArrayList<List<String>> varList = st.varMap.get(fy.name);
-						//System.out.println(varList);
-						if(varList != null){
-							//System.out.println("VARLIST NOT EMPTY!!!!!!!!!");
+					//System.out.println(varList);
+					if(varList != null){
+						//System.out.println("VARLIST NOT EMPTY!!!!!!!!!");
 				      for(List<String> varData : varList){
-				      	if(varData.get(0).equals(id)){
-									//System.out.println("GETTING TYPE : " + varData.get(1));
-				      		type = varData.get(1);
-									idReg = varData.get(3);
+					      	if(varData.get(0).equals(id)){
+								//System.out.println("GETTING TYPE : " + varData.get(1));
+					      		type = varData.get(1);
+								idReg = varData.get(3);
+					      	}		
+							if(varData.get(0).equals(expr)){
+								exprReg = varData.get(3);
+					      	}
 				      	}
-								if(varData.get(0).equals(expr)){
-									exprReg = varData.get(3);
-				      	}
-				      }
-				    }
+				   	}
 
 				    if(infixS.size() != 1){
 							ShuntingYard sy = new ShuntingYard();
@@ -707,7 +713,7 @@ public class AntlrMicroListener extends MicroBaseListener {
 		//Only happens in Function calls
 		//separated like: "something", "something else", "this"
 		ArrayList<String> params = new ArrayList<>(Arrays.asList(ctx.getText().split(",")));
-		//System.out.println(params);
+		// System.out.println(params);
 
 		for(String param : params){
 			try{
@@ -724,36 +730,34 @@ public class AntlrMicroListener extends MicroBaseListener {
 								this.meIRL.add(new IRNode("STOREF", param, "", "$T" + IRNode.tempCnt));
 								this.meIRL.add(new IRNode("PUSH", "$T" + IRNode.tempCnt, "", ""));
 					}
-				}
+				}catch(Exception err2){
+					String type = "";
+					ArrayList<List<String>> varList = st.varMap.get(fy.name);
+				    if(varList != null){
+				      for(List<String> varData : varList){
+				      	if(varData.get(0).equals(param)){
+				      		type = varData.get(1);
+									// Param is variable so push $L here
+									this.meIRL.add(new IRNode("PUSH", varData.get(3), "", ""));
+				      	}
+				      }
+				    }
 
-				catch(Exception err2){
-						String type = "";
-						ArrayList<List<String>> varList = st.varMap.get(fy.name);
-					    if(varList != null){
-					      for(List<String> varData : varList){
-					      	if(varData.get(0).equals(param)){
-					      		type = varData.get(1);
-										// Param is variable so push $L here
-										this.meIRL.add(new IRNode("PUSH", varData.get(3), "", ""));
-					      	}
-					      }
-					    }
-
-					    if(type.equals("")){
-								type = "INT";
-								ShuntingYard sy = new ShuntingYard();
-								String postfixS = sy.infixToPostfix(infixS);
-
-								//Tests Postfix Tree
-								PostfixTree pfTree = new PostfixTree();
-								PostfixTreeNode root = pfTree.createTree(postfixS);
-								//adds tree to IRList
-								root.toIRList(root, this.meIRL, type, fy);
-						  	this.meIRL.add(new IRNode("PUSH", "$T"+ IRNode.tempCnt, "", ""));
-					    }
+				    if(type.equals("")){
+						type = "INT";
+						ShuntingYard sy = new ShuntingYard();
+						String postfixS = sy.infixToPostfix(infixS);
+						
+						//Tests Postfix Tree
+						PostfixTree pfTree = new PostfixTree();
+						PostfixTreeNode root = pfTree.createTree(postfixS);
+						
+						//adds tree to IRList
+						root.toIRList(root, this.meIRL, type, fy);
+					  	this.meIRL.add(new IRNode("PUSH", "$T"+ IRNode.tempCnt, "", ""));
+				    }
 				}
 			}
-
 		}
 	}
 

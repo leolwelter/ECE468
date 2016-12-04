@@ -140,7 +140,7 @@ public class IRNode {
 		//If not a REGISTER ($) just return tvar
 		String tinyReg = "";
 		//T->R
-		if(irop[0] == '$'){
+		if(tvar.startsWith("$")){
 			if(tvar.toCharArray()[1] == 'T'){
 				tinyReg = "r" + (Integer.parseInt(tvar.split("T")[1]) - 1);		
 			} else if(tvar.toCharArray()[1] == 'L'){
