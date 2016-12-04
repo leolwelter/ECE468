@@ -16,9 +16,9 @@ import org.antlr.v4.*;
 public class Micro {
 
 	public static void initProgram(LinkedList<TinyNode> tinyList){
-		tinyList.add(new TinyNode("push", "", ""));		
+		tinyList.add(new TinyNode("push", "", ""));
 		tinyList.add(new TinyNode("push", "r0", ""));
-		tinyList.add(new TinyNode("push", "r1", ""));		
+		tinyList.add(new TinyNode("push", "r1", ""));
 		tinyList.add(new TinyNode("push", "r2", ""));
 		tinyList.add(new TinyNode("push", "r3", ""));
 		tinyList.add(new TinyNode("jsr", "main", ""));
@@ -80,8 +80,8 @@ public class Micro {
 	 	//GLOBAL DECLARATIONS
 	 	Function fc1 = mlistener.functionTable.get("GLOBAL");
 		for(int i = 0; i < fc1.meIRL.size(); i++){
-			fc1.meIRL.get(i).irToTiny(tinyList, fc1.paramCnt);
-		}	 	
+			fc1.meIRL.get(i).irToTiny(tinyList, fc1);
+		}
 
 		//PROGRAM INIT
 		initProgram(tinyList);
@@ -93,14 +93,14 @@ public class Micro {
 	 		} else {
 			 	//Prints Tiny List
 			 	for(int i = 0; i < func.meIRL.size(); i++){
-			 		func.meIRL.get(i).irToTiny(tinyList, func.paramCnt);
+			 		func.meIRL.get(i).irToTiny(tinyList, func);
 			 		// tinyList.add(new TinyNode(meIRL.get(i)));
 			 	}
 	 		}
 	 	}
 	 	//Add halt to end of Tiny list
 		tinyList.add(new TinyNode("sys", "halt", ""));
-		 	
+
 
 	 	//Print TinyList
 		for (int i = 0; i < tinyList.size(); i++) {

@@ -135,28 +135,59 @@ public class IRNode {
 		result  = "$T" + ++tempCnt;
 	}
 
-	public String tempToReg(char[] irop, String tvar, int paramCnt){
-		//Take in a raw L/T/P, convert to Tiny 
+	public String tempToReg(char[] irop, String tvar, Function fy){
+		//Take in a raw L/T/P, convert to Tiny
 		//If not a REGISTER ($) just return tvar
 		String tinyReg = "";
 		//T->R
+		// System.out.println("TVAR :" + tvar);
 		if(tvar.startsWith("$")){
 			if(tvar.toCharArray()[1] == 'T'){
-				tinyReg = "r" + (Integer.parseInt(tvar.split("T")[1]) - 1);		
+				tinyReg = "r" + (Integer.parseInt(tvar.split("T")[1]) - 1);
 			} else if(tvar.toCharArray()[1] == 'L'){
 				tinyReg = "$-" + (Integer.parseInt(tvar.split("L")[1]));
 			} else if(tvar.toCharArray()[1] == 'P'){
-				tinyReg = "$" + (6 + paramCnt - Integer.parseInt(tvar.split("P")[1]));
+				tinyReg = "$" + (6 + fy.paramCnt - Integer.parseInt(tvar.split("P")[1]));
 			} else if(tvar.toCharArray()[1] == 'R'){
-				tinyReg = "$" + (6 + paramCnt);
+				tinyReg = "$" + (6 + fy.paramCnt);
 			}
 		} else {
-			tinyReg = tvar;
+			try{
+				if(Integer.valueOf(tvar) instanceof Integer){
+					tinyReg = tvar;
+				}
+			}
+			catch (Exception err1){
+				try{
+					if(Float.valueOf(tvar) instanceof Float){
+						tinyReg = tvar;
+					}
+				}
+				catch(Exception err2){
+						ArrayList<List<String>> varList = fy.st.varMap.get(fy.name);
+						if(varList != null){
+				      for(List<String> varData : varList){
+								if(varData.get(0).equals(tvar)){
+									tvar = varData.get(3);
+									if(tvar.toCharArray()[1] == 'T'){
+										tinyReg = "r" + (Integer.parseInt(tvar.split("T")[1]) - 1);
+									} else if(tvar.toCharArray()[1] == 'L'){
+										tinyReg = "$-" + (Integer.parseInt(tvar.split("L")[1]));
+									} else if(tvar.toCharArray()[1] == 'P'){
+										tinyReg = "$" + (6 + fy.paramCnt - Integer.parseInt(tvar.split("P")[1]));
+									} else if(tvar.toCharArray()[1] == 'R'){
+										tinyReg = "$" + (6 + fy.paramCnt);
+									}
+								}
+							}
+						}
+				}
 		}
+	}
 		return tinyReg;
 	}
 
-	public void irToTiny(LinkedList<TinyNode> tinyList, int paramCnt){
+	public void irToTiny(LinkedList<TinyNode> tinyList, Function fy){
 		String topcode, top1, top2 = "";
 		char [] irResult = result.toCharArray();
 		char [] irOp1    = op1.toCharArray();
@@ -167,27 +198,27 @@ public class IRNode {
 		// temp1 = Integer.parseInt(op1.split("T")[1]) - 1;
 		// temp1 = Integer.parseInt(result.split("T")[1]) - 1;
 
-		switch(opcode){			
+		switch(opcode){
 			//******* STACK OPERATIONS            ******//
 			case("POP"):
 				if(op1.equals("")){
-					tinyList.add(new TinyNode("pop", "", ""));					
+					tinyList.add(new TinyNode("pop", "", ""));
 				}else{
-					top1 = tempToReg(irOp1, op1, paramCnt);
+					top1 = tempToReg(irOp1, op1, fy);
 					tinyList.add(new TinyNode("pop", top1, ""));
 				}
 				break;
 			case("PUSH"):
 				if(op1.equals("")){
-					tinyList.add(new TinyNode("push", "", ""));										
+					tinyList.add(new TinyNode("push", "", ""));
 				}else{
-					top1 = tempToReg(irOp1, op1, paramCnt);
-					tinyList.add(new TinyNode("push", top1, ""));						
-				}		
+					top1 = tempToReg(irOp1, op1, fy);
+					tinyList.add(new TinyNode("push", top1, ""));
+				}
 				break;
 			case("RET"):
 					tinyList.add(new TinyNode("unlnk", "", ""));
-					tinyList.add(new TinyNode("ret", "", ""));									
+					tinyList.add(new TinyNode("ret", "", ""));
 				break;
 			case("JSR"):
 					tinyList.add(new TinyNode("push", "r0", ""));
@@ -206,8 +237,8 @@ public class IRNode {
 			//******* CONDITIONAL(int) OPERATIONS ******//
 			case("GT"):
 				//If operands are $T's, make them registers
-				top1 = tempToReg(irOp1, op1, paramCnt);
-				top2 = tempToReg(irOp2, op2, paramCnt);
+				top1 = tempToReg(irOp1, op1, fy);
+				top2 = tempToReg(irOp2, op2, fy);
 
 				if(this.opType.equals("FLOAT")){
 					tinyList.add(new TinyNode("cmpr", top1, top2)); //comparison
@@ -218,8 +249,8 @@ public class IRNode {
 				break;
 			case("GE"):
 				//If operands are $T's, make them registers
-				top1 = tempToReg(irOp1, op1, paramCnt);
-				top2 = tempToReg(irOp2, op2, paramCnt);
+				top1 = tempToReg(irOp1, op1, fy);
+				top2 = tempToReg(irOp2, op2, fy);
 
 				if(this.opType.equals("FLOAT")){
 					tinyList.add(new TinyNode("cmpr", top1, top2)); //comparison
@@ -230,8 +261,8 @@ public class IRNode {
 				break;
 			case("LT"):
 				//If operands are $T's, make them registers
-				top1 = tempToReg(irOp1, op1, paramCnt);
-				top2 = tempToReg(irOp2, op2, paramCnt);
+				top1 = tempToReg(irOp1, op1, fy);
+				top2 = tempToReg(irOp2, op2, fy);
 
 				if(this.opType.equals("FLOAT")){
 					tinyList.add(new TinyNode("cmpr", top1, top2)); //comparison
@@ -241,8 +272,8 @@ public class IRNode {
 				tinyList.add(new TinyNode("jlt", result, "")); //jump
 				break;
 			case("LE"):
-				top1 = tempToReg(irOp1, op1, paramCnt);
-				top2 = tempToReg(irOp2, op2, paramCnt);
+				top1 = tempToReg(irOp1, op1, fy);
+				top2 = tempToReg(irOp2, op2, fy);
 
 				if(this.opType.equals("FLOAT")){
 					tinyList.add(new TinyNode("cmpr", top1, top2)); //comparison
@@ -252,8 +283,8 @@ public class IRNode {
 				tinyList.add(new TinyNode("jle", result, "")); //jump
 				break;
 			case("NE"):
-				top1 = tempToReg(irOp1, op1, paramCnt);
-				top2 = tempToReg(irOp2, op2, paramCnt);
+				top1 = tempToReg(irOp1, op1, fy);
+				top2 = tempToReg(irOp2, op2, fy);
 
 				if(this.opType.equals("FLOAT")){
 					tinyList.add(new TinyNode("cmpr", top1, top2)); //comparison
@@ -263,8 +294,8 @@ public class IRNode {
 				tinyList.add(new TinyNode("jne", result, "")); //jump
 				break;
 			case("EQ"):
-				top1 = tempToReg(irOp1, op1, paramCnt);
-				top2 = tempToReg(irOp2, op2, paramCnt);
+				top1 = tempToReg(irOp1, op1, fy);
+				top2 = tempToReg(irOp2, op2, fy);
 
 				if(this.opType.equals("FLOAT")){
 					tinyList.add(new TinyNode("cmpr", top1, top2)); //comparison
@@ -303,86 +334,86 @@ public class IRNode {
 			//******* INTEGER OPERATIONS ******//
 			case("STOREI"):
 				topcode = "move";
-				top1 = tempToReg(irOp1, op1, paramCnt);
-				top2 = tempToReg(irResult, result, paramCnt);
+				top1 = tempToReg(irOp1, op1, fy);
+				top2 = tempToReg(irResult, result, fy);
 				tinyList.add(new TinyNode(topcode, top1, top2));
 				break;
 			case("WRITES"):
 				topcode = "sys";
 				top1	= "writes";
 				top2	= op1;
-				tinyList.add(new TinyNode(topcode, top1, top2));				
+				tinyList.add(new TinyNode(topcode, top1, top2));
 				break;
 			case("WRITEI"):
 				topcode = "sys";
 				top1 	= "writei";
-				top2 = tempToReg(irOp1, op1, paramCnt);
+				top2 = tempToReg(irOp1, op1, fy);
 				tinyList.add(new TinyNode(topcode, top1, top2));
 				break;
 			case("READI"):
 				topcode = "sys";
 				top1 	= "readi";
-				top2 = tempToReg(irOp1, op1, paramCnt);
+				top2 = tempToReg(irOp1, op1, fy);
 				tinyList.add(new TinyNode(topcode, top1, top2));
 				break;
 			case("ADDI"):
 				topcode = "move";
-				top1 = tempToReg(irOp1, op1, paramCnt);
-				top2 = tempToReg(irResult, result, paramCnt);
+				top1 = tempToReg(irOp1, op1, fy);
+				top2 = tempToReg(irResult, result, fy);
 
 				tinyList.add(new TinyNode(topcode, top1, top2));
 
 				topcode = "addi";
 				// temp1 = Integer.parseInt(op1.split("T")[1]) - 1;
 				// temp1 = Integer.parseInt(result.split("T")[1]) - 1;
-				top1 = tempToReg(irOp2, op2, paramCnt);
-				top2 = tempToReg(irResult, result, paramCnt);
+				top1 = tempToReg(irOp2, op2, fy);
+				top2 = tempToReg(irResult, result, fy);
 
 				tinyList.add(new TinyNode(topcode, top1, top2));
 				break;
 			case("SUBI"):
 				topcode = "move";
-				top1 = tempToReg(irOp1, op1, paramCnt);
-				top2 = tempToReg(irResult, result, paramCnt);				
+				top1 = tempToReg(irOp1, op1, fy);
+				top2 = tempToReg(irResult, result, fy);
 
 				tinyList.add(new TinyNode(topcode, top1, top2));
 
 				topcode = "subi";
 				// temp1 = Integer.parseInt(op1.split("T")[1]) - 1;
 				// temp1 = Integer.parseInt(result.split("T")[1]) - 1;
-				top1 = tempToReg(irOp2, op2, paramCnt);
-				top2 = tempToReg(irResult, result, paramCnt);				
+				top1 = tempToReg(irOp2, op2, fy);
+				top2 = tempToReg(irResult, result, fy);
 
 				tinyList.add(new TinyNode(topcode, top1, top2));
 				break;
 			case("MULTI"):
 				topcode = "move";
-				top1 = tempToReg(irOp1, op2, paramCnt);
-				top2 = tempToReg(irResult, result, paramCnt);
+				top1 = tempToReg(irOp1, op2, fy);
+				top2 = tempToReg(irResult, result, fy);
 
 				tinyList.add(new TinyNode(topcode, top1, top2));
 
 				topcode = "muli";
 				// temp1 = Integer.parseInt(op1.split("T")[1]) - 1;
 				// temp1 = Integer.parseInt(result.split("T")[1]) - 1;
-				top1 = tempToReg(irOp2, op2, paramCnt);
-				top2 = tempToReg(irResult, result, paramCnt);
+				top1 = tempToReg(irOp2, op2, fy);
+				top2 = tempToReg(irResult, result, fy);
 
 				tinyList.add(new TinyNode(topcode, top1, top2));
 				break;
 
 			case("DIVI"):
 				topcode = "move";
-				top1 = tempToReg(irOp1, op1, paramCnt);
-				top2 = tempToReg(irResult, result, paramCnt);
+				top1 = tempToReg(irOp1, op1, fy);
+				top2 = tempToReg(irResult, result, fy);
 
 				tinyList.add(new TinyNode(topcode, top1, top2));
 
 				topcode = "divi";
 				// temp1 = Integer.parseInt(op1.split("T")[1]) - 1;
 				// temp1 = Integer.parseInt(result.split("T")[1]) - 1;
-				top1 = tempToReg(irOp2, op2, paramCnt);
-				top2 = tempToReg(irResult, result, paramCnt);
+				top1 = tempToReg(irOp2, op2, fy);
+				top2 = tempToReg(irResult, result, fy);
 
 				tinyList.add(new TinyNode(topcode, top1, top2));
 				break;
@@ -390,81 +421,81 @@ public class IRNode {
 			//******* Float OPERATIONS ********//
 			case("STOREF"):
 				topcode = "move";
-				top1 = tempToReg(irOp1, op1, paramCnt);
-				top2 = tempToReg(irResult, result, paramCnt);
+				top1 = tempToReg(irOp1, op1, fy);
+				top2 = tempToReg(irResult, result, fy);
 
 				tinyList.add(new TinyNode(topcode, top1, top2));
 				break;
 			case("WRITEF"):
 				topcode = "sys";
 				top1 	= "writer";
-				top2 = tempToReg(irOp1, op1, paramCnt);
+				top2 = tempToReg(irOp1, op1, fy);
 				tinyList.add(new TinyNode(topcode, top1, top2));
 				break;
 			case("READF"):
 				topcode = "sys";
 				top1 	= "readr";
-				top2 = tempToReg(irOp1, op1, paramCnt);
+				top2 = tempToReg(irOp1, op1, fy);
 				tinyList.add(new TinyNode(topcode, top1, top2));
 				break;
 			case("ADDF"):
 				topcode = "move";
-				top1 = tempToReg(irOp1, op1, paramCnt);
-				top2 = tempToReg(irResult, result, paramCnt);				
+				top1 = tempToReg(irOp1, op1, fy);
+				top2 = tempToReg(irResult, result, fy);
 
 				tinyList.add(new TinyNode(topcode, top1, top2));
 
 				topcode = "addr";
 				// temp1 = Integer.parseInt(op1.split("T")[1]) - 1;
 				// temp1 = Integer.parseInt(result.split("T")[1]) - 1;
-				top1 = tempToReg(irOp2, op2, paramCnt);
-				top2 = tempToReg(irResult, result, paramCnt);
+				top1 = tempToReg(irOp2, op2, fy);
+				top2 = tempToReg(irResult, result, fy);
 
 				tinyList.add(new TinyNode(topcode, top1, top2));
 				break;
 			case("SUBF"):
 				topcode = "move";
-				top1 = tempToReg(irOp1, op1, paramCnt);
-				top2 = tempToReg(irResult, result, paramCnt);
+				top1 = tempToReg(irOp1, op1, fy);
+				top2 = tempToReg(irResult, result, fy);
 
 				tinyList.add(new TinyNode(topcode, top1, top2));
 
 				topcode = "subr";
 				// temp1 = Integer.parseInt(op1.split("T")[1]) - 1;
 				// temp1 = Integer.parseInt(result.split("T")[1]) - 1;
-				top1 = tempToReg(irOp2, op2, paramCnt);
-				top2 = tempToReg(irResult, result, paramCnt);
+				top1 = tempToReg(irOp2, op2, fy);
+				top2 = tempToReg(irResult, result, fy);
 
 				tinyList.add(new TinyNode(topcode, top1, top2));
 				break;
 			case("MULTF"):
 				topcode = "move";
-				top1 = tempToReg(irOp1, op1, paramCnt);
-				top2 = tempToReg(irResult, result, paramCnt);
+				top1 = tempToReg(irOp1, op1, fy);
+				top2 = tempToReg(irResult, result, fy);
 
 				tinyList.add(new TinyNode(topcode, top1, top2));
 
 				topcode = "mulr";
 				// temp1 = Integer.parseInt(op1.split("T")[1]) - 1;
 				// temp1 = Integer.parseInt(result.split("T")[1]) - 1;
-				top1 = tempToReg(irOp2, op2, paramCnt);
-				top2 = tempToReg(irResult, result, paramCnt);
-				
+				top1 = tempToReg(irOp2, op2, fy);
+				top2 = tempToReg(irResult, result, fy);
+
 				tinyList.add(new TinyNode(topcode, top1, top2));
 				break;
 
 			case("DIVF"):
 				topcode = "move";
-				top1 = tempToReg(irOp1, op2, paramCnt);
-				top2 = tempToReg(irResult, result, paramCnt);
+				top1 = tempToReg(irOp1, op2, fy);
+				top2 = tempToReg(irResult, result, fy);
 
 				tinyList.add(new TinyNode(topcode, top1, top2));
 
 				topcode = "divr";
 				// temp1 = Integer.parseInt(op1.split("T")[1]) - 1;
 				// temp1 = Integer.parseInt(result.split("T")[1]) - 1;
-				top1 = tempToReg(irOp2, op2, paramCnt);
-				top2 = tempToReg(irResult, result, paramCnt);
+				top1 = tempToReg(irOp2, op2, fy);
+				top2 = tempToReg(irResult, result, fy);
 
 				tinyList.add(new TinyNode(topcode, top1, top2));
 				break;
