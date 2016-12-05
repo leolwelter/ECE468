@@ -64,12 +64,35 @@ public class Micro {
 	 	//Print Function information
 	 	ControlFlowGraph cfg = new ControlFlowGraph(mlistener.functionTable);
 	 	cfg.printCFG();
-		 	//Prints Intermediate Representation List
-		 	/* for(int i = 0; i < func.meIRL.size(); i++){
-		 		func.meIRL.get(i).printNode();
-		 	}
-			System.out.println(); 
-			*/
+
+	 	for(Function func : mlistener.functionTable){
+	 		for(IRNode irNode : func.meIRL){
+	 			cfg.createInOutList(irNode);	 			
+	 		}
+	 	}
+
+ 		/* **** WORKLIST NOTES *****
+ 		OUT = IN_succ (union of all)
+ 			iterate over successor list
+ 			set add all successors
+
+ 		IN = Gen U (Out - Kill)
+ 		add all rets to worklist
+ 		@ each CFG node in WORKLIST:
+ 			calc out
+ 			calc in
+ 			if IN is changed:
+ 				push all PREDECESSORS to worklist
+ 		STOP when worklist is empty (IN hasn't changed) (how does it empty?)
+
+ 		**************************** */
+
+	 	//Prints Intermediate Representation List
+	 	/* for(int i = 0; i < func.meIRL.size(); i++){
+	 		func.meIRL.get(i).printNode();
+	 	}
+		System.out.println(); 
+		*/
 
 
 /*

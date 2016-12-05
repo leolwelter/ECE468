@@ -77,6 +77,10 @@ public class ControlFlowGraph{
 				}
 		 	}
 	 	}
-	}
-	
+	}//printCFG
+
+	public void createInOutSets(Function func){
+		//Calculate Inset for given node
+		Set<IRNode> inset = new HashSet<IRNode>(func.meIRL)
+	}	
 }
