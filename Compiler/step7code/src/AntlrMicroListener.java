@@ -28,7 +28,8 @@ public class AntlrMicroListener extends MicroBaseListener {
 		this.enterStack = new Stack<String>();
 		this.endStack = new Stack<String>();
 		this.functionTable = new LinkedHashMap<String, Function>();
-		this.functionTable.put("GLOBAL", new Function(st, meIRL, "GLOBAL", 1, 1));
+		this.fy = new Function(st, meIRL, "GLOBAL", 1, 1);
+		this.functionTable.put("GLOBAL", fy);
 	}
 
 	//Prints the scopes as they're entered

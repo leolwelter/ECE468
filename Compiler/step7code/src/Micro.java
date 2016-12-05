@@ -71,7 +71,7 @@ public class Micro {
 
 			System.out.println(); */
 // -------------------------- CREATING CFG ----------------------------//
-			if(func.meIRL.size() != 0) {
+			if(func.meIRL.peekFirst() != null && func.meIRL.size() != 0) {
 				IRNode p = func.meIRL.get(0);
 				for(int i = 1; i < func.meIRL.size(); i++){
 					if(!(p.opcode.equals("JUMP"))){
@@ -106,34 +106,34 @@ public class Micro {
 						}
 					}
 			 	}
-
+// --------------------- CREATING GEN & KILL SETS ----------------------------
 				for(int i = 0; i < func.meIRL.size(); i++){
 					temp = func.meIRL.get(i);
 					if(temp.opcode.equals("POP")){
-						if(temp.op1){
+						if((!(temp.op1.isEmpty())) && temp.op1.startsWith("$")){
 							temp.kill.add(temp.op1);
 						}
 					}
 					else if(temp.opcode.equals("READI") || temp.opcode.equals("READF")){
-						if(temp.op1){
+						if((!(temp.op1.isEmpty())) && temp.op1.startsWith("$")){
 							temp.kill.add(temp.op1);
 						}
 					}
 					else if(temp.opcode.equals("STOREI") || temp.opcode.equals("STOREF")){
-						if(temp.op1){
+						if((!(temp.op1.isEmpty())) && temp.op1.startsWith("$")){
 							temp.kill.add(temp.op1);
 						}
-						if(temp.result){
+						if((!(temp.result.isEmpty())) && temp.result.startsWith("$")){
 							temp.kill.add(temp.result);
 						}
 					}
 					else if(temp.opcode.equals("PUSH")){
-						if(temp.op1){
+						if((!(temp.op1.isEmpty())) && temp.op1.startsWith("$")){
 							temp.gen.add(temp.op1);
 						}
 					}
 					else if(temp.opcode.equals("WRITEI") || temp.opcode.equals("WRITEF") || temp.opcode.equals("WRITES")){
-						if(temp.op1){
+						if((!(temp.op1.isEmpty())) && temp.op1.startsWith("$")){
 							temp.gen.add(temp.op1);
 						}
 					}
@@ -141,13 +141,13 @@ public class Micro {
 					temp.opcode.equals("SUBI") || temp.opcode.equals("SUBF") ||
 					temp.opcode.equals("MULTI") || temp.opcode.equals("MULTF") ||
 					temp.opcode.equals("DIVI") || temp.opcode.equals("DIVF")){
-						if(temp.op1){
+						if((!(temp.op1.isEmpty())) && temp.op1.startsWith("$")){
 							temp.gen.add(temp.op1);
 						}
-						if(temp.op2){
+						if((!(temp.op2.isEmpty())) && temp.op2.startsWith("$")){
 							temp.gen.add(temp.op2);
 						}
-						if(temp.result){
+						if((!(temp.result.isEmpty())) && temp.result.startsWith("$")){
 							temp.kill.add(temp.result);
 						}
 					}
@@ -155,34 +155,63 @@ public class Micro {
 					temp.opcode.equals("LT") || temp.opcode.equals("LE") ||
 					temp.opcode.equals("NE") || temp.opcode.equals("EQ") ||
 					temp.opcode.equals("JUMP")){
-						if(temp.op1){
+						if((!(temp.op1.isEmpty())) && temp.op1.startsWith("$")){
 							temp.gen.add(temp.op1);
 						}
-						if(temp.op2){
+						if((!(temp.op2.isEmpty())) && temp.op2.startsWith("$")){
 							temp.gen.add(temp.op2);
 						}
 					}
 
-
 				}
+
+// --------------------- DONE CREATING GEN & KILL SETS ------------------------
+
+// -------------------------- Start Worklist -----------------------------
+
+				ArrayDeque<IRNode> initialWorklist = new ArrayDeque<IRNode>();
+
+				for(int i = 0; i < func.meIRL.size(); i++){
+					temp = func.meIRL.get(i);
+					if(temp.opcode.equals("RET")){
+						initialWorklist.add(temp);
+					}
+				}
+				func.meIRL.get(0).createWorklist(func.meIRL, initialWorklist);
+
+// -------------------------- End Worklist -----------------------------
 
 				// Printing for IRNodes and CFG
 				for(int i = 0; i < func.meIRL.size(); i++){
 					System.out.println("Main Node : ");
 					func.meIRL.get(i).printNode();
-					System.out.println();
 					System.out.println("Predecessors : ");
 					for(IRNode p1 : func.meIRL.get(i).predecessors){
 						p1.printNode();
 					}
-					System.out.println();
 					System.out.println("Successors : ");
 					for(IRNode s1 : func.meIRL.get(i).successors){
 						s1.printNode();
 					}
+					System.out.println("Gen : ");
+					for(String q : func.meIRL.get(i).gen){
+						System.out.print(q);
+					}
+					System.out.println("Kill : ");
+					for(String w : func.meIRL.get(i).kill){
+						System.out.print(w);
+					}
+					System.out.println("In : ");
+					for(String e : func.meIRL.get(i).in){
+						System.out.print(e);
+					}
+					System.out.println("Out : ");
+					for(String r : func.meIRL.get(i).out){
+						System.out.print(r);
+					}
 					System.out.println();
 					System.out.println();
-					System.out.println();
+
 			 	}
 
 				System.out.println();

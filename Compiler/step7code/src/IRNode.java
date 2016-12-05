@@ -15,8 +15,10 @@ public class IRNode {
 
 	public ArrayList<IRNode> predecessors;
 	public ArrayList<IRNode> successors;
-	public ArrayList<String> gen;
-	public ArrayList<String> kill;
+	public HashSet<String> gen;
+	public HashSet<String> kill;
+	public HashSet<String> in;
+	public HashSet<String> out;
 
 	//constructors
 	public IRNode(){
@@ -28,8 +30,10 @@ public class IRNode {
 		this.opType = null;
 		this.predecessors = new ArrayList<IRNode>();
     this.successors = new ArrayList<IRNode>();
-		this.gen = new ArrayList<String>();
-		this.kill = new ArrayList<String>();
+		this.gen = new HashSet<String>();
+		this.kill = new HashSet<String>();
+		this.in = new HashSet<String>();
+		this.out = new HashSet<String>();
 	}
 
 	public IRNode(ArrayList<String> token, String type){
@@ -45,8 +49,10 @@ public class IRNode {
 		this.opType = null;
 		this.predecessors = new ArrayList<IRNode>();
     this.successors = new ArrayList<IRNode>();
-		this.gen = new ArrayList<String>();
-		this.kill = new ArrayList<String>();
+		this.gen = new HashSet<String>();
+		this.kill = new HashSet<String>();
+		this.in = new HashSet<String>();
+		this.out = new HashSet<String>();
 	}
 
 	public IRNode(String opcode, String op1, String op2, String result, String opType){
@@ -58,8 +64,10 @@ public class IRNode {
 		this.opType = opType;
 		this.predecessors = new ArrayList<IRNode>();
     this.successors = new ArrayList<IRNode>();
-		this.gen = new ArrayList<String>();
-		this.kill = new ArrayList<String>();
+		this.gen = new HashSet<String>();
+		this.kill = new HashSet<String>();
+		this.in = new HashSet<String>();
+		this.out = new HashSet<String>();
 	}
 
 	public void addPredecessor(IRNode pre){
@@ -68,6 +76,43 @@ public class IRNode {
 
 	public void addSuccessor(IRNode succ){
 		this.successors.add(succ);
+	}
+
+	public void createWorklist(LinkedList<IRNode> meIRL, ArrayDeque<IRNode> worklist){
+		// Fucntion that creates In / Out sets for node that it is called on
+		// Keeps going until worklist is empty & In doesn't change
+		IRNode temp;
+		HashSet<String> inTemp = new HashSet<String>();
+		HashSet<String> outTemp = new HashSet<String>();
+		while(worklist.peek() != null){
+			temp = worklist.remove();
+			//System.out.println("HEREEEEE");
+			//temp.printNode();
+			// keep track of old in
+			// calc out set
+			for( IRNode s : temp.successors){
+				outTemp.addAll(s.in);
+			}
+			temp.out = outTemp;
+			// calc in set
+			outTemp.removeAll(temp.kill);
+			inTemp = outTemp;
+			inTemp.addAll(temp.gen);
+			System.out.println("HEREEEE1: " + temp.gen);
+			System.out.println("HEREEEE2: " + inTemp);
+			// check if in set changed
+			if(!(temp.in.equals(inTemp))){
+			// if changed, push all predecessor IRNodes on to worklist
+				temp.in = inTemp;
+				for(IRNode p : temp.predecessors){
+					//System.out.println("HEREEE: " + p);
+					worklist.add(p);
+				}
+			}
+
+			System.out.println("IN : " + temp.in + "Out : " + temp.out);
+		}
+
 	}
 
 
