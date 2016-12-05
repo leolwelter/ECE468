@@ -86,7 +86,7 @@ push r3
 jsr main 
 sys halt 
 label F 
-link 10 
+link 4 
 move 2 r0
 cmpi $6 r0
 jle label0 
@@ -160,7 +160,7 @@ label label4
 unlnk  
 ret  
 label main 
-link 10 
+link 4 
 move 0 r0
 move r0 $-1
 sys writes input

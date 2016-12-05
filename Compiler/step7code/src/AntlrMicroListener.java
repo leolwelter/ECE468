@@ -792,8 +792,10 @@ public class AntlrMicroListener extends MicroBaseListener {
 				      	if(varData.get(0).equals(param)){
 				      		type = varData.get(1);
 									// Param is variable so push $L here
-									this.meIRL.add(new IRNode("PUSH", "" , "", ""));
-									retPushed = true;
+									if(!(retPushed)) {
+										this.meIRL.add(new IRNode("PUSH", "" , "", ""));
+										retPushed = true;
+									}
 									this.meIRL.add(new IRNode("PUSH", varData.get(3), "", ""));
 				      	}
 				      }
@@ -810,8 +812,10 @@ public class AntlrMicroListener extends MicroBaseListener {
 
 							//adds tree to IRList
 							root.toIRList(root, this.meIRL, type, fy);
-							this.meIRL.add(new IRNode("PUSH", "" , "", ""));
-							retPushed = true;
+							if(!(retPushed)) {
+								this.meIRL.add(new IRNode("PUSH", "" , "", ""));
+								retPushed = true;
+							}
 						  this.meIRL.add(new IRNode("PUSH", "$T"+ IRNode.tempCnt, "", ""));
 				    }
 				}

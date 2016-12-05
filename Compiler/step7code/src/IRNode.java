@@ -244,7 +244,8 @@ public class IRNode {
 					tinyList.add(new TinyNode("pop", "r0", ""));
 				break;
 			case("LINK"): //TODO: make 10 the actual number of locals + temps
-					tinyList.add(new TinyNode("link", "10", ""));
+					//System.out.println("LC : " + fy.localCnt + "PC : " + fy.paramCnt);
+					tinyList.add(new TinyNode("link", Integer.toString(fy.localCnt + fy.paramCnt), ""));
 				break;
 			//******* CONDITIONAL(int) OPERATIONS ******//
 			case("GT"):
