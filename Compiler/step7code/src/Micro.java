@@ -120,25 +120,47 @@ public class Micro {
 						}
 					}
 					else if(temp.opcode.equals("STOREI") || temp.opcode.equals("STOREF")){
-						
+						if(temp.op1){
+							temp.kill.add(temp.op1);
+						}
+						if(temp.result){
+							temp.kill.add(temp.result);
+						}
 					}
 					else if(temp.opcode.equals("PUSH")){
-
+						if(temp.op1){
+							temp.gen.add(temp.op1);
+						}
 					}
 					else if(temp.opcode.equals("WRITEI") || temp.opcode.equals("WRITEF") || temp.opcode.equals("WRITES")){
-
+						if(temp.op1){
+							temp.gen.add(temp.op1);
+						}
 					}
 					else if(temp.opcode.equals("ADDI") || temp.opcode.equals("ADDF") ||
 					temp.opcode.equals("SUBI") || temp.opcode.equals("SUBF") ||
 					temp.opcode.equals("MULTI") || temp.opcode.equals("MULTF") ||
 					temp.opcode.equals("DIVI") || temp.opcode.equals("DIVF")){
-
+						if(temp.op1){
+							temp.gen.add(temp.op1);
+						}
+						if(temp.op2){
+							temp.gen.add(temp.op2);
+						}
+						if(temp.result){
+							temp.kill.add(temp.result);
+						}
 					}
 					else if(temp.opcode.equals("GT") || temp.opcode.equals("GE") ||
 					temp.opcode.equals("LT") || temp.opcode.equals("LE") ||
 					temp.opcode.equals("NE") || temp.opcode.equals("EQ") ||
 					temp.opcode.equals("JUMP")){
-
+						if(temp.op1){
+							temp.gen.add(temp.op1);
+						}
+						if(temp.op2){
+							temp.gen.add(temp.op2);
+						}
 					}
 
 
