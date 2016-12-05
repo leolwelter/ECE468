@@ -12,10 +12,10 @@ Main Node :
 ;str space  " "
 
 Predecessors : 
-;str space  " "
+;str input  "Please input an integer number: "
 
 Successors : 
-;str space  " "
+;str eol  "\n"
 
 
 
@@ -23,6 +23,7 @@ Main Node :
 ;str eol  "\n"
 
 Predecessors : 
+;str space  " "
 
 Successors : 
 
@@ -35,7 +36,7 @@ Main Node :
 Predecessors : 
 
 Successors : 
-;LABEL   label4
+;LINK   
 
 
 
@@ -43,10 +44,10 @@ Main Node :
 ;LINK   
 
 Predecessors : 
-;LABEL   label4
+;LABEL   F
 
 Successors : 
-;LABEL   label4
+;STOREI 2  $T1
 
 
 
@@ -54,10 +55,10 @@ Main Node :
 ;STOREI 2  $T1
 
 Predecessors : 
-;LABEL   label4
+;LINK   
 
 Successors : 
-;LABEL   label4
+;LE $P1 $T1 label0
 
 
 
@@ -65,10 +66,11 @@ Main Node :
 ;LE $P1 $T1 label0
 
 Predecessors : 
-;LABEL   label4
+;STOREI 2  $T1
 
 Successors : 
-;LABEL   label4
+;SUBI $P1 1 $T2
+;LABEL   label0
 
 
 
@@ -76,10 +78,10 @@ Main Node :
 ;SUBI $P1 1 $T2
 
 Predecessors : 
-;LABEL   label4
+;LE $P1 $T1 label0
 
 Successors : 
-;LABEL   label4
+;PUSH   
 
 
 
@@ -87,10 +89,10 @@ Main Node :
 ;PUSH   
 
 Predecessors : 
-;LABEL   label4
+;SUBI $P1 1 $T2
 
 Successors : 
-;LABEL   label4
+;PUSH $T2  
 
 
 
@@ -98,10 +100,10 @@ Main Node :
 ;PUSH $T2  
 
 Predecessors : 
-;LABEL   label4
+;PUSH   
 
 Successors : 
-;LABEL   label4
+;JSR F  
 
 
 
@@ -109,10 +111,10 @@ Main Node :
 ;JSR F  
 
 Predecessors : 
-;LABEL   label4
+;PUSH $T2  
 
 Successors : 
-;LABEL   label4
+;POP   
 
 
 
@@ -120,10 +122,10 @@ Main Node :
 ;POP   
 
 Predecessors : 
-;LABEL   label4
+;JSR F  
 
 Successors : 
-;LABEL   label4
+;POP $T3  
 
 
 
@@ -131,10 +133,10 @@ Main Node :
 ;POP $T3  
 
 Predecessors : 
-;LABEL   label4
+;POP   
 
 Successors : 
-;LABEL   label4
+;STOREI $T3  $L1
 
 
 
@@ -142,10 +144,10 @@ Main Node :
 ;STOREI $T3  $L1
 
 Predecessors : 
-;LABEL   label4
+;POP $T3  
 
 Successors : 
-;LABEL   label4
+;SUBI $P1 2 $T4
 
 
 
@@ -153,10 +155,10 @@ Main Node :
 ;SUBI $P1 2 $T4
 
 Predecessors : 
-;LABEL   label4
+;STOREI $T3  $L1
 
 Successors : 
-;LABEL   label4
+;PUSH   
 
 
 
@@ -164,10 +166,10 @@ Main Node :
 ;PUSH   
 
 Predecessors : 
-;LABEL   label4
+;SUBI $P1 2 $T4
 
 Successors : 
-;LABEL   label4
+;PUSH $T4  
 
 
 
@@ -175,10 +177,10 @@ Main Node :
 ;PUSH $T4  
 
 Predecessors : 
-;LABEL   label4
+;PUSH   
 
 Successors : 
-;LABEL   label4
+;JSR F  
 
 
 
@@ -186,10 +188,10 @@ Main Node :
 ;JSR F  
 
 Predecessors : 
-;LABEL   label4
+;PUSH $T4  
 
 Successors : 
-;LABEL   label4
+;POP   
 
 
 
@@ -197,10 +199,10 @@ Main Node :
 ;POP   
 
 Predecessors : 
-;LABEL   label4
+;JSR F  
 
 Successors : 
-;LABEL   label4
+;POP $T5  
 
 
 
@@ -208,10 +210,10 @@ Main Node :
 ;POP $T5  
 
 Predecessors : 
-;LABEL   label4
+;POP   
 
 Successors : 
-;LABEL   label4
+;STOREI $T5  $L2
 
 
 
@@ -219,10 +221,10 @@ Main Node :
 ;STOREI $T5  $L2
 
 Predecessors : 
-;LABEL   label4
+;POP $T5  
 
 Successors : 
-;LABEL   label4
+;ADDI $L1 $L2 $T6
 
 
 
@@ -230,10 +232,10 @@ Main Node :
 ;ADDI $L1 $L2 $T6
 
 Predecessors : 
-;LABEL   label4
+;STOREI $T5  $L2
 
 Successors : 
-;LABEL   label4
+;STOREI $T6  $R
 
 
 
@@ -241,10 +243,10 @@ Main Node :
 ;STOREI $T6  $R
 
 Predecessors : 
-;LABEL   label4
+;ADDI $L1 $L2 $T6
 
 Successors : 
-;LABEL   label4
+;RET   
 
 
 
@@ -252,10 +254,10 @@ Main Node :
 ;RET   
 
 Predecessors : 
-;LABEL   label4
+;STOREI $T6  $R
 
 Successors : 
-;LABEL   label4
+;JUMP   label1
 
 
 
@@ -263,10 +265,10 @@ Main Node :
 ;JUMP   label1
 
 Predecessors : 
-;LABEL   label4
+;RET   
 
 Successors : 
-;LABEL   label4
+;LABEL   label1
 
 
 
@@ -274,10 +276,10 @@ Main Node :
 ;LABEL   label0
 
 Predecessors : 
-;LABEL   label4
+;LE $P1 $T1 label0
 
 Successors : 
-;LABEL   label4
+;STOREI 0  $T7
 
 
 
@@ -285,10 +287,10 @@ Main Node :
 ;STOREI 0  $T7
 
 Predecessors : 
-;LABEL   label4
+;LABEL   label0
 
 Successors : 
-;LABEL   label4
+;NE $P1 $T7 label2
 
 
 
@@ -296,10 +298,11 @@ Main Node :
 ;NE $P1 $T7 label2
 
 Predecessors : 
-;LABEL   label4
+;STOREI 0  $T7
 
 Successors : 
-;LABEL   label4
+;STOREI 0  $T8
+;LABEL   label2
 
 
 
@@ -307,10 +310,10 @@ Main Node :
 ;STOREI 0  $T8
 
 Predecessors : 
-;LABEL   label4
+;NE $P1 $T7 label2
 
 Successors : 
-;LABEL   label4
+;STOREI $T8  $R
 
 
 
@@ -318,10 +321,10 @@ Main Node :
 ;STOREI $T8  $R
 
 Predecessors : 
-;LABEL   label4
+;STOREI 0  $T8
 
 Successors : 
-;LABEL   label4
+;RET   
 
 
 
@@ -329,10 +332,10 @@ Main Node :
 ;RET   
 
 Predecessors : 
-;LABEL   label4
+;STOREI $T8  $R
 
 Successors : 
-;LABEL   label4
+;JUMP   label1
 
 
 
@@ -340,10 +343,10 @@ Main Node :
 ;JUMP   label1
 
 Predecessors : 
-;LABEL   label4
+;RET   
 
 Successors : 
-;LABEL   label4
+;LABEL   label1
 
 
 
@@ -351,10 +354,10 @@ Main Node :
 ;LABEL   label2
 
 Predecessors : 
-;LABEL   label4
+;NE $P1 $T7 label2
 
 Successors : 
-;LABEL   label4
+;STOREI 1  $T9
 
 
 
@@ -362,10 +365,10 @@ Main Node :
 ;STOREI 1  $T9
 
 Predecessors : 
-;LABEL   label4
+;LABEL   label2
 
 Successors : 
-;LABEL   label4
+;NE $P1 $T9 label3
 
 
 
@@ -373,10 +376,11 @@ Main Node :
 ;NE $P1 $T9 label3
 
 Predecessors : 
-;LABEL   label4
+;STOREI 1  $T9
 
 Successors : 
-;LABEL   label4
+;STOREI 1  $T10
+;LABEL   label3
 
 
 
@@ -384,10 +388,10 @@ Main Node :
 ;STOREI 1  $T10
 
 Predecessors : 
-;LABEL   label4
+;NE $P1 $T9 label3
 
 Successors : 
-;LABEL   label4
+;STOREI $T10  $R
 
 
 
@@ -395,10 +399,10 @@ Main Node :
 ;STOREI $T10  $R
 
 Predecessors : 
-;LABEL   label4
+;STOREI 1  $T10
 
 Successors : 
-;LABEL   label4
+;RET   
 
 
 
@@ -406,10 +410,10 @@ Main Node :
 ;RET   
 
 Predecessors : 
-;LABEL   label4
+;STOREI $T10  $R
 
 Successors : 
-;LABEL   label4
+;JUMP   label1
 
 
 
@@ -417,10 +421,10 @@ Main Node :
 ;JUMP   label1
 
 Predecessors : 
-;LABEL   label4
+;RET   
 
 Successors : 
-;LABEL   label4
+;LABEL   label1
 
 
 
@@ -428,10 +432,10 @@ Main Node :
 ;LABEL   label3
 
 Predecessors : 
-;LABEL   label4
+;NE $P1 $T9 label3
 
 Successors : 
-;LABEL   label4
+;STOREI 2  $T11
 
 
 
@@ -439,10 +443,10 @@ Main Node :
 ;STOREI 2  $T11
 
 Predecessors : 
-;LABEL   label4
+;LABEL   label3
 
 Successors : 
-;LABEL   label4
+;NE $P1 $T11 label4
 
 
 
@@ -450,9 +454,10 @@ Main Node :
 ;NE $P1 $T11 label4
 
 Predecessors : 
-;LABEL   label4
+;STOREI 2  $T11
 
 Successors : 
+;STOREI 1  $T12
 ;LABEL   label4
 
 
@@ -461,10 +466,10 @@ Main Node :
 ;STOREI 1  $T12
 
 Predecessors : 
-;LABEL   label4
+;NE $P1 $T11 label4
 
 Successors : 
-;LABEL   label4
+;STOREI $T12  $R
 
 
 
@@ -472,10 +477,10 @@ Main Node :
 ;STOREI $T12  $R
 
 Predecessors : 
-;LABEL   label4
+;STOREI 1  $T12
 
 Successors : 
-;LABEL   label4
+;RET   
 
 
 
@@ -483,10 +488,10 @@ Main Node :
 ;RET   
 
 Predecessors : 
-;LABEL   label4
+;STOREI $T12  $R
 
 Successors : 
-;LABEL   label4
+;JUMP   label1
 
 
 
@@ -494,10 +499,10 @@ Main Node :
 ;JUMP   label1
 
 Predecessors : 
-;LABEL   label4
+;RET   
 
 Successors : 
-;LABEL   label4
+;LABEL   label1
 
 
 
@@ -505,7 +510,10 @@ Main Node :
 ;LABEL   label1
 
 Predecessors : 
-;LABEL   label4
+;JUMP   label1
+;JUMP   label1
+;JUMP   label1
+;JUMP   label1
 
 Successors : 
 ;LABEL   label4
@@ -516,10 +524,11 @@ Main Node :
 ;LABEL   label4
 
 Predecessors : 
-;LABEL   label4
+;LABEL   label1
+;NE $P1 $T11 label4
 
 Successors : 
-;LABEL   label4
+;RET   
 
 
 
@@ -527,6 +536,7 @@ Main Node :
 ;RET   
 
 Predecessors : 
+;LABEL   label4
 
 Successors : 
 
@@ -539,7 +549,7 @@ Main Node :
 Predecessors : 
 
 Successors : 
-;STOREI $T5  $R
+;LINK   
 
 
 
@@ -547,10 +557,10 @@ Main Node :
 ;LINK   
 
 Predecessors : 
-;STOREI $T5  $R
+;LABEL   main
 
 Successors : 
-;STOREI $T5  $R
+;STOREI 0  $T1
 
 
 
@@ -558,10 +568,10 @@ Main Node :
 ;STOREI 0  $T1
 
 Predecessors : 
-;STOREI $T5  $R
+;LINK   
 
 Successors : 
-;STOREI $T5  $R
+;STOREI $T1  $L1
 
 
 
@@ -569,10 +579,10 @@ Main Node :
 ;STOREI $T1  $L1
 
 Predecessors : 
-;STOREI $T5  $R
+;STOREI 0  $T1
 
 Successors : 
-;STOREI $T5  $R
+;WRITES input  
 
 
 
@@ -580,10 +590,10 @@ Main Node :
 ;WRITES input  
 
 Predecessors : 
-;STOREI $T5  $R
+;STOREI $T1  $L1
 
 Successors : 
-;STOREI $T5  $R
+;READI $L2  
 
 
 
@@ -591,10 +601,10 @@ Main Node :
 ;READI $L2  
 
 Predecessors : 
-;STOREI $T5  $R
+;WRITES input  
 
 Successors : 
-;STOREI $T5  $R
+;LABEL   label6
 
 
 
@@ -602,10 +612,11 @@ Main Node :
 ;LABEL   label6
 
 Predecessors : 
-;STOREI $T5  $R
+;READI $L2  
+;JUMP   label6
 
 Successors : 
-;STOREI $T5  $R
+;PUSH   
 
 
 
@@ -613,10 +624,10 @@ Main Node :
 ;PUSH   
 
 Predecessors : 
-;STOREI $T5  $R
+;LABEL   label6
 
 Successors : 
-;STOREI $T5  $R
+;PUSH $L1  
 
 
 
@@ -624,10 +635,10 @@ Main Node :
 ;PUSH $L1  
 
 Predecessors : 
-;STOREI $T5  $R
+;PUSH   
 
 Successors : 
-;STOREI $T5  $R
+;JSR F  
 
 
 
@@ -635,10 +646,10 @@ Main Node :
 ;JSR F  
 
 Predecessors : 
-;STOREI $T5  $R
+;PUSH $L1  
 
 Successors : 
-;STOREI $T5  $R
+;POP   
 
 
 
@@ -646,10 +657,10 @@ Main Node :
 ;POP   
 
 Predecessors : 
-;STOREI $T5  $R
+;JSR F  
 
 Successors : 
-;STOREI $T5  $R
+;POP $T2  
 
 
 
@@ -657,10 +668,10 @@ Main Node :
 ;POP $T2  
 
 Predecessors : 
-;STOREI $T5  $R
+;POP   
 
 Successors : 
-;STOREI $T5  $R
+;STOREI $T2  $L3
 
 
 
@@ -668,10 +679,10 @@ Main Node :
 ;STOREI $T2  $L3
 
 Predecessors : 
-;STOREI $T5  $R
+;POP $T2  
 
 Successors : 
-;STOREI $T5  $R
+;WRITEI $L1  
 
 
 
@@ -679,10 +690,10 @@ Main Node :
 ;WRITEI $L1  
 
 Predecessors : 
-;STOREI $T5  $R
+;STOREI $T2  $L3
 
 Successors : 
-;STOREI $T5  $R
+;WRITES space  
 
 
 
@@ -690,10 +701,10 @@ Main Node :
 ;WRITES space  
 
 Predecessors : 
-;STOREI $T5  $R
+;WRITEI $L1  
 
 Successors : 
-;STOREI $T5  $R
+;WRITEI $L3  
 
 
 
@@ -701,10 +712,10 @@ Main Node :
 ;WRITEI $L3  
 
 Predecessors : 
-;STOREI $T5  $R
+;WRITES space  
 
 Successors : 
-;STOREI $T5  $R
+;WRITES eol  
 
 
 
@@ -712,10 +723,10 @@ Main Node :
 ;WRITES eol  
 
 Predecessors : 
-;STOREI $T5  $R
+;WRITEI $L3  
 
 Successors : 
-;STOREI $T5  $R
+;ADDI $L1 1 $T3
 
 
 
@@ -723,10 +734,10 @@ Main Node :
 ;ADDI $L1 1 $T3
 
 Predecessors : 
-;STOREI $T5  $R
+;WRITES eol  
 
 Successors : 
-;STOREI $T5  $R
+;STOREI $T3  $L1
 
 
 
@@ -734,10 +745,10 @@ Main Node :
 ;STOREI $T3  $L1
 
 Predecessors : 
-;STOREI $T5  $R
+;ADDI $L1 1 $T3
 
 Successors : 
-;STOREI $T5  $R
+;EQ $L1 $L2 label5
 
 
 
@@ -745,10 +756,11 @@ Main Node :
 ;EQ $L1 $L2 label5
 
 Predecessors : 
-;STOREI $T5  $R
+;STOREI $T3  $L1
 
 Successors : 
-;STOREI $T5  $R
+;JUMP   label6
+;LABEL   label5
 
 
 
@@ -756,10 +768,10 @@ Main Node :
 ;JUMP   label6
 
 Predecessors : 
-;STOREI $T5  $R
+;EQ $L1 $L2 label5
 
 Successors : 
-;STOREI $T5  $R
+;LABEL   label6
 
 
 
@@ -767,10 +779,10 @@ Main Node :
 ;LABEL   label5
 
 Predecessors : 
-;STOREI $T5  $R
+;EQ $L1 $L2 label5
 
 Successors : 
-;STOREI $T5  $R
+;STOREI 0  $T5
 
 
 
@@ -778,7 +790,7 @@ Main Node :
 ;STOREI 0  $T5
 
 Predecessors : 
-;STOREI $T5  $R
+;LABEL   label5
 
 Successors : 
 ;STOREI $T5  $R
@@ -789,10 +801,10 @@ Main Node :
 ;STOREI $T5  $R
 
 Predecessors : 
-;STOREI $T5  $R
+;STOREI 0  $T5
 
 Successors : 
-;STOREI $T5  $R
+;RET   
 
 
 
@@ -800,6 +812,7 @@ Main Node :
 ;RET   
 
 Predecessors : 
+;STOREI $T5  $R
 
 Successors : 
 

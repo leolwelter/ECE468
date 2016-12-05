@@ -13,6 +13,9 @@ public class IRNode {
 	public static int tempCnt;
 	public static int regNo;
 
+	public ArrayList<IRNode> predecessors;
+	public ArrayList<IRNode> successors;
+
 	//constructors
 	public IRNode(){
 		this.bTarget = null;
@@ -21,6 +24,8 @@ public class IRNode {
 		this.op2 = null;
 		this.result = null;
 		this.opType = null;
+		this.predecessors = new ArrayList<IRNode>();
+    this.successors = new ArrayList<IRNode>();
 	}
 
 	public IRNode(ArrayList<String> token, String type){
@@ -34,6 +39,8 @@ public class IRNode {
 		this.result = result;
 		this.bTarget = bTarget;
 		this.opType = null;
+		this.predecessors = new ArrayList<IRNode>();
+    this.successors = new ArrayList<IRNode>();
 	}
 
 	public IRNode(String opcode, String op1, String op2, String result, String opType){
@@ -43,7 +50,18 @@ public class IRNode {
 		this.result = result;
 		this.bTarget = null;
 		this.opType = opType;
+		this.predecessors = new ArrayList<IRNode>();
+    this.successors = new ArrayList<IRNode>();
 	}
+
+	public void addPredecessor(IRNode pre){
+		this.predecessors.add(pre);
+	}
+
+	public void addSuccessor(IRNode succ){
+		this.successors.add(succ);
+	}
+
 
 	//instance methods
 	public void printNode(){
