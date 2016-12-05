@@ -144,6 +144,7 @@ public class IRNode {
 		if(tvar.startsWith("$")){
 			if(tvar.toCharArray()[1] == 'T'){
 				tinyReg = "r" + (Integer.parseInt(tvar.split("T")[1]) - 1);
+				//tinyReg = "$-" + (fy.localCnt + (Integer.parseInt(tvar.split("T")[1])));
 			} else if(tvar.toCharArray()[1] == 'L'){
 				tinyReg = "$-" + (Integer.parseInt(tvar.split("L")[1]));
 			} else if(tvar.toCharArray()[1] == 'P'){
@@ -172,6 +173,7 @@ public class IRNode {
 									// System.out.println("TVAR :" + tvar);
 									if(tvar.toCharArray()[1] == 'T'){
 										tinyReg = "r" + (Integer.parseInt(tvar.split("T")[1]) - 1);
+										//tinyReg = "$-" + (fy.localCnt + (Integer.parseInt(tvar.split("T")[1])));
 									} else if(tvar.toCharArray()[1] == 'L'){
 										tinyReg = "$-" + (Integer.parseInt(tvar.split("L")[1]));
 									} else if(tvar.toCharArray()[1] == 'P'){
@@ -185,6 +187,7 @@ public class IRNode {
 				}
 		}
 	}
+		//System.out.println("TR : " + tinyReg);
 		return tinyReg;
 	}
 
@@ -245,7 +248,7 @@ public class IRNode {
 				break;
 			case("LINK"): //TODO: make 10 the actual number of locals + temps
 					//System.out.println("LC : " + fy.localCnt + "PC : " + fy.paramCnt);
-					tinyList.add(new TinyNode("link", Integer.toString(fy.localCnt + fy.paramCnt), ""));
+					tinyList.add(new TinyNode("link", Integer.toString(fy.localCnt), ""));
 				break;
 			//******* CONDITIONAL(int) OPERATIONS ******//
 			case("GT"):
@@ -374,7 +377,7 @@ public class IRNode {
 				topcode = "move";
 				top1 = tempToReg(irOp1, op1, fy);
 				top2 = tempToReg(irResult, result, fy);
-
+				top2 = checkBothMems(tinyList, op1, top2);
 				tinyList.add(new TinyNode(topcode, top1, top2));
 
 				topcode = "addi";
@@ -382,14 +385,14 @@ public class IRNode {
 				// temp1 = Integer.parseInt(result.split("T")[1]) - 1;
 				top1 = tempToReg(irOp2, op2, fy);
 				top2 = tempToReg(irResult, result, fy);
-
+				top2 = checkBothMems(tinyList, op1, top2);
 				tinyList.add(new TinyNode(topcode, top1, top2));
 				break;
 			case("SUBI"):
 				topcode = "move";
 				top1 = tempToReg(irOp1, op1, fy);
 				top2 = tempToReg(irResult, result, fy);
-
+				top2 = checkBothMems(tinyList, op1, top2);
 				tinyList.add(new TinyNode(topcode, top1, top2));
 
 				topcode = "subi";
@@ -397,14 +400,16 @@ public class IRNode {
 				// temp1 = Integer.parseInt(result.split("T")[1]) - 1;
 				top1 = tempToReg(irOp2, op2, fy);
 				top2 = tempToReg(irResult, result, fy);
-
+				top2 = checkBothMems(tinyList, op1, top2);
 				tinyList.add(new TinyNode(topcode, top1, top2));
 				break;
 			case("MULTI"):
 				topcode = "move";
-				top1 = tempToReg(irOp1, op2, fy);
+				top1 = tempToReg(irOp1, op1, fy);
 				top2 = tempToReg(irResult, result, fy);
-
+				//System.out.println(op1 + op2);
+				//System.out.println(top1 + top2);
+				top2 = checkBothMems(tinyList, op1, top2);
 				tinyList.add(new TinyNode(topcode, top1, top2));
 
 				topcode = "muli";
@@ -412,7 +417,6 @@ public class IRNode {
 				// temp1 = Integer.parseInt(result.split("T")[1]) - 1;
 				top1 = tempToReg(irOp2, op2, fy);
 				top2 = tempToReg(irResult, result, fy);
-
 				tinyList.add(new TinyNode(topcode, top1, top2));
 				break;
 
@@ -420,7 +424,7 @@ public class IRNode {
 				topcode = "move";
 				top1 = tempToReg(irOp1, op1, fy);
 				top2 = tempToReg(irResult, result, fy);
-
+				top2 = checkBothMems(tinyList, op1, top2);
 				tinyList.add(new TinyNode(topcode, top1, top2));
 
 				topcode = "divi";
@@ -428,7 +432,7 @@ public class IRNode {
 				// temp1 = Integer.parseInt(result.split("T")[1]) - 1;
 				top1 = tempToReg(irOp2, op2, fy);
 				top2 = tempToReg(irResult, result, fy);
-
+				top2 = checkBothMems(tinyList, op1, top2);
 				tinyList.add(new TinyNode(topcode, top1, top2));
 				break;
 
@@ -456,7 +460,7 @@ public class IRNode {
 				topcode = "move";
 				top1 = tempToReg(irOp1, op1, fy);
 				top2 = tempToReg(irResult, result, fy);
-
+				top2 = checkBothMems(tinyList, op1, top2);
 				tinyList.add(new TinyNode(topcode, top1, top2));
 
 				topcode = "addr";
@@ -464,14 +468,14 @@ public class IRNode {
 				// temp1 = Integer.parseInt(result.split("T")[1]) - 1;
 				top1 = tempToReg(irOp2, op2, fy);
 				top2 = tempToReg(irResult, result, fy);
-
+				top2 = checkBothMems(tinyList, op1, top2);
 				tinyList.add(new TinyNode(topcode, top1, top2));
 				break;
 			case("SUBF"):
 				topcode = "move";
 				top1 = tempToReg(irOp1, op1, fy);
 				top2 = tempToReg(irResult, result, fy);
-
+				top2 = checkBothMems(tinyList, op1, top2);
 				tinyList.add(new TinyNode(topcode, top1, top2));
 
 				topcode = "subr";
@@ -479,14 +483,14 @@ public class IRNode {
 				// temp1 = Integer.parseInt(result.split("T")[1]) - 1;
 				top1 = tempToReg(irOp2, op2, fy);
 				top2 = tempToReg(irResult, result, fy);
-
+				top2 = checkBothMems(tinyList, op1, top2);
 				tinyList.add(new TinyNode(topcode, top1, top2));
 				break;
 			case("MULTF"):
 				topcode = "move";
 				top1 = tempToReg(irOp1, op1, fy);
 				top2 = tempToReg(irResult, result, fy);
-
+				top2 = checkBothMems(tinyList, op1, top2);
 				tinyList.add(new TinyNode(topcode, top1, top2));
 
 				topcode = "mulr";
@@ -494,7 +498,7 @@ public class IRNode {
 				// temp1 = Integer.parseInt(result.split("T")[1]) - 1;
 				top1 = tempToReg(irOp2, op2, fy);
 				top2 = tempToReg(irResult, result, fy);
-
+				top2 = checkBothMems(tinyList, op1, top2);
 				tinyList.add(new TinyNode(topcode, top1, top2));
 				break;
 
@@ -502,7 +506,7 @@ public class IRNode {
 				topcode = "move";
 				top1 = tempToReg(irOp1, op2, fy);
 				top2 = tempToReg(irResult, result, fy);
-
+				top2 = checkBothMems(tinyList, op1, top2);
 				tinyList.add(new TinyNode(topcode, top1, top2));
 
 				topcode = "divr";
@@ -510,7 +514,7 @@ public class IRNode {
 				// temp1 = Integer.parseInt(result.split("T")[1]) - 1;
 				top1 = tempToReg(irOp2, op2, fy);
 				top2 = tempToReg(irResult, result, fy);
-
+				top2 = checkBothMems(tinyList, op1, top2);
 				tinyList.add(new TinyNode(topcode, top1, top2));
 				break;
 		}

@@ -52,7 +52,7 @@ public class AntlrMicroListener extends MicroBaseListener {
 			lhsType = null;
 			rhsType = null;
 			lhsTemp = 0;
-			condCount = 0;
+			// condCount = 0;
 			tf_flag = 0;
 			fy = new Function(st, meIRL, txt, 1, 0);
 			functionTable.put(txt, fy);

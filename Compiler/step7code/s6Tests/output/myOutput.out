@@ -55,7 +55,7 @@
 ;STOREI $T1  $L1
 ;WRITES input  
 ;READI $L2  
-;LABEL   label1
+;LABEL   label6
 ;PUSH   
 ;PUSH $L1  
 ;JSR F  
@@ -68,9 +68,9 @@
 ;WRITES eol  
 ;ADDI $L1 1 $T3
 ;STOREI $T3  $L1
-;EQ $L1 $L2 label0
-;JUMP   label1
-;LABEL   label0
+;EQ $L1 $L2 label5
+;JUMP   label6
+;LABEL   label5
 ;STOREI 0  $T5
 ;STOREI $T5  $R
 ;RET   
@@ -86,7 +86,7 @@ push r3
 jsr main 
 sys halt 
 label F 
-link 4 
+link 3 
 move 2 r0
 cmpi $6 r0
 jle label0 
@@ -165,7 +165,7 @@ move 0 r0
 move r0 $-1
 sys writes input
 sys readi $-2
-label label1 
+label label6 
 push  
 push $-1 
 push r0 
@@ -189,9 +189,9 @@ addi 1 r2
 move r2 $-1
 move $-2 r6
 cmpi $-1 r6
-jeq label0 
-jmp label1 
-label label0 
+jeq label5 
+jmp label6 
+label label5 
 move 0 r4
 move r4 $6
 unlnk  
