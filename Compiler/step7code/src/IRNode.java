@@ -15,6 +15,8 @@ public class IRNode {
 
 	public ArrayList<IRNode> predecessors;
 	public ArrayList<IRNode> successors;
+	public ArrayList<String> gen;
+	public ArrayList<String> kill;
 
 	//constructors
 	public IRNode(){
@@ -26,6 +28,8 @@ public class IRNode {
 		this.opType = null;
 		this.predecessors = new ArrayList<IRNode>();
     this.successors = new ArrayList<IRNode>();
+		this.gen = new ArrayList<String>();
+		this.kill = new ArrayList<String>();
 	}
 
 	public IRNode(ArrayList<String> token, String type){
@@ -41,6 +45,8 @@ public class IRNode {
 		this.opType = null;
 		this.predecessors = new ArrayList<IRNode>();
     this.successors = new ArrayList<IRNode>();
+		this.gen = new ArrayList<String>();
+		this.kill = new ArrayList<String>();
 	}
 
 	public IRNode(String opcode, String op1, String op2, String result, String opType){
@@ -52,6 +58,8 @@ public class IRNode {
 		this.opType = opType;
 		this.predecessors = new ArrayList<IRNode>();
     this.successors = new ArrayList<IRNode>();
+		this.gen = new ArrayList<String>();
+		this.kill = new ArrayList<String>();
 	}
 
 	public void addPredecessor(IRNode pre){

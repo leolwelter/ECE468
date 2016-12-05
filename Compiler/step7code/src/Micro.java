@@ -70,6 +70,7 @@ public class Micro {
 		 	}
 
 			System.out.println(); */
+// -------------------------- CREATING CFG ----------------------------//
 			if(func.meIRL.size() != 0) {
 				IRNode p = func.meIRL.get(0);
 				for(int i = 1; i < func.meIRL.size(); i++){
@@ -106,7 +107,44 @@ public class Micro {
 					}
 			 	}
 
+				for(int i = 0; i < func.meIRL.size(); i++){
+					temp = func.meIRL.get(i);
+					if(temp.opcode.equals("POP")){
+						if(temp.op1){
+							temp.kill.add(temp.op1);
+						}
+					}
+					else if(temp.opcode.equals("READI") || temp.opcode.equals("READF")){
+						if(temp.op1){
+							temp.kill.add(temp.op1);
+						}
+					}
+					else if(temp.opcode.equals("STOREI") || temp.opcode.equals("STOREF")){
+						
+					}
+					else if(temp.opcode.equals("PUSH")){
 
+					}
+					else if(temp.opcode.equals("WRITEI") || temp.opcode.equals("WRITEF") || temp.opcode.equals("WRITES")){
+
+					}
+					else if(temp.opcode.equals("ADDI") || temp.opcode.equals("ADDF") ||
+					temp.opcode.equals("SUBI") || temp.opcode.equals("SUBF") ||
+					temp.opcode.equals("MULTI") || temp.opcode.equals("MULTF") ||
+					temp.opcode.equals("DIVI") || temp.opcode.equals("DIVF")){
+
+					}
+					else if(temp.opcode.equals("GT") || temp.opcode.equals("GE") ||
+					temp.opcode.equals("LT") || temp.opcode.equals("LE") ||
+					temp.opcode.equals("NE") || temp.opcode.equals("EQ") ||
+					temp.opcode.equals("JUMP")){
+
+					}
+
+
+				}
+
+				// Printing for IRNodes and CFG
 				for(int i = 0; i < func.meIRL.size(); i++){
 					System.out.println("Main Node : ");
 					func.meIRL.get(i).printNode();
@@ -126,6 +164,7 @@ public class Micro {
 			 	}
 
 				System.out.println();
+// ------------------- CREATING & PRINTING CFG DONE ---------------------//
 			 	//func.st.printTable();
 				//System.out.println("-----End of Symbol Table-----");
 		 	}
