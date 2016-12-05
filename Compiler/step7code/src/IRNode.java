@@ -1,15 +1,14 @@
 import java.util.*;
 
 public class IRNode {
-	//fields
 	public  IRNode bTarget;
 	public  String opcode;
 	public  String op1;
 	public  String op2;
 	public  String result;
 
-	public String opType; //conditional flag (FALSE if int)
-
+	public String opType; 
+	
 	public static int tempCnt;
 	public static int regNo;
 
@@ -18,14 +17,16 @@ public class IRNode {
 
 	//constructors
 	public IRNode(){
-		this.bTarget = null;
+		//Intermediate Representation
 		this.opcode = null;
 		this.op1 = null;
 		this.op2 = null;
 		this.result = null;
 		this.opType = null;
+		//CFG support
+		this.bTarget = null;
 		this.predecessors = new ArrayList<IRNode>();
-    this.successors = new ArrayList<IRNode>();
+    	this.successors = new ArrayList<IRNode>();
 	}
 
 	public IRNode(ArrayList<String> token, String type){
@@ -40,7 +41,7 @@ public class IRNode {
 		this.bTarget = bTarget;
 		this.opType = null;
 		this.predecessors = new ArrayList<IRNode>();
-    this.successors = new ArrayList<IRNode>();
+    	this.successors = new ArrayList<IRNode>();
 	}
 
 	public IRNode(String opcode, String op1, String op2, String result, String opType){
@@ -51,9 +52,10 @@ public class IRNode {
 		this.bTarget = null;
 		this.opType = opType;
 		this.predecessors = new ArrayList<IRNode>();
-    this.successors = new ArrayList<IRNode>();
+   		this.successors = new ArrayList<IRNode>();
 	}
 
+	//**** CFG METHODS ****
 	public void addPredecessor(IRNode pre){
 		this.predecessors.add(pre);
 	}

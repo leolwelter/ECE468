@@ -1,0 +1,1028 @@
+--------------------------------------------------------------
+Predecessors : 
+
+Current : 
+;str intro  "You will be asked for three float numbers\n"
+
+Successors : 
+;str first  "Please enter the first float number: "
+--------------------------------------------------------------
+Predecessors : 
+;str intro  "You will be asked for three float numbers\n"
+
+Current : 
+;str first  "Please enter the first float number: "
+
+Successors : 
+;str second  "Please enter the second float number: "
+--------------------------------------------------------------
+Predecessors : 
+;str first  "Please enter the first float number: "
+
+Current : 
+;str second  "Please enter the second float number: "
+
+Successors : 
+;str third  "Please enter the third float number: "
+--------------------------------------------------------------
+Predecessors : 
+;str second  "Please enter the second float number: "
+
+Current : 
+;str third  "Please enter the third float number: "
+
+Successors : 
+;str eol  "\n"
+--------------------------------------------------------------
+Predecessors : 
+;str third  "Please enter the third float number: "
+
+Current : 
+;str eol  "\n"
+
+Successors : 
+;str star  "*"
+--------------------------------------------------------------
+Predecessors : 
+;str eol  "\n"
+
+Current : 
+;str star  "*"
+
+Successors : 
+;str plus  "+"
+--------------------------------------------------------------
+Predecessors : 
+;str star  "*"
+
+Current : 
+;str plus  "+"
+
+Successors : 
+;str equal  "="
+--------------------------------------------------------------
+Predecessors : 
+;str plus  "+"
+
+Current : 
+;str equal  "="
+
+Successors : 
+--------------------------------------------------------------
+Predecessors : 
+
+Current : 
+;LABEL   add
+
+Successors : 
+;LINK   
+--------------------------------------------------------------
+Predecessors : 
+;LABEL   add
+
+Current : 
+;LINK   
+
+Successors : 
+;ADDF $P1 $P2 $T1
+--------------------------------------------------------------
+Predecessors : 
+;LINK   
+
+Current : 
+;ADDF $P1 $P2 $T1
+
+Successors : 
+;STOREF $T1  $L1
+--------------------------------------------------------------
+Predecessors : 
+;ADDF $P1 $P2 $T1
+
+Current : 
+;STOREF $T1  $L1
+
+Successors : 
+;STOREF $L1  $T1
+--------------------------------------------------------------
+Predecessors : 
+;STOREF $T1  $L1
+
+Current : 
+;STOREF $L1  $T1
+
+Successors : 
+;STOREF $T1  $R
+--------------------------------------------------------------
+Predecessors : 
+;STOREF $L1  $T1
+
+Current : 
+;STOREF $T1  $R
+
+Successors : 
+;RET   
+--------------------------------------------------------------
+Predecessors : 
+;STOREF $T1  $R
+
+Current : 
+;RET   
+
+Successors : 
+--------------------------------------------------------------
+Predecessors : 
+
+Current : 
+;LABEL   multiply
+
+Successors : 
+;LINK   
+--------------------------------------------------------------
+Predecessors : 
+;LABEL   multiply
+
+Current : 
+;LINK   
+
+Successors : 
+;MULTF $P1 $P2 $T1
+--------------------------------------------------------------
+Predecessors : 
+;LINK   
+
+Current : 
+;MULTF $P1 $P2 $T1
+
+Successors : 
+;STOREF $T1  $L1
+--------------------------------------------------------------
+Predecessors : 
+;MULTF $P1 $P2 $T1
+
+Current : 
+;STOREF $T1  $L1
+
+Successors : 
+;STOREF $L1  $T1
+--------------------------------------------------------------
+Predecessors : 
+;STOREF $T1  $L1
+
+Current : 
+;STOREF $L1  $T1
+
+Successors : 
+;STOREF $T1  $R
+--------------------------------------------------------------
+Predecessors : 
+;STOREF $L1  $T1
+
+Current : 
+;STOREF $T1  $R
+
+Successors : 
+;RET   
+--------------------------------------------------------------
+Predecessors : 
+;STOREF $T1  $R
+
+Current : 
+;RET   
+
+Successors : 
+--------------------------------------------------------------
+Predecessors : 
+
+Current : 
+;LABEL   main
+
+Successors : 
+;LINK   
+--------------------------------------------------------------
+Predecessors : 
+;LABEL   main
+
+Current : 
+;LINK   
+
+Successors : 
+;WRITES intro  
+--------------------------------------------------------------
+Predecessors : 
+;LINK   
+
+Current : 
+;WRITES intro  
+
+Successors : 
+;WRITES first  
+--------------------------------------------------------------
+Predecessors : 
+;WRITES intro  
+
+Current : 
+;WRITES first  
+
+Successors : 
+;READF $L1  
+--------------------------------------------------------------
+Predecessors : 
+;WRITES first  
+
+Current : 
+;READF $L1  
+
+Successors : 
+;WRITES second  
+--------------------------------------------------------------
+Predecessors : 
+;READF $L1  
+
+Current : 
+;WRITES second  
+
+Successors : 
+;READF $L2  
+--------------------------------------------------------------
+Predecessors : 
+;WRITES second  
+
+Current : 
+;READF $L2  
+
+Successors : 
+;WRITES third  
+--------------------------------------------------------------
+Predecessors : 
+;READF $L2  
+
+Current : 
+;WRITES third  
+
+Successors : 
+;READF $L3  
+--------------------------------------------------------------
+Predecessors : 
+;WRITES third  
+
+Current : 
+;READF $L3  
+
+Successors : 
+;PUSH   
+--------------------------------------------------------------
+Predecessors : 
+;READF $L3  
+
+Current : 
+;PUSH   
+
+Successors : 
+;PUSH $L1  
+--------------------------------------------------------------
+Predecessors : 
+;PUSH   
+
+Current : 
+;PUSH $L1  
+
+Successors : 
+;PUSH $L2  
+--------------------------------------------------------------
+Predecessors : 
+;PUSH $L1  
+
+Current : 
+;PUSH $L2  
+
+Successors : 
+;JSR multiply  
+--------------------------------------------------------------
+Predecessors : 
+;PUSH $L2  
+
+Current : 
+;JSR multiply  
+
+Successors : 
+;POP   
+--------------------------------------------------------------
+Predecessors : 
+;JSR multiply  
+
+Current : 
+;POP   
+
+Successors : 
+;POP   
+--------------------------------------------------------------
+Predecessors : 
+;POP   
+
+Current : 
+;POP   
+
+Successors : 
+;POP $T1  
+--------------------------------------------------------------
+Predecessors : 
+;POP   
+
+Current : 
+;POP $T1  
+
+Successors : 
+;STOREF $T1  $L5
+--------------------------------------------------------------
+Predecessors : 
+;POP $T1  
+
+Current : 
+;STOREF $T1  $L5
+
+Successors : 
+;PUSH   
+--------------------------------------------------------------
+Predecessors : 
+;STOREF $T1  $L5
+
+Current : 
+;PUSH   
+
+Successors : 
+;PUSH $L5  
+--------------------------------------------------------------
+Predecessors : 
+;PUSH   
+
+Current : 
+;PUSH $L5  
+
+Successors : 
+;PUSH $L3  
+--------------------------------------------------------------
+Predecessors : 
+;PUSH $L5  
+
+Current : 
+;PUSH $L3  
+
+Successors : 
+;JSR add  
+--------------------------------------------------------------
+Predecessors : 
+;PUSH $L3  
+
+Current : 
+;JSR add  
+
+Successors : 
+;POP   
+--------------------------------------------------------------
+Predecessors : 
+;JSR add  
+
+Current : 
+;POP   
+
+Successors : 
+;POP   
+--------------------------------------------------------------
+Predecessors : 
+;POP   
+
+Current : 
+;POP   
+
+Successors : 
+;POP $T2  
+--------------------------------------------------------------
+Predecessors : 
+;POP   
+
+Current : 
+;POP $T2  
+
+Successors : 
+;STOREF $T2  $L4
+--------------------------------------------------------------
+Predecessors : 
+;POP $T2  
+
+Current : 
+;STOREF $T2  $L4
+
+Successors : 
+;WRITEF $L1  
+--------------------------------------------------------------
+Predecessors : 
+;STOREF $T2  $L4
+
+Current : 
+;WRITEF $L1  
+
+Successors : 
+;WRITES star  
+--------------------------------------------------------------
+Predecessors : 
+;WRITEF $L1  
+
+Current : 
+;WRITES star  
+
+Successors : 
+;WRITEF $L2  
+--------------------------------------------------------------
+Predecessors : 
+;WRITES star  
+
+Current : 
+;WRITEF $L2  
+
+Successors : 
+;WRITES plus  
+--------------------------------------------------------------
+Predecessors : 
+;WRITEF $L2  
+
+Current : 
+;WRITES plus  
+
+Successors : 
+;WRITEF $L3  
+--------------------------------------------------------------
+Predecessors : 
+;WRITES plus  
+
+Current : 
+;WRITEF $L3  
+
+Successors : 
+;WRITES equal  
+--------------------------------------------------------------
+Predecessors : 
+;WRITEF $L3  
+
+Current : 
+;WRITES equal  
+
+Successors : 
+;WRITEF $L4  
+--------------------------------------------------------------
+Predecessors : 
+;WRITES equal  
+
+Current : 
+;WRITEF $L4  
+
+Successors : 
+;WRITES eol  
+--------------------------------------------------------------
+Predecessors : 
+;WRITEF $L4  
+
+Current : 
+;WRITES eol  
+
+Successors : 
+;STOREI 0  $T3
+--------------------------------------------------------------
+Predecessors : 
+;WRITES eol  
+
+Current : 
+;STOREI 0  $T3
+
+Successors : 
+;STOREI $T3  $R
+--------------------------------------------------------------
+Predecessors : 
+;STOREI 0  $T3
+
+Current : 
+;STOREI $T3  $R
+
+Successors : 
+;RET   
+--------------------------------------------------------------
+Predecessors : 
+;STOREI $T3  $R
+
+Current : 
+;RET   
+
+Successors : 
+--------------------------------------------------------------
+Predecessors : 
+
+Current : 
+;str intro  "You will be asked for three float numbers\n"
+
+Successors : 
+;str first  "Please enter the first float number: "
+--------------------------------------------------------------
+Predecessors : 
+;str intro  "You will be asked for three float numbers\n"
+
+Current : 
+;str first  "Please enter the first float number: "
+
+Successors : 
+;str second  "Please enter the second float number: "
+--------------------------------------------------------------
+Predecessors : 
+;str first  "Please enter the first float number: "
+
+Current : 
+;str second  "Please enter the second float number: "
+
+Successors : 
+;str third  "Please enter the third float number: "
+--------------------------------------------------------------
+Predecessors : 
+;str second  "Please enter the second float number: "
+
+Current : 
+;str third  "Please enter the third float number: "
+
+Successors : 
+;str eol  "\n"
+--------------------------------------------------------------
+Predecessors : 
+;str third  "Please enter the third float number: "
+
+Current : 
+;str eol  "\n"
+
+Successors : 
+;str star  "*"
+--------------------------------------------------------------
+Predecessors : 
+;str eol  "\n"
+
+Current : 
+;str star  "*"
+
+Successors : 
+;str plus  "+"
+--------------------------------------------------------------
+Predecessors : 
+;str star  "*"
+
+Current : 
+;str plus  "+"
+
+Successors : 
+;str equal  "="
+--------------------------------------------------------------
+Predecessors : 
+;str plus  "+"
+
+Current : 
+;str equal  "="
+
+Successors : 
+--------------------------------------------------------------
+Predecessors : 
+
+Current : 
+;LABEL   add
+
+Successors : 
+;LINK   
+--------------------------------------------------------------
+Predecessors : 
+;LABEL   add
+
+Current : 
+;LINK   
+
+Successors : 
+;ADDF $P1 $P2 $T1
+--------------------------------------------------------------
+Predecessors : 
+;LINK   
+
+Current : 
+;ADDF $P1 $P2 $T1
+
+Successors : 
+;STOREF $T1  $L1
+--------------------------------------------------------------
+Predecessors : 
+;ADDF $P1 $P2 $T1
+
+Current : 
+;STOREF $T1  $L1
+
+Successors : 
+;STOREF $L1  $T1
+--------------------------------------------------------------
+Predecessors : 
+;STOREF $T1  $L1
+
+Current : 
+;STOREF $L1  $T1
+
+Successors : 
+;STOREF $T1  $R
+--------------------------------------------------------------
+Predecessors : 
+;STOREF $L1  $T1
+
+Current : 
+;STOREF $T1  $R
+
+Successors : 
+;RET   
+--------------------------------------------------------------
+Predecessors : 
+;STOREF $T1  $R
+
+Current : 
+;RET   
+
+Successors : 
+--------------------------------------------------------------
+Predecessors : 
+
+Current : 
+;LABEL   multiply
+
+Successors : 
+;LINK   
+--------------------------------------------------------------
+Predecessors : 
+;LABEL   multiply
+
+Current : 
+;LINK   
+
+Successors : 
+;MULTF $P1 $P2 $T1
+--------------------------------------------------------------
+Predecessors : 
+;LINK   
+
+Current : 
+;MULTF $P1 $P2 $T1
+
+Successors : 
+;STOREF $T1  $L1
+--------------------------------------------------------------
+Predecessors : 
+;MULTF $P1 $P2 $T1
+
+Current : 
+;STOREF $T1  $L1
+
+Successors : 
+;STOREF $L1  $T1
+--------------------------------------------------------------
+Predecessors : 
+;STOREF $T1  $L1
+
+Current : 
+;STOREF $L1  $T1
+
+Successors : 
+;STOREF $T1  $R
+--------------------------------------------------------------
+Predecessors : 
+;STOREF $L1  $T1
+
+Current : 
+;STOREF $T1  $R
+
+Successors : 
+;RET   
+--------------------------------------------------------------
+Predecessors : 
+;STOREF $T1  $R
+
+Current : 
+;RET   
+
+Successors : 
+--------------------------------------------------------------
+Predecessors : 
+
+Current : 
+;LABEL   main
+
+Successors : 
+;LINK   
+--------------------------------------------------------------
+Predecessors : 
+;LABEL   main
+
+Current : 
+;LINK   
+
+Successors : 
+;WRITES intro  
+--------------------------------------------------------------
+Predecessors : 
+;LINK   
+
+Current : 
+;WRITES intro  
+
+Successors : 
+;WRITES first  
+--------------------------------------------------------------
+Predecessors : 
+;WRITES intro  
+
+Current : 
+;WRITES first  
+
+Successors : 
+;READF $L1  
+--------------------------------------------------------------
+Predecessors : 
+;WRITES first  
+
+Current : 
+;READF $L1  
+
+Successors : 
+;WRITES second  
+--------------------------------------------------------------
+Predecessors : 
+;READF $L1  
+
+Current : 
+;WRITES second  
+
+Successors : 
+;READF $L2  
+--------------------------------------------------------------
+Predecessors : 
+;WRITES second  
+
+Current : 
+;READF $L2  
+
+Successors : 
+;WRITES third  
+--------------------------------------------------------------
+Predecessors : 
+;READF $L2  
+
+Current : 
+;WRITES third  
+
+Successors : 
+;READF $L3  
+--------------------------------------------------------------
+Predecessors : 
+;WRITES third  
+
+Current : 
+;READF $L3  
+
+Successors : 
+;PUSH   
+--------------------------------------------------------------
+Predecessors : 
+;READF $L3  
+
+Current : 
+;PUSH   
+
+Successors : 
+;PUSH $L1  
+--------------------------------------------------------------
+Predecessors : 
+;PUSH   
+
+Current : 
+;PUSH $L1  
+
+Successors : 
+;PUSH $L2  
+--------------------------------------------------------------
+Predecessors : 
+;PUSH $L1  
+
+Current : 
+;PUSH $L2  
+
+Successors : 
+;JSR multiply  
+--------------------------------------------------------------
+Predecessors : 
+;PUSH $L2  
+
+Current : 
+;JSR multiply  
+
+Successors : 
+;POP   
+--------------------------------------------------------------
+Predecessors : 
+;JSR multiply  
+
+Current : 
+;POP   
+
+Successors : 
+;POP   
+--------------------------------------------------------------
+Predecessors : 
+;POP   
+
+Current : 
+;POP   
+
+Successors : 
+;POP $T1  
+--------------------------------------------------------------
+Predecessors : 
+;POP   
+
+Current : 
+;POP $T1  
+
+Successors : 
+;STOREF $T1  $L5
+--------------------------------------------------------------
+Predecessors : 
+;POP $T1  
+
+Current : 
+;STOREF $T1  $L5
+
+Successors : 
+;PUSH   
+--------------------------------------------------------------
+Predecessors : 
+;STOREF $T1  $L5
+
+Current : 
+;PUSH   
+
+Successors : 
+;PUSH $L5  
+--------------------------------------------------------------
+Predecessors : 
+;PUSH   
+
+Current : 
+;PUSH $L5  
+
+Successors : 
+;PUSH $L3  
+--------------------------------------------------------------
+Predecessors : 
+;PUSH $L5  
+
+Current : 
+;PUSH $L3  
+
+Successors : 
+;JSR add  
+--------------------------------------------------------------
+Predecessors : 
+;PUSH $L3  
+
+Current : 
+;JSR add  
+
+Successors : 
+;POP   
+--------------------------------------------------------------
+Predecessors : 
+;JSR add  
+
+Current : 
+;POP   
+
+Successors : 
+;POP   
+--------------------------------------------------------------
+Predecessors : 
+;POP   
+
+Current : 
+;POP   
+
+Successors : 
+;POP $T2  
+--------------------------------------------------------------
+Predecessors : 
+;POP   
+
+Current : 
+;POP $T2  
+
+Successors : 
+;STOREF $T2  $L4
+--------------------------------------------------------------
+Predecessors : 
+;POP $T2  
+
+Current : 
+;STOREF $T2  $L4
+
+Successors : 
+;WRITEF $L1  
+--------------------------------------------------------------
+Predecessors : 
+;STOREF $T2  $L4
+
+Current : 
+;WRITEF $L1  
+
+Successors : 
+;WRITES star  
+--------------------------------------------------------------
+Predecessors : 
+;WRITEF $L1  
+
+Current : 
+;WRITES star  
+
+Successors : 
+;WRITEF $L2  
+--------------------------------------------------------------
+Predecessors : 
+;WRITES star  
+
+Current : 
+;WRITEF $L2  
+
+Successors : 
+;WRITES plus  
+--------------------------------------------------------------
+Predecessors : 
+;WRITEF $L2  
+
+Current : 
+;WRITES plus  
+
+Successors : 
+;WRITEF $L3  
+--------------------------------------------------------------
+Predecessors : 
+;WRITES plus  
+
+Current : 
+;WRITEF $L3  
+
+Successors : 
+;WRITES equal  
+--------------------------------------------------------------
+Predecessors : 
+;WRITEF $L3  
+
+Current : 
+;WRITES equal  
+
+Successors : 
+;WRITEF $L4  
+--------------------------------------------------------------
+Predecessors : 
+;WRITES equal  
+
+Current : 
+;WRITEF $L4  
+
+Successors : 
+;WRITES eol  
+--------------------------------------------------------------
+Predecessors : 
+;WRITEF $L4  
+
+Current : 
+;WRITES eol  
+
+Successors : 
+;STOREI 0  $T3
+--------------------------------------------------------------
+Predecessors : 
+;WRITES eol  
+
+Current : 
+;STOREI 0  $T3
+
+Successors : 
+;STOREI $T3  $R
+--------------------------------------------------------------
+Predecessors : 
+;STOREI 0  $T3
+
+Current : 
+;STOREI $T3  $R
+
+Successors : 
+;RET   
+--------------------------------------------------------------
+Predecessors : 
+;STOREI $T3  $R
+
+Current : 
+;RET   
+
+Successors : 

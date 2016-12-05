@@ -1,0 +1,1340 @@
+--------------------------------------------------------------
+Predecessors : 
+
+Current : 
+;str input  "Please input an integer number: "
+
+Successors : 
+;str space  " "
+--------------------------------------------------------------
+Predecessors : 
+;str input  "Please input an integer number: "
+
+Current : 
+;str space  " "
+
+Successors : 
+;str eol  "\n"
+--------------------------------------------------------------
+Predecessors : 
+;str space  " "
+
+Current : 
+;str eol  "\n"
+
+Successors : 
+--------------------------------------------------------------
+Predecessors : 
+
+Current : 
+;LABEL   F
+
+Successors : 
+;LINK   
+--------------------------------------------------------------
+Predecessors : 
+;LABEL   F
+
+Current : 
+;LINK   
+
+Successors : 
+;STOREI 2  $T1
+--------------------------------------------------------------
+Predecessors : 
+;LINK   
+
+Current : 
+;STOREI 2  $T1
+
+Successors : 
+;LE $P1 $T1 label0
+--------------------------------------------------------------
+Predecessors : 
+;STOREI 2  $T1
+
+Current : 
+;LE $P1 $T1 label0
+
+Successors : 
+;SUBI $P1 1 $T2
+;LABEL   label0
+--------------------------------------------------------------
+Predecessors : 
+;LE $P1 $T1 label0
+
+Current : 
+;SUBI $P1 1 $T2
+
+Successors : 
+;PUSH   
+--------------------------------------------------------------
+Predecessors : 
+;SUBI $P1 1 $T2
+
+Current : 
+;PUSH   
+
+Successors : 
+;PUSH $T2  
+--------------------------------------------------------------
+Predecessors : 
+;PUSH   
+
+Current : 
+;PUSH $T2  
+
+Successors : 
+;JSR F  
+--------------------------------------------------------------
+Predecessors : 
+;PUSH $T2  
+
+Current : 
+;JSR F  
+
+Successors : 
+;POP   
+--------------------------------------------------------------
+Predecessors : 
+;JSR F  
+
+Current : 
+;POP   
+
+Successors : 
+;POP $T3  
+--------------------------------------------------------------
+Predecessors : 
+;POP   
+
+Current : 
+;POP $T3  
+
+Successors : 
+;STOREI $T3  $L1
+--------------------------------------------------------------
+Predecessors : 
+;POP $T3  
+
+Current : 
+;STOREI $T3  $L1
+
+Successors : 
+;SUBI $P1 2 $T4
+--------------------------------------------------------------
+Predecessors : 
+;STOREI $T3  $L1
+
+Current : 
+;SUBI $P1 2 $T4
+
+Successors : 
+;PUSH   
+--------------------------------------------------------------
+Predecessors : 
+;SUBI $P1 2 $T4
+
+Current : 
+;PUSH   
+
+Successors : 
+;PUSH $T4  
+--------------------------------------------------------------
+Predecessors : 
+;PUSH   
+
+Current : 
+;PUSH $T4  
+
+Successors : 
+;JSR F  
+--------------------------------------------------------------
+Predecessors : 
+;PUSH $T4  
+
+Current : 
+;JSR F  
+
+Successors : 
+;POP   
+--------------------------------------------------------------
+Predecessors : 
+;JSR F  
+
+Current : 
+;POP   
+
+Successors : 
+;POP $T5  
+--------------------------------------------------------------
+Predecessors : 
+;POP   
+
+Current : 
+;POP $T5  
+
+Successors : 
+;STOREI $T5  $L2
+--------------------------------------------------------------
+Predecessors : 
+;POP $T5  
+
+Current : 
+;STOREI $T5  $L2
+
+Successors : 
+;ADDI $L1 $L2 $T6
+--------------------------------------------------------------
+Predecessors : 
+;STOREI $T5  $L2
+
+Current : 
+;ADDI $L1 $L2 $T6
+
+Successors : 
+;STOREI $T6  $R
+--------------------------------------------------------------
+Predecessors : 
+;ADDI $L1 $L2 $T6
+
+Current : 
+;STOREI $T6  $R
+
+Successors : 
+;RET   
+--------------------------------------------------------------
+Predecessors : 
+;STOREI $T6  $R
+
+Current : 
+;RET   
+
+Successors : 
+;JUMP   label1
+--------------------------------------------------------------
+Predecessors : 
+;RET   
+
+Current : 
+;JUMP   label1
+
+Successors : 
+;LABEL   label1
+--------------------------------------------------------------
+Predecessors : 
+;LE $P1 $T1 label0
+
+Current : 
+;LABEL   label0
+
+Successors : 
+;STOREI 0  $T7
+--------------------------------------------------------------
+Predecessors : 
+;LABEL   label0
+
+Current : 
+;STOREI 0  $T7
+
+Successors : 
+;NE $P1 $T7 label2
+--------------------------------------------------------------
+Predecessors : 
+;STOREI 0  $T7
+
+Current : 
+;NE $P1 $T7 label2
+
+Successors : 
+;STOREI 0  $T8
+;LABEL   label2
+--------------------------------------------------------------
+Predecessors : 
+;NE $P1 $T7 label2
+
+Current : 
+;STOREI 0  $T8
+
+Successors : 
+;STOREI $T8  $R
+--------------------------------------------------------------
+Predecessors : 
+;STOREI 0  $T8
+
+Current : 
+;STOREI $T8  $R
+
+Successors : 
+;RET   
+--------------------------------------------------------------
+Predecessors : 
+;STOREI $T8  $R
+
+Current : 
+;RET   
+
+Successors : 
+;JUMP   label1
+--------------------------------------------------------------
+Predecessors : 
+;RET   
+
+Current : 
+;JUMP   label1
+
+Successors : 
+;LABEL   label1
+--------------------------------------------------------------
+Predecessors : 
+;NE $P1 $T7 label2
+
+Current : 
+;LABEL   label2
+
+Successors : 
+;STOREI 1  $T9
+--------------------------------------------------------------
+Predecessors : 
+;LABEL   label2
+
+Current : 
+;STOREI 1  $T9
+
+Successors : 
+;NE $P1 $T9 label3
+--------------------------------------------------------------
+Predecessors : 
+;STOREI 1  $T9
+
+Current : 
+;NE $P1 $T9 label3
+
+Successors : 
+;STOREI 1  $T10
+;LABEL   label3
+--------------------------------------------------------------
+Predecessors : 
+;NE $P1 $T9 label3
+
+Current : 
+;STOREI 1  $T10
+
+Successors : 
+;STOREI $T10  $R
+--------------------------------------------------------------
+Predecessors : 
+;STOREI 1  $T10
+
+Current : 
+;STOREI $T10  $R
+
+Successors : 
+;RET   
+--------------------------------------------------------------
+Predecessors : 
+;STOREI $T10  $R
+
+Current : 
+;RET   
+
+Successors : 
+;JUMP   label1
+--------------------------------------------------------------
+Predecessors : 
+;RET   
+
+Current : 
+;JUMP   label1
+
+Successors : 
+;LABEL   label1
+--------------------------------------------------------------
+Predecessors : 
+;NE $P1 $T9 label3
+
+Current : 
+;LABEL   label3
+
+Successors : 
+;STOREI 2  $T11
+--------------------------------------------------------------
+Predecessors : 
+;LABEL   label3
+
+Current : 
+;STOREI 2  $T11
+
+Successors : 
+;NE $P1 $T11 label4
+--------------------------------------------------------------
+Predecessors : 
+;STOREI 2  $T11
+
+Current : 
+;NE $P1 $T11 label4
+
+Successors : 
+;STOREI 1  $T12
+;LABEL   label4
+--------------------------------------------------------------
+Predecessors : 
+;NE $P1 $T11 label4
+
+Current : 
+;STOREI 1  $T12
+
+Successors : 
+;STOREI $T12  $R
+--------------------------------------------------------------
+Predecessors : 
+;STOREI 1  $T12
+
+Current : 
+;STOREI $T12  $R
+
+Successors : 
+;RET   
+--------------------------------------------------------------
+Predecessors : 
+;STOREI $T12  $R
+
+Current : 
+;RET   
+
+Successors : 
+;JUMP   label1
+--------------------------------------------------------------
+Predecessors : 
+;RET   
+
+Current : 
+;JUMP   label1
+
+Successors : 
+;LABEL   label1
+--------------------------------------------------------------
+Predecessors : 
+;JUMP   label1
+;JUMP   label1
+;JUMP   label1
+;JUMP   label1
+
+Current : 
+;LABEL   label1
+
+Successors : 
+;LABEL   label4
+--------------------------------------------------------------
+Predecessors : 
+;LABEL   label1
+;NE $P1 $T11 label4
+
+Current : 
+;LABEL   label4
+
+Successors : 
+;RET   
+--------------------------------------------------------------
+Predecessors : 
+;LABEL   label4
+
+Current : 
+;RET   
+
+Successors : 
+--------------------------------------------------------------
+Predecessors : 
+
+Current : 
+;LABEL   main
+
+Successors : 
+;LINK   
+--------------------------------------------------------------
+Predecessors : 
+;LABEL   main
+
+Current : 
+;LINK   
+
+Successors : 
+;STOREI 0  $T1
+--------------------------------------------------------------
+Predecessors : 
+;LINK   
+
+Current : 
+;STOREI 0  $T1
+
+Successors : 
+;STOREI $T1  $L1
+--------------------------------------------------------------
+Predecessors : 
+;STOREI 0  $T1
+
+Current : 
+;STOREI $T1  $L1
+
+Successors : 
+;WRITES input  
+--------------------------------------------------------------
+Predecessors : 
+;STOREI $T1  $L1
+
+Current : 
+;WRITES input  
+
+Successors : 
+;READI $L2  
+--------------------------------------------------------------
+Predecessors : 
+;WRITES input  
+
+Current : 
+;READI $L2  
+
+Successors : 
+;LABEL   label6
+--------------------------------------------------------------
+Predecessors : 
+;READI $L2  
+;JUMP   label6
+
+Current : 
+;LABEL   label6
+
+Successors : 
+;PUSH   
+--------------------------------------------------------------
+Predecessors : 
+;LABEL   label6
+
+Current : 
+;PUSH   
+
+Successors : 
+;PUSH $L1  
+--------------------------------------------------------------
+Predecessors : 
+;PUSH   
+
+Current : 
+;PUSH $L1  
+
+Successors : 
+;JSR F  
+--------------------------------------------------------------
+Predecessors : 
+;PUSH $L1  
+
+Current : 
+;JSR F  
+
+Successors : 
+;POP   
+--------------------------------------------------------------
+Predecessors : 
+;JSR F  
+
+Current : 
+;POP   
+
+Successors : 
+;POP $T2  
+--------------------------------------------------------------
+Predecessors : 
+;POP   
+
+Current : 
+;POP $T2  
+
+Successors : 
+;STOREI $T2  $L3
+--------------------------------------------------------------
+Predecessors : 
+;POP $T2  
+
+Current : 
+;STOREI $T2  $L3
+
+Successors : 
+;WRITEI $L1  
+--------------------------------------------------------------
+Predecessors : 
+;STOREI $T2  $L3
+
+Current : 
+;WRITEI $L1  
+
+Successors : 
+;WRITES space  
+--------------------------------------------------------------
+Predecessors : 
+;WRITEI $L1  
+
+Current : 
+;WRITES space  
+
+Successors : 
+;WRITEI $L3  
+--------------------------------------------------------------
+Predecessors : 
+;WRITES space  
+
+Current : 
+;WRITEI $L3  
+
+Successors : 
+;WRITES eol  
+--------------------------------------------------------------
+Predecessors : 
+;WRITEI $L3  
+
+Current : 
+;WRITES eol  
+
+Successors : 
+;ADDI $L1 1 $T3
+--------------------------------------------------------------
+Predecessors : 
+;WRITES eol  
+
+Current : 
+;ADDI $L1 1 $T3
+
+Successors : 
+;STOREI $T3  $L1
+--------------------------------------------------------------
+Predecessors : 
+;ADDI $L1 1 $T3
+
+Current : 
+;STOREI $T3  $L1
+
+Successors : 
+;EQ $L1 $L2 label5
+--------------------------------------------------------------
+Predecessors : 
+;STOREI $T3  $L1
+
+Current : 
+;EQ $L1 $L2 label5
+
+Successors : 
+;JUMP   label6
+;LABEL   label5
+--------------------------------------------------------------
+Predecessors : 
+;EQ $L1 $L2 label5
+
+Current : 
+;JUMP   label6
+
+Successors : 
+;LABEL   label6
+--------------------------------------------------------------
+Predecessors : 
+;EQ $L1 $L2 label5
+
+Current : 
+;LABEL   label5
+
+Successors : 
+;STOREI 0  $T5
+--------------------------------------------------------------
+Predecessors : 
+;LABEL   label5
+
+Current : 
+;STOREI 0  $T5
+
+Successors : 
+;STOREI $T5  $R
+--------------------------------------------------------------
+Predecessors : 
+;STOREI 0  $T5
+
+Current : 
+;STOREI $T5  $R
+
+Successors : 
+;RET   
+--------------------------------------------------------------
+Predecessors : 
+;STOREI $T5  $R
+
+Current : 
+;RET   
+
+Successors : 
+--------------------------------------------------------------
+Predecessors : 
+
+Current : 
+;str input  "Please input an integer number: "
+
+Successors : 
+;str space  " "
+--------------------------------------------------------------
+Predecessors : 
+;str input  "Please input an integer number: "
+
+Current : 
+;str space  " "
+
+Successors : 
+;str eol  "\n"
+--------------------------------------------------------------
+Predecessors : 
+;str space  " "
+
+Current : 
+;str eol  "\n"
+
+Successors : 
+--------------------------------------------------------------
+Predecessors : 
+
+Current : 
+;LABEL   F
+
+Successors : 
+;LINK   
+--------------------------------------------------------------
+Predecessors : 
+;LABEL   F
+
+Current : 
+;LINK   
+
+Successors : 
+;STOREI 2  $T1
+--------------------------------------------------------------
+Predecessors : 
+;LINK   
+
+Current : 
+;STOREI 2  $T1
+
+Successors : 
+;LE $P1 $T1 label0
+--------------------------------------------------------------
+Predecessors : 
+;STOREI 2  $T1
+
+Current : 
+;LE $P1 $T1 label0
+
+Successors : 
+;SUBI $P1 1 $T2
+;LABEL   label0
+--------------------------------------------------------------
+Predecessors : 
+;LE $P1 $T1 label0
+
+Current : 
+;SUBI $P1 1 $T2
+
+Successors : 
+;PUSH   
+--------------------------------------------------------------
+Predecessors : 
+;SUBI $P1 1 $T2
+
+Current : 
+;PUSH   
+
+Successors : 
+;PUSH $T2  
+--------------------------------------------------------------
+Predecessors : 
+;PUSH   
+
+Current : 
+;PUSH $T2  
+
+Successors : 
+;JSR F  
+--------------------------------------------------------------
+Predecessors : 
+;PUSH $T2  
+
+Current : 
+;JSR F  
+
+Successors : 
+;POP   
+--------------------------------------------------------------
+Predecessors : 
+;JSR F  
+
+Current : 
+;POP   
+
+Successors : 
+;POP $T3  
+--------------------------------------------------------------
+Predecessors : 
+;POP   
+
+Current : 
+;POP $T3  
+
+Successors : 
+;STOREI $T3  $L1
+--------------------------------------------------------------
+Predecessors : 
+;POP $T3  
+
+Current : 
+;STOREI $T3  $L1
+
+Successors : 
+;SUBI $P1 2 $T4
+--------------------------------------------------------------
+Predecessors : 
+;STOREI $T3  $L1
+
+Current : 
+;SUBI $P1 2 $T4
+
+Successors : 
+;PUSH   
+--------------------------------------------------------------
+Predecessors : 
+;SUBI $P1 2 $T4
+
+Current : 
+;PUSH   
+
+Successors : 
+;PUSH $T4  
+--------------------------------------------------------------
+Predecessors : 
+;PUSH   
+
+Current : 
+;PUSH $T4  
+
+Successors : 
+;JSR F  
+--------------------------------------------------------------
+Predecessors : 
+;PUSH $T4  
+
+Current : 
+;JSR F  
+
+Successors : 
+;POP   
+--------------------------------------------------------------
+Predecessors : 
+;JSR F  
+
+Current : 
+;POP   
+
+Successors : 
+;POP $T5  
+--------------------------------------------------------------
+Predecessors : 
+;POP   
+
+Current : 
+;POP $T5  
+
+Successors : 
+;STOREI $T5  $L2
+--------------------------------------------------------------
+Predecessors : 
+;POP $T5  
+
+Current : 
+;STOREI $T5  $L2
+
+Successors : 
+;ADDI $L1 $L2 $T6
+--------------------------------------------------------------
+Predecessors : 
+;STOREI $T5  $L2
+
+Current : 
+;ADDI $L1 $L2 $T6
+
+Successors : 
+;STOREI $T6  $R
+--------------------------------------------------------------
+Predecessors : 
+;ADDI $L1 $L2 $T6
+
+Current : 
+;STOREI $T6  $R
+
+Successors : 
+;RET   
+--------------------------------------------------------------
+Predecessors : 
+;STOREI $T6  $R
+
+Current : 
+;RET   
+
+Successors : 
+;JUMP   label1
+--------------------------------------------------------------
+Predecessors : 
+;RET   
+
+Current : 
+;JUMP   label1
+
+Successors : 
+;LABEL   label1
+--------------------------------------------------------------
+Predecessors : 
+;LE $P1 $T1 label0
+
+Current : 
+;LABEL   label0
+
+Successors : 
+;STOREI 0  $T7
+--------------------------------------------------------------
+Predecessors : 
+;LABEL   label0
+
+Current : 
+;STOREI 0  $T7
+
+Successors : 
+;NE $P1 $T7 label2
+--------------------------------------------------------------
+Predecessors : 
+;STOREI 0  $T7
+
+Current : 
+;NE $P1 $T7 label2
+
+Successors : 
+;STOREI 0  $T8
+;LABEL   label2
+--------------------------------------------------------------
+Predecessors : 
+;NE $P1 $T7 label2
+
+Current : 
+;STOREI 0  $T8
+
+Successors : 
+;STOREI $T8  $R
+--------------------------------------------------------------
+Predecessors : 
+;STOREI 0  $T8
+
+Current : 
+;STOREI $T8  $R
+
+Successors : 
+;RET   
+--------------------------------------------------------------
+Predecessors : 
+;STOREI $T8  $R
+
+Current : 
+;RET   
+
+Successors : 
+;JUMP   label1
+--------------------------------------------------------------
+Predecessors : 
+;RET   
+
+Current : 
+;JUMP   label1
+
+Successors : 
+;LABEL   label1
+--------------------------------------------------------------
+Predecessors : 
+;NE $P1 $T7 label2
+
+Current : 
+;LABEL   label2
+
+Successors : 
+;STOREI 1  $T9
+--------------------------------------------------------------
+Predecessors : 
+;LABEL   label2
+
+Current : 
+;STOREI 1  $T9
+
+Successors : 
+;NE $P1 $T9 label3
+--------------------------------------------------------------
+Predecessors : 
+;STOREI 1  $T9
+
+Current : 
+;NE $P1 $T9 label3
+
+Successors : 
+;STOREI 1  $T10
+;LABEL   label3
+--------------------------------------------------------------
+Predecessors : 
+;NE $P1 $T9 label3
+
+Current : 
+;STOREI 1  $T10
+
+Successors : 
+;STOREI $T10  $R
+--------------------------------------------------------------
+Predecessors : 
+;STOREI 1  $T10
+
+Current : 
+;STOREI $T10  $R
+
+Successors : 
+;RET   
+--------------------------------------------------------------
+Predecessors : 
+;STOREI $T10  $R
+
+Current : 
+;RET   
+
+Successors : 
+;JUMP   label1
+--------------------------------------------------------------
+Predecessors : 
+;RET   
+
+Current : 
+;JUMP   label1
+
+Successors : 
+;LABEL   label1
+--------------------------------------------------------------
+Predecessors : 
+;NE $P1 $T9 label3
+
+Current : 
+;LABEL   label3
+
+Successors : 
+;STOREI 2  $T11
+--------------------------------------------------------------
+Predecessors : 
+;LABEL   label3
+
+Current : 
+;STOREI 2  $T11
+
+Successors : 
+;NE $P1 $T11 label4
+--------------------------------------------------------------
+Predecessors : 
+;STOREI 2  $T11
+
+Current : 
+;NE $P1 $T11 label4
+
+Successors : 
+;STOREI 1  $T12
+;LABEL   label4
+--------------------------------------------------------------
+Predecessors : 
+;NE $P1 $T11 label4
+
+Current : 
+;STOREI 1  $T12
+
+Successors : 
+;STOREI $T12  $R
+--------------------------------------------------------------
+Predecessors : 
+;STOREI 1  $T12
+
+Current : 
+;STOREI $T12  $R
+
+Successors : 
+;RET   
+--------------------------------------------------------------
+Predecessors : 
+;STOREI $T12  $R
+
+Current : 
+;RET   
+
+Successors : 
+;JUMP   label1
+--------------------------------------------------------------
+Predecessors : 
+;RET   
+
+Current : 
+;JUMP   label1
+
+Successors : 
+;LABEL   label1
+--------------------------------------------------------------
+Predecessors : 
+;JUMP   label1
+;JUMP   label1
+;JUMP   label1
+;JUMP   label1
+
+Current : 
+;LABEL   label1
+
+Successors : 
+;LABEL   label4
+--------------------------------------------------------------
+Predecessors : 
+;LABEL   label1
+;NE $P1 $T11 label4
+
+Current : 
+;LABEL   label4
+
+Successors : 
+;RET   
+--------------------------------------------------------------
+Predecessors : 
+;LABEL   label4
+
+Current : 
+;RET   
+
+Successors : 
+--------------------------------------------------------------
+Predecessors : 
+
+Current : 
+;LABEL   main
+
+Successors : 
+;LINK   
+--------------------------------------------------------------
+Predecessors : 
+;LABEL   main
+
+Current : 
+;LINK   
+
+Successors : 
+;STOREI 0  $T1
+--------------------------------------------------------------
+Predecessors : 
+;LINK   
+
+Current : 
+;STOREI 0  $T1
+
+Successors : 
+;STOREI $T1  $L1
+--------------------------------------------------------------
+Predecessors : 
+;STOREI 0  $T1
+
+Current : 
+;STOREI $T1  $L1
+
+Successors : 
+;WRITES input  
+--------------------------------------------------------------
+Predecessors : 
+;STOREI $T1  $L1
+
+Current : 
+;WRITES input  
+
+Successors : 
+;READI $L2  
+--------------------------------------------------------------
+Predecessors : 
+;WRITES input  
+
+Current : 
+;READI $L2  
+
+Successors : 
+;LABEL   label6
+--------------------------------------------------------------
+Predecessors : 
+;READI $L2  
+;JUMP   label6
+
+Current : 
+;LABEL   label6
+
+Successors : 
+;PUSH   
+--------------------------------------------------------------
+Predecessors : 
+;LABEL   label6
+
+Current : 
+;PUSH   
+
+Successors : 
+;PUSH $L1  
+--------------------------------------------------------------
+Predecessors : 
+;PUSH   
+
+Current : 
+;PUSH $L1  
+
+Successors : 
+;JSR F  
+--------------------------------------------------------------
+Predecessors : 
+;PUSH $L1  
+
+Current : 
+;JSR F  
+
+Successors : 
+;POP   
+--------------------------------------------------------------
+Predecessors : 
+;JSR F  
+
+Current : 
+;POP   
+
+Successors : 
+;POP $T2  
+--------------------------------------------------------------
+Predecessors : 
+;POP   
+
+Current : 
+;POP $T2  
+
+Successors : 
+;STOREI $T2  $L3
+--------------------------------------------------------------
+Predecessors : 
+;POP $T2  
+
+Current : 
+;STOREI $T2  $L3
+
+Successors : 
+;WRITEI $L1  
+--------------------------------------------------------------
+Predecessors : 
+;STOREI $T2  $L3
+
+Current : 
+;WRITEI $L1  
+
+Successors : 
+;WRITES space  
+--------------------------------------------------------------
+Predecessors : 
+;WRITEI $L1  
+
+Current : 
+;WRITES space  
+
+Successors : 
+;WRITEI $L3  
+--------------------------------------------------------------
+Predecessors : 
+;WRITES space  
+
+Current : 
+;WRITEI $L3  
+
+Successors : 
+;WRITES eol  
+--------------------------------------------------------------
+Predecessors : 
+;WRITEI $L3  
+
+Current : 
+;WRITES eol  
+
+Successors : 
+;ADDI $L1 1 $T3
+--------------------------------------------------------------
+Predecessors : 
+;WRITES eol  
+
+Current : 
+;ADDI $L1 1 $T3
+
+Successors : 
+;STOREI $T3  $L1
+--------------------------------------------------------------
+Predecessors : 
+;ADDI $L1 1 $T3
+
+Current : 
+;STOREI $T3  $L1
+
+Successors : 
+;EQ $L1 $L2 label5
+--------------------------------------------------------------
+Predecessors : 
+;STOREI $T3  $L1
+
+Current : 
+;EQ $L1 $L2 label5
+
+Successors : 
+;JUMP   label6
+;LABEL   label5
+--------------------------------------------------------------
+Predecessors : 
+;EQ $L1 $L2 label5
+
+Current : 
+;JUMP   label6
+
+Successors : 
+;LABEL   label6
+--------------------------------------------------------------
+Predecessors : 
+;EQ $L1 $L2 label5
+
+Current : 
+;LABEL   label5
+
+Successors : 
+;STOREI 0  $T5
+--------------------------------------------------------------
+Predecessors : 
+;LABEL   label5
+
+Current : 
+;STOREI 0  $T5
+
+Successors : 
+;STOREI $T5  $R
+--------------------------------------------------------------
+Predecessors : 
+;STOREI 0  $T5
+
+Current : 
+;STOREI $T5  $R
+
+Successors : 
+;RET   
+--------------------------------------------------------------
+Predecessors : 
+;STOREI $T5  $R
+
+Current : 
+;RET   
+
+Successors : 
