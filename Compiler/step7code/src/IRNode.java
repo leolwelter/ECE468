@@ -169,6 +169,7 @@ public class IRNode {
 				      for(List<String> varData : varList){
 								if(varData.get(0).equals(tvar)){
 									tvar = varData.get(3);
+									// System.out.println("TVAR :" + tvar);
 									if(tvar.toCharArray()[1] == 'T'){
 										tinyReg = "r" + (Integer.parseInt(tvar.split("T")[1]) - 1);
 									} else if(tvar.toCharArray()[1] == 'L'){
@@ -185,6 +186,17 @@ public class IRNode {
 		}
 	}
 		return tinyReg;
+	}
+
+	public String checkBothMems(LinkedList<TinyNode> tinyList, String top1, String top2){
+		if(top1.startsWith("$") && top2.startsWith("$")){
+			tempCnt++;
+			tinyList.add(new TinyNode("move", top2, "r" + tempCnt));
+			return "r" + tempCnt;
+		}
+		else{
+			return top2;
+		}
 	}
 
 	public void irToTiny(LinkedList<TinyNode> tinyList, Function fy){
@@ -239,6 +251,7 @@ public class IRNode {
 				//If operands are $T's, make them registers
 				top1 = tempToReg(irOp1, op1, fy);
 				top2 = tempToReg(irOp2, op2, fy);
+				top2 = checkBothMems(tinyList, op1, top2);
 
 				if(this.opType.equals("FLOAT")){
 					tinyList.add(new TinyNode("cmpr", top1, top2)); //comparison
@@ -251,7 +264,7 @@ public class IRNode {
 				//If operands are $T's, make them registers
 				top1 = tempToReg(irOp1, op1, fy);
 				top2 = tempToReg(irOp2, op2, fy);
-
+				top2 = checkBothMems(tinyList, op1, top2);
 				if(this.opType.equals("FLOAT")){
 					tinyList.add(new TinyNode("cmpr", top1, top2)); //comparison
 				}else{
@@ -263,7 +276,7 @@ public class IRNode {
 				//If operands are $T's, make them registers
 				top1 = tempToReg(irOp1, op1, fy);
 				top2 = tempToReg(irOp2, op2, fy);
-
+				top2 = checkBothMems(tinyList, op1, top2);
 				if(this.opType.equals("FLOAT")){
 					tinyList.add(new TinyNode("cmpr", top1, top2)); //comparison
 				}else{
@@ -274,7 +287,7 @@ public class IRNode {
 			case("LE"):
 				top1 = tempToReg(irOp1, op1, fy);
 				top2 = tempToReg(irOp2, op2, fy);
-
+				top2 = checkBothMems(tinyList, op1, top2);
 				if(this.opType.equals("FLOAT")){
 					tinyList.add(new TinyNode("cmpr", top1, top2)); //comparison
 				}else{
@@ -285,7 +298,7 @@ public class IRNode {
 			case("NE"):
 				top1 = tempToReg(irOp1, op1, fy);
 				top2 = tempToReg(irOp2, op2, fy);
-
+				top2 = checkBothMems(tinyList, op1, top2);
 				if(this.opType.equals("FLOAT")){
 					tinyList.add(new TinyNode("cmpr", top1, top2)); //comparison
 				}else{
@@ -296,7 +309,7 @@ public class IRNode {
 			case("EQ"):
 				top1 = tempToReg(irOp1, op1, fy);
 				top2 = tempToReg(irOp2, op2, fy);
-
+				top2 = checkBothMems(tinyList, op1, top2);
 				if(this.opType.equals("FLOAT")){
 					tinyList.add(new TinyNode("cmpr", top1, top2)); //comparison
 				}else{

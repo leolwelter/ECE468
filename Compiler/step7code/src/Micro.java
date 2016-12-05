@@ -99,7 +99,7 @@ public class Micro {
 	 		}
 	 	}
 	 	//Add halt to end of Tiny list
-		tinyList.add(new TinyNode("sys", "halt", ""));
+		tinyList.add(new TinyNode("end", "", ""));
 
 
 	 	//Print TinyList

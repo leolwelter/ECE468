@@ -4,46 +4,46 @@
 
 ;LABEL   F
 ;LINK   
-;STOREI n  $T0
 ;STOREI 2  $T1
-;LE $T0 $T1 label0
+;LE $P1 $T1 label0
+;SUBI $P1 1 $T2
 ;PUSH   
-;PUSH $T1  
+;PUSH $T2  
 ;JSR F  
 ;POP   
-;POP $T2  
-;SUBI $P1 1 $T3
+;POP $T3  
 ;STOREI $T3  $L1
+;SUBI $P1 2 $T4
 ;PUSH   
-;PUSH $T3  
+;PUSH $T4  
 ;JSR F  
 ;POP   
-;POP $T4  
-;SUBI $P1 2 $T5
+;POP $T5  
 ;STOREI $T5  $L2
 ;ADDI $L1 $L2 $T6
 ;STOREI $T6  $R
+;RET   
 ;JUMP   label1
 ;LABEL   label0
-;STOREI n  $T6
 ;STOREI 0  $T7
-;NE $T6 $T7 label2
+;NE $P1 $T7 label2
 ;STOREI 0  $T8
 ;STOREI $T8  $R
+;RET   
 ;JUMP   label1
 ;LABEL   label2
-;STOREI n  $T8
 ;STOREI 1  $T9
-;NE $T8 $T9 label3
+;NE $P1 $T9 label3
 ;STOREI 1  $T10
 ;STOREI $T10  $R
+;RET   
 ;JUMP   label1
 ;LABEL   label3
-;STOREI n  $T10
 ;STOREI 2  $T11
-;NE $T10 $T11 label4
+;NE $P1 $T11 label4
 ;STOREI 1  $T12
 ;STOREI $T12  $R
+;RET   
 ;JUMP   label1
 ;LABEL   label1
 ;LABEL   label4
@@ -51,6 +51,8 @@
 
 ;LABEL   main
 ;LINK   
+;STOREI 0  $T1
+;STOREI $T1  $L1
 ;WRITES input  
 ;READI $L2  
 ;LABEL   label1
@@ -58,21 +60,19 @@
 ;PUSH $L1  
 ;JSR F  
 ;POP   
-;POP $T1  
-;STOREI   $T1
-;STOREI $T1  $L3
+;POP $T2  
+;STOREI $T2  $L3
 ;WRITEI $L1  
 ;WRITES space  
 ;WRITEI $L3  
 ;WRITES eol  
-;ADDI $L1 1 $T2
-;STOREI $T2  $L1
-;STOREI i  $T2
-;EQ $T2 $L2 label0
+;ADDI $L1 1 $T3
+;STOREI $T3  $L1
+;EQ $L1 $L2 label0
 ;JUMP   label1
 ;LABEL   label0
-;STOREI 0  $T4
-;STOREI $T4  $R
+;STOREI 0  $T5
+;STOREI $T5  $R
 ;RET   
 
 str input "Please input an integer number: "
@@ -87,12 +87,13 @@ jsr main
 sys halt 
 label F 
 link 10 
-move $6 r-1
 move 2 r0
-cmpi r-1 r0
+cmpi $6 r0
 jle label0 
+move $6 r1
+subi 1 r1
 push  
-push r0 
+push r1 
 push r0 
 push r1 
 push r2 
@@ -103,12 +104,12 @@ pop r2
 pop r1 
 pop r0 
 pop  
-pop r1 
-move $6 r2
-subi 1 r2
+pop r2 
 move r2 $-1
+move $6 r3
+subi 2 r3
 push  
-push r2 
+push r3 
 push r0 
 push r1 
 push r2 
@@ -119,37 +120,40 @@ pop r2
 pop r1 
 pop r0 
 pop  
-pop r3 
-move $6 r4
-subi 2 r4
+pop r4 
 move r4 $-2
 move $-1 r5
 addi $-2 r5
 move r5 $7
+unlnk  
+ret  
 jmp label1 
 label label0 
-move $6 r5
 move 0 r6
-cmpi r5 r6
+cmpi $6 r6
 jne label2 
 move 0 r7
 move r7 $7
+unlnk  
+ret  
 jmp label1 
 label label2 
-move $6 r7
 move 1 r8
-cmpi r7 r8
+cmpi $6 r8
 jne label3 
 move 1 r9
 move r9 $7
+unlnk  
+ret  
 jmp label1 
 label label3 
-move $6 r9
 move 2 r10
-cmpi r9 r10
+cmpi $6 r10
 jne label4 
 move 1 r11
 move r11 $7
+unlnk  
+ret  
 jmp label1 
 label label1 
 label label4 
@@ -157,6 +161,8 @@ unlnk
 ret  
 label main 
 link 10 
+move 0 r0
+move r0 $-1
 sys writes input
 sys readi $-2
 label label1 
@@ -172,23 +178,22 @@ pop r2
 pop r1 
 pop r0 
 pop  
-pop r0 
-move  r0
-move r0 $-3
+pop r1 
+move r1 $-3
 sys writei $-1
 sys writes space
 sys writei $-3
 sys writes eol
-move $-1 r1
-addi 1 r1
-move r1 $-1
-move $-1 r1
-cmpi r1 $-2
+move $-1 r2
+addi 1 r2
+move r2 $-1
+move $-2 r6
+cmpi $-1 r6
 jeq label0 
 jmp label1 
 label label0 
-move 0 r3
-move r3 $6
+move 0 r4
+move r4 $6
 unlnk  
 ret  
-sys halt 
+end  
