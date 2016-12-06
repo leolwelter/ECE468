@@ -29,6 +29,7 @@ public class AntlrMicroListener extends MicroBaseListener {
 		this.endStack = new Stack<String>();
 		this.functionTable = new LinkedHashMap<String, Function>();
 		this.functionTable.put("GLOBAL", new Function(st, meIRL, "GLOBAL", 1, 1));
+		this.fy = functionTable.get("GLOBAL");
 	}
 
 	//Prints the scopes as they're entered
@@ -492,7 +493,6 @@ public class AntlrMicroListener extends MicroBaseListener {
 				temp.add(type);
 				temp.add(null);
 				temp.add("$L" + this.fy.localCnt++);
-
 				//Add Tiny to IRList
 				tdata.clear();
 				tdata.add(ids[i]);
@@ -583,8 +583,8 @@ public class AntlrMicroListener extends MicroBaseListener {
 					ArrayList<List<String>> varList = st.varMap.get(fy.name);
 					//System.out.println(varList);
 					if(varList != null){
-						//System.out.println("VARLIST NOT EMPTY!!!!!!!!!");
-				      for(List<String> varData : varList){
+						// System.out.println("VARLIST NOT EMPTY!!!!!!!!!");
+				      	for(List<String> varData : varList){
 					      	if(varData.get(0).equals(id)){
 								//System.out.println("GETTING TYPE : " + varData.get(1));
 					      		type = varData.get(1);
@@ -594,6 +594,20 @@ public class AntlrMicroListener extends MicroBaseListener {
 								exprReg = varData.get(3);
 					      	}
 				      	}
+				   	} else {
+				   		varList = st.varMap.get("GLOBAL");
+				   		if(varList != null){
+		      				for(List<String> varData : varList){
+						      	if(varData.get(0).equals(id)){
+									//System.out.println("GETTING TYPE : " + varData.get(1));
+						      		type = varData.get(1);
+									idReg = varData.get(3);
+						      	}
+								if(varData.get(0).equals(expr)){
+									exprReg = varData.get(3);
+						      	}
+					      	}				   			
+				   		}
 				   	}
 
 				    if(infixS.size() != 1){
@@ -606,8 +620,8 @@ public class AntlrMicroListener extends MicroBaseListener {
 
 							//adds tree to IRList
 							//st.printTable();
-							//System.out.println("ID IS : " + id);
-							//System.out.println("TYPE IS : " + type);
+							// System.out.println("ID IS : " + id);
+							// System.out.println("TYPE IS : " + type);
 							root.toIRList(root, this.meIRL, type, fy);
 							if(type.compareTo("FLOAT") == 0){
 						  		this.meIRL.add(new IRNode("STOREF", "$T"+ IRNode.tempCnt, "", idReg));
@@ -615,27 +629,34 @@ public class AntlrMicroListener extends MicroBaseListener {
 						 		this.meIRL.add(new IRNode("STOREI", "$T"+ IRNode.tempCnt, "", idReg));
 							}
 				    }
-						else {
-							if(meIRL.peekLast().opcode.equals("POP")){
-								if(type.compareTo("FLOAT") == 0){
-									this.meIRL.add(new IRNode("STOREF", "$T"+ IRNode.tempCnt, "", idReg));
-								}
-								else{
-									this.meIRL.add(new IRNode("STOREI", "$T"+ IRNode.tempCnt, "", idReg));
-								}
+					else {
+						if(meIRL.peekLast().opcode.equals("POP")){
+							if(type.compareTo("FLOAT") == 0){
+								this.meIRL.add(new IRNode("STOREF", "$T"+ IRNode.tempCnt, "", idReg));
 							}
 							else{
+								this.meIRL.add(new IRNode("STOREI", "$T"+ IRNode.tempCnt, "", idReg));
+							}
+						}else if(exprReg.equals("")){
+					    	if(type.compareTo("FLOAT") == 0){
+						  		this.meIRL.add(new IRNode("STOREF", id, "", "$T"+ IRNode.tempCnt));
+						  		this.meIRL.add(new IRNode("STOREF", "$T"+ IRNode.tempCnt, "", idReg));
+							} else {
+								// System.out.println("ExprReg: " + exprReg + " Tmpcnt: " + IRNode.tempCnt + " idReg: " + idReg);
+						 		this.meIRL.add(new IRNode("STOREI", id, "", "$T"+ IRNode.tempCnt));
+						 		this.meIRL.add(new IRNode("STOREI", "$T"+ IRNode.tempCnt, "", idReg));
+							}									
+						}else{
 					    	if(type.compareTo("FLOAT") == 0){
 						  		this.meIRL.add(new IRNode("STOREF", exprReg, "", "$T"+ IRNode.tempCnt));
 						  		this.meIRL.add(new IRNode("STOREF", "$T"+ IRNode.tempCnt, "", idReg));
-								} else {
+							} else {
+								// System.out.println("ExprReg: " + exprReg + " Tmpcnt: " + IRNode.tempCnt + " idReg: " + idReg);
 						 		this.meIRL.add(new IRNode("STOREI", exprReg, "", "$T"+ IRNode.tempCnt));
 						 		this.meIRL.add(new IRNode("STOREI", "$T"+ IRNode.tempCnt, "", idReg));
-								}
 							}
+						}
 				    }
-
-
 			}
 		}
 	}

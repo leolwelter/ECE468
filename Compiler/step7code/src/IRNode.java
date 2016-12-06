@@ -110,7 +110,7 @@ public class IRNode {
 				case("-"):
 					opcode = "SUBF"; break;
 			}
-		}
+		} 
 		//op1     = left.value;
 		//op2     = right.value;
 		ArrayList<List<String>> varList = fy.st.varMap.get(fy.name);
