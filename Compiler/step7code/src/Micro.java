@@ -170,11 +170,19 @@ public class Micro {
 // -------------------------- Start Worklist -----------------------------
 
 				ArrayDeque<IRNode> initialWorklist = new ArrayDeque<IRNode>();
-
-				for(int i = 0; i < func.meIRL.size(); i++){
-					temp = func.meIRL.get(i);
-					if(temp.opcode.equals("RET")){
-						initialWorklist.add(temp);
+				//for(int i = 0; i < func.meIRL.size(); i++){
+					//temp = func.meIRL.get(i);
+				for(IRNode node : func.meIRL){
+					if(node.opcode.equals("RET")){
+						initialWorklist.add(node);
+						node.out.clear();
+						for(ArrayList<String> vardata : functionTable.get("GLOBAL")){
+							node.out.add(vardata.get())
+							//IN PROGRESS
+						}					
+					} else {
+						node.in.clear();
+						node.out.clear();
 					}
 				}
 				func.meIRL.get(0).createWorklist(func.meIRL, initialWorklist);
@@ -195,19 +203,19 @@ public class Micro {
 					}
 					System.out.println("Gen : ");
 					for(String q : func.meIRL.get(i).gen){
-						System.out.print(q);
+						System.out.print(" " + q);
 					}
-					System.out.println("Kill : ");
+					System.out.println("\nKill : ");
 					for(String w : func.meIRL.get(i).kill){
-						System.out.print(w);
+						System.out.print(" " + w);
 					}
-					System.out.println("In : ");
+					System.out.println("\nIn : ");
 					for(String e : func.meIRL.get(i).in){
-						System.out.print(e);
+						System.out.print(" " + e);
 					}
-					System.out.println("Out : ");
+					System.out.println("\nOut : ");
 					for(String r : func.meIRL.get(i).out){
-						System.out.print(r);
+						System.out.print(" " + r);
 					}
 					System.out.println();
 					System.out.println();

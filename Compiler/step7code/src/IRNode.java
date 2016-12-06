@@ -86,8 +86,6 @@ public class IRNode {
 		HashSet<String> outTemp = new HashSet<String>();
 		while(worklist.peek() != null){
 			temp = worklist.remove();
-			//System.out.println("HEREEEEE");
-			//temp.printNode();
 			// keep track of old in
 			// calc out set
 			for( IRNode s : temp.successors){
@@ -98,8 +96,8 @@ public class IRNode {
 			outTemp.removeAll(temp.kill);
 			inTemp = outTemp;
 			inTemp.addAll(temp.gen);
-			System.out.println("HEREEEE1: " + temp.gen);
-			System.out.println("HEREEEE2: " + inTemp);
+			System.out.println("Node.gen : " + temp.gen);
+			System.out.println("inList   : " + inTemp);
 			// check if in set changed
 			if(!(temp.in.equals(inTemp))){
 			// if changed, push all predecessor IRNodes on to worklist
