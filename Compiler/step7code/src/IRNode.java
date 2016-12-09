@@ -506,7 +506,7 @@ public class IRNode {
 
 			case("DIVF"):
 				topcode = "move";
-				top1 = tempToReg(irOp1, op2, fy);
+				top1 = tempToReg(irOp1, op1, fy);
 				top2 = tempToReg(irResult, result, fy);
 				top2 = checkBothMems(tinyList, op1, top2);
 				tinyList.add(new TinyNode(topcode, top1, top2));

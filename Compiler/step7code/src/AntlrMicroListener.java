@@ -388,45 +388,64 @@ public class AntlrMicroListener extends MicroBaseListener {
 					}
 				}
 				catch(Exception err2){
-						String type = "FLOAT";
-						IRNode.tempCnt++;
-						ArrayList<List<String>> varList = st.varMap.get(fy.name);
-					    if(varList != null){
-					      for(List<String> varData : varList){
-					      	if(varData.get(0).equals(rhs)){
-					      		type = varData.get(1);
-										rhsReg = varData.get(3);
-								/*if(type.compareTo("FLOAT") == 0){
-							  		this.meIRL.add(new IRNode("STOREF", rhs, "", "$T"+ IRNode.tempCnt));
-								} else {
-									this.meIRL.add(new IRNode("STOREI", rhs, "", "$T"+ IRNode.tempCnt));
-								}*/
-					      	}
-					      }
-					    }
+					String type = "FLOAT";
+					IRNode.tempCnt++;
+					ArrayList<List<String>> varList = st.varMap.get(fy.name);
+				    if(varList != null){
+				      for(List<String> varData : varList){
+				      	if(varData.get(0).equals(rhs)){
+				      		type = varData.get(1);
+							rhsReg = varData.get(3);
+							//12/9 Possible problem? 
+							if(type.compareTo("FLOAT") == 0){
+						  		this.meIRL.add(new IRNode("STOREF", rhs, "", "$T"+ IRNode.tempCnt));
+							} else {
+								this.meIRL.add(new IRNode("STOREI", rhs, "", "$T"+ IRNode.tempCnt));
+							}
+				      	}
+				      }
+				    }
 
-						ShuntingYard sy = new ShuntingYard();
-						String postfixS = sy.infixToPostfix(infixS);
+					ShuntingYard sy = new ShuntingYard();
+					String postfixS = sy.infixToPostfix(infixS);
 
-						//Tests Postfix Tree
-						//System.out.println("postfixS: " + postfixS);
-						PostfixTree pfTree = new PostfixTree();
-						PostfixTreeNode root = pfTree.createTree(postfixS);
+					//Tests Postfix Tree
+					//System.out.println("postfixS: " + postfixS);
+					PostfixTree pfTree = new PostfixTree();
+					PostfixTreeNode root = pfTree.createTree(postfixS);
 
-						//adds tree to IRList
-						//System.out.println("Type: " + type);
-						root.toIRList(root, this.meIRL, type, fy);
+					//adds tree to IRList
+					//System.out.println("Type: " + type);
+					root.toIRList(root, this.meIRL, type, fy);
 
-						//RHS is an expression (no store manual necessary)
-					  rhsType = type;
-						if(rhsReg.compareTo("") == 0){
-							rhsReg = "$T"+ IRNode.tempCnt;
-						}
+					//RHS is an expression (no store manual necessary)
+				  	rhsType = type;
+					if(rhsReg.compareTo("") == 0){
+						rhsReg = "$T"+ IRNode.tempCnt;
+					}
 				}
 			}
 
 			//Add Intermediate Nodes
-			// System.out.println(lhsType);
+			//IF RHS is a GLOBAL, replace it with a temporary
+			ArrayList<List<String>> varList = st.varMap.get("GLOBAL");
+			if(varList != null){
+		      for(List<String> varData : varList){
+			      	if(varData.get(0).equals(rhs)){
+			      		rhsReg = "$T" + IRNode.tempCnt;
+			      	}
+		      	}
+		   	}
+		   	//IF RHS is a local VARIABLE, replace it with a temporary
+			varList = st.varMap.get(fy.name);
+			if(varList != null){
+		      for(List<String> varData : varList){
+			      	if(varData.get(0).equals(rhs)){
+						rhsReg = "$T" +  IRNode.tempCnt;		      		
+			      	}
+		      	}
+		   	}		   	
+
 			switch(cmp){
 				case ">":
 					this.meIRL.add(new IRNode("LE", lhsReg, rhsReg, enterStack.peek(), lhsType));
