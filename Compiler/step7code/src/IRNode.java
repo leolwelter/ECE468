@@ -138,7 +138,7 @@ public class IRNode {
 	public String tempToReg(char[] irop, String tvar, Function fy){
 		//Take in a raw L/T/P, convert to Tiny
 		//If not a REGISTER ($) just return tvar
-		String tinyReg = "";
+		String tinyReg = tvar;
 		//T->R
 		// System.out.println("TVAR :" + tvar);
 		if(tvar.startsWith("$")){
@@ -171,15 +171,17 @@ public class IRNode {
 								if(varData.get(0).equals(tvar)){
 									tvar = varData.get(3);
 									// System.out.println("TVAR :" + tvar);
-									if(tvar.toCharArray()[1] == 'T'){
-										tinyReg = "r" + (Integer.parseInt(tvar.split("T")[1]) - 1);
-										//tinyReg = "$-" + (fy.localCnt + (Integer.parseInt(tvar.split("T")[1])));
-									} else if(tvar.toCharArray()[1] == 'L'){
-										tinyReg = "$-" + (Integer.parseInt(tvar.split("L")[1]));
-									} else if(tvar.toCharArray()[1] == 'P'){
-										tinyReg = "$" + (6 + fy.paramCnt - Integer.parseInt(tvar.split("P")[1]));
-									} else if(tvar.toCharArray()[1] == 'R'){
-										tinyReg = "$" + (6 + fy.paramCnt);
+									if(tvar.startsWith("$")) {
+										if(tvar.toCharArray()[1] == 'T'){
+											tinyReg = "r" + (Integer.parseInt(tvar.split("T")[1]) - 1);
+											//tinyReg = "$-" + (fy.localCnt + (Integer.parseInt(tvar.split("T")[1])));
+										} else if(tvar.toCharArray()[1] == 'L'){
+											tinyReg = "$-" + (Integer.parseInt(tvar.split("L")[1]));
+										} else if(tvar.toCharArray()[1] == 'P'){
+											tinyReg = "$" + (6 + fy.paramCnt - Integer.parseInt(tvar.split("P")[1]));
+										} else if(tvar.toCharArray()[1] == 'R'){
+											tinyReg = "$" + (6 + fy.paramCnt);
+										}
 									}
 								}
 							}
