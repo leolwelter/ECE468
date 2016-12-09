@@ -63,6 +63,11 @@ public class Micro {
 
 	 	//Print Function information
 	 	//System.out.println(mlistener.functionTable);
+		// String txt = "GLOBAL";
+		//System.out.println("GLOBAL SYMBOL TABLE STARTS");
+		//mlistener.functionTable.get("GLOBAL").st.printTable();
+		//System.out.println("GLOBAL SYMBOL TABLE STARTS");
+
 	 	for(Function func : mlistener.functionTable.values()){
 		 	//Prints Intermediate Representation List
 		 	/* for(int i = 0; i < func.meIRL.size(); i++){
