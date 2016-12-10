@@ -61,13 +61,7 @@ public class Micro {
 		AntlrMicroListener mlistener = new AntlrMicroListener(st, meIRL);
 	 	walker.walk(mlistener, programContext);
 
-	 	//Print Function information
-	 	//System.out.println(mlistener.functionTable);
-		// String txt = "GLOBAL";
-		//System.out.println("GLOBAL SYMBOL TABLE STARTS");
-		//mlistener.functionTable.get("GLOBAL").st.printTable();
-		//System.out.println("GLOBAL SYMBOL TABLE STARTS");
-
+	 	//Print IR Nodes for EACH FUNCTION
 	 	for(Function func : mlistener.functionTable.values()){
 		 	//Prints Intermediate Representation List
 		 	for(int i = 0; i < func.meIRL.size(); i++){
@@ -75,13 +69,10 @@ public class Micro {
 		 	}
 
 			System.out.println();
-
-		 	//func.st.printTable();
-			//System.out.println("-----End of Symbol Table-----");
 	 	}
 
 
-	 	//Convert Functions to Tiny
+	 	//Convert IR List of each function to Tiny
 	 	//GLOBAL DECLARATIONS
 	 	Function fc1 = mlistener.functionTable.get("GLOBAL");
 		for(int i = 0; i < fc1.meIRL.size(); i++){
@@ -97,10 +88,12 @@ public class Micro {
 	 			continue;
 	 		} else {
 			 	//Prints Tiny List
-			 	for(int i = 0; i < func.meIRL.size(); i++){
-			 		func.meIRL.get(i).irToTiny(tinyList, func);
-			 		// tinyList.add(new TinyNode(meIRL.get(i)));
-			 	}
+			 	Allocator alloc = new Allocator(func, fc1.st, tinyList);
+			 	alloc.allocate();
+			 	// for(int i = 0; i < func.meIRL.size(); i++){
+			 	// 	func.meIRL.get(i).irToTiny(tinyList, func);
+			 	// 	// tinyList.add(new TinyNode(meIRL.get(i)));
+			 	// }
 	 		}
 	 	}
 	 	//Add halt to end of Tiny list

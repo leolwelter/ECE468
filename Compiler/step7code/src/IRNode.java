@@ -136,61 +136,62 @@ public class IRNode {
 	}
 
 	public String tempToReg(char[] irop, String tvar, Function fy){
-		//Take in a raw L/T/P, convert to Tiny
-		//If not a REGISTER ($) just return tvar
-		String tinyReg = tvar;
-		//T->R
-		// System.out.println("TVAR :" + tvar);
-		if(tvar.startsWith("$")){
-			if(tvar.toCharArray()[1] == 'T'){
-				tinyReg = "r" + (Integer.parseInt(tvar.split("T")[1]) - 1);
-				//tinyReg = "$-" + (fy.localCnt + (Integer.parseInt(tvar.split("T")[1])));
-			} else if(tvar.toCharArray()[1] == 'L'){
-				tinyReg = "$-" + (Integer.parseInt(tvar.split("L")[1]));
-			} else if(tvar.toCharArray()[1] == 'P'){
-				tinyReg = "$" + (6 + fy.paramCnt - Integer.parseInt(tvar.split("P")[1]));
-			} else if(tvar.toCharArray()[1] == 'R'){
-				tinyReg = "$" + (6 + fy.paramCnt);
-			}
-		} else {
-			try{
-				if(Integer.valueOf(tvar) instanceof Integer){
-					tinyReg = tvar;
-				}
-			}
-			catch (Exception err1){
-				try{
-					if(Float.valueOf(tvar) instanceof Float){
-						tinyReg = tvar;
-					}
-				}
-				catch(Exception err2){
-						ArrayList<List<String>> varList = fy.st.varMap.get(fy.name);
-						if(varList != null){
-				      for(List<String> varData : varList){
-								if(varData.get(0).equals(tvar)){
-									tvar = varData.get(3);
-									// System.out.println("TVAR :" + tvar);
-									if(tvar.startsWith("$")) {
-										if(tvar.toCharArray()[1] == 'T'){
-											tinyReg = "r" + (Integer.parseInt(tvar.split("T")[1]) - 1);
-											//tinyReg = "$-" + (fy.localCnt + (Integer.parseInt(tvar.split("T")[1])));
-										} else if(tvar.toCharArray()[1] == 'L'){
-											tinyReg = "$-" + (Integer.parseInt(tvar.split("L")[1]));
-										} else if(tvar.toCharArray()[1] == 'P'){
-											tinyReg = "$" + (6 + fy.paramCnt - Integer.parseInt(tvar.split("P")[1]));
-										} else if(tvar.toCharArray()[1] == 'R'){
-											tinyReg = "$" + (6 + fy.paramCnt);
-										}
-									}
-								}
-							}
-						}
-				}
-		}
-	}
-		//System.out.println("TR : " + tinyReg);
-		return tinyReg;
+	// 	//Take in a raw L/T/P, convert to Tiny
+	// 	//If not a REGISTER ($) just return tvar
+	// 	String tinyReg = tvar;
+	// 	//T->R
+	// 	// System.out.println("TVAR :" + tvar);
+	// 	if(tvar.startsWith("$")){
+	// 		if(tvar.toCharArray()[1] == 'T'){
+	// 			tinyReg = "r" + (Integer.parseInt(tvar.split("T")[1]) - 1);
+	// 			//tinyReg = "$-" + (fy.localCnt + (Integer.parseInt(tvar.split("T")[1])));
+	// 		} else if(tvar.toCharArray()[1] == 'L'){
+	// 			tinyReg = "$-" + (Integer.parseInt(tvar.split("L")[1]));
+	// 		} else if(tvar.toCharArray()[1] == 'P'){
+	// 			tinyReg = "$" + (6 + fy.paramCnt - Integer.parseInt(tvar.split("P")[1]));
+	// 		} else if(tvar.toCharArray()[1] == 'R'){
+	// 			tinyReg = "$" + (6 + fy.paramCnt);
+	// 		}
+	// 	} else {
+	// 		try{
+	// 			if(Integer.valueOf(tvar) instanceof Integer){
+	// 				tinyReg = tvar;
+	// 			}
+	// 		}
+	// 		catch (Exception err1){
+	// 			try{
+	// 				if(Float.valueOf(tvar) instanceof Float){
+	// 					tinyReg = tvar;
+	// 				}
+	// 			}
+	// 			catch(Exception err2){
+	// 					ArrayList<List<String>> varList = fy.st.varMap.get(fy.name);
+	// 					if(varList != null){
+	// 			      for(List<String> varData : varList){
+	// 							if(varData.get(0).equals(tvar)){
+	// 								tvar = varData.get(3);
+	// 								// System.out.println("TVAR :" + tvar);
+	// 								if(tvar.startsWith("$")) {
+	// 									if(tvar.toCharArray()[1] == 'T'){
+	// 										tinyReg = "r" + (Integer.parseInt(tvar.split("T")[1]) - 1);
+	// 										//tinyReg = "$-" + (fy.localCnt + (Integer.parseInt(tvar.split("T")[1])));
+	// 									} else if(tvar.toCharArray()[1] == 'L'){
+	// 										tinyReg = "$-" + (Integer.parseInt(tvar.split("L")[1]));
+	// 									} else if(tvar.toCharArray()[1] == 'P'){
+	// 										tinyReg = "$" + (6 + fy.paramCnt - Integer.parseInt(tvar.split("P")[1]));
+	// 									} else if(tvar.toCharArray()[1] == 'R'){
+	// 										tinyReg = "$" + (6 + fy.paramCnt);
+	// 									}
+	// 								}
+	// 							}
+	// 						}
+	// 					}
+	// 			}
+	// 	}
+	// }
+	// 	//System.out.println("TR : " + tinyReg);
+	// 	return tinyReg;
+		return tvar;
 	}
 
 	public String checkBothMems(LinkedList<TinyNode> tinyList, String top1, String top2){
@@ -221,7 +222,7 @@ public class IRNode {
 				if(op1.equals("")){
 					tinyList.add(new TinyNode("pop", "", ""));
 				}else{
-					top1 = tempToReg(irOp1, op1, fy);
+					top1 = tempToReg(result.toCharArray(), result, fy);
 					tinyList.add(new TinyNode("pop", top1, ""));
 				}
 				break;
@@ -250,7 +251,7 @@ public class IRNode {
 				break;
 			case("LINK"): //TODO: make 10 the actual number of locals + temps
 					//System.out.println("LC : " + fy.localCnt + "PC : " + fy.paramCnt);
-					tinyList.add(new TinyNode("link", Integer.toString(fy.localCnt), ""));
+					tinyList.add(new TinyNode("link", "100" , ""));
 				break;
 			//******* CONDITIONAL(int) OPERATIONS ******//
 			case("GT"):
@@ -372,7 +373,7 @@ public class IRNode {
 			case("READI"):
 				topcode = "sys";
 				top1 	= "readi";
-				top2 = tempToReg(irOp1, op1, fy);
+				top2 = tempToReg(result.toCharArray(), result, fy);
 				tinyList.add(new TinyNode(topcode, top1, top2));
 				break;
 			case("ADDI"):
@@ -455,7 +456,7 @@ public class IRNode {
 			case("READF"):
 				topcode = "sys";
 				top1 	= "readr";
-				top2 = tempToReg(irOp1, op1, fy);
+				top2 = tempToReg(result.toCharArray(), result, fy);
 				tinyList.add(new TinyNode(topcode, top1, top2));
 				break;
 			case("ADDF"):

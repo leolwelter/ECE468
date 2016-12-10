@@ -11,14 +11,14 @@
 ;PUSH $T2  
 ;JSR F  
 ;POP   
-;POP $T3  
+;POP   $T3
 ;STOREI $T3  $L1
 ;SUBI $P1 2 $T4
 ;PUSH   
 ;PUSH $T4  
 ;JSR F  
 ;POP   
-;POP $T5  
+;POP   $T5
 ;STOREI $T5  $L2
 ;ADDI $L1 $L2 $T6
 ;STOREI $T6  $R
@@ -54,13 +54,13 @@
 ;STOREI 0  $T1
 ;STOREI $T1  $L1
 ;WRITES input  
-;READI end  
+;READI   $L2
 ;LABEL   label6
 ;PUSH   
 ;PUSH $L1  
 ;JSR F  
 ;POP   
-;POP $T2  
+;POP   $T2
 ;STOREI $T2  $L3
 ;WRITEI $L1  
 ;WRITES space  
@@ -87,13 +87,21 @@ push r3
 jsr main 
 sys halt 
 label F 
-link 3 
-move 2 r0
-cmpi $6 r0
+link 100 
+move 2 r1
+move r1 r3
+move r3 $-4
+move $6 r1
+move $-4 r2
+cmpi r1 r2
 jle label0 
 move $6 r1
-subi 1 r1
+move 1 r2
+move r1 r3
+subi r2 r3
+move r3 $-5
 push  
+move $-5 r1
 push r1 
 push r0 
 push r1 
@@ -105,12 +113,19 @@ pop r2
 pop r1 
 pop r0 
 pop  
-pop r2 
-move r2 $-1
-move $6 r3
-subi 2 r3
+pop r3 
+move r3 $-6
+move $-6 r1
+move r1 r3
+move r3 $-1
+move $6 r1
+move 2 r2
+move r1 r3
+subi r2 r3
+move r3 $-7
 push  
-push r3 
+move $-7 r1
+push r1 
 push r0 
 push r1 
 push r2 
@@ -121,38 +136,70 @@ pop r2
 pop r1 
 pop r0 
 pop  
-pop r4 
-move r4 $-2
-move $-1 r5
-addi $-2 r5
-move r5 $7
+pop r3 
+move r3 $-8
+move $-8 r1
+move r1 r3
+move r3 $-2
+move $-1 r1
+move $-2 r2
+move r1 r3
+addi r2 r3
+move r3 $-9
+move $-9 r1
+move r1 r3
+move r3 $7
 unlnk  
 ret  
 jmp label1 
 label label0 
-move 0 r6
-cmpi $6 r6
+move 0 r1
+move r1 r3
+move r3 $-10
+move $6 r1
+move $-10 r2
+cmpi r1 r2
 jne label2 
-move 0 r7
-move r7 $7
+move 0 r1
+move r1 r3
+move r3 $-11
+move $-11 r1
+move r1 r3
+move r3 $7
 unlnk  
 ret  
 jmp label1 
 label label2 
-move 1 r8
-cmpi $6 r8
+move 1 r1
+move r1 r3
+move r3 $-12
+move $6 r1
+move $-12 r2
+cmpi r1 r2
 jne label3 
-move 1 r9
-move r9 $7
+move 1 r1
+move r1 r3
+move r3 $-13
+move $-13 r1
+move r1 r3
+move r3 $7
 unlnk  
 ret  
 jmp label1 
 label label3 
-move 2 r10
-cmpi $6 r10
+move 2 r1
+move r1 r3
+move r3 $-14
+move $6 r1
+move $-14 r2
+cmpi r1 r2
 jne label4 
-move 1 r11
-move r11 $7
+move 1 r1
+move r1 r3
+move r3 $-15
+move $-15 r1
+move r1 r3
+move r3 $7
 unlnk  
 ret  
 jmp label1 
@@ -161,14 +208,20 @@ label label4
 unlnk  
 ret  
 label main 
-link 4 
-move 0 r0
-move r0 $-1
+link 100 
+move 0 r1
+move r1 r3
+move r3 $-5
+move $-5 r1
+move r1 r3
+move r3 $-1
 sys writes input
-sys readi $-2
+sys readi r3
+move r3 $-2
 label label6 
 push  
-push $-1 
+move $-1 r1
+push r1 
 push r0 
 push r1 
 push r2 
@@ -179,22 +232,40 @@ pop r2
 pop r1 
 pop r0 
 pop  
-pop r1 
-move r1 $-3
-sys writei $-1
+pop r3 
+move r3 $-6
+move $-6 r1
+move r1 r3
+move r3 $-3
+move $-1 r1
+sys writei r1
 sys writes space
-sys writei $-3
+move $-3 r1
+sys writei r1
 sys writes eol
-move $-1 r2
-addi 1 r2
-move r2 $-1
-move $-2 r3
-cmpi $-1 r3
+move $-1 r1
+move 1 r2
+move r1 r3
+addi r2 r3
+move r3 $-7
+move $-7 r1
+move r1 r3
+move r3 $-1
+move end r1
+move r1 r3
+move r3 $-8
+move $-1 r1
+move $-8 r2
+cmpi r1 r2
 jeq label5 
 jmp label6 
 label label5 
-move 0 r4
-move r4 $6
+move 0 r1
+move r1 r3
+move r3 $-9
+move $-9 r1
+move r1 r3
+move r3 $6
 unlnk  
 ret  
 end  

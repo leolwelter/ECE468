@@ -43,7 +43,6 @@ public class AntlrMicroListener extends MicroBaseListener {
 			txt = txt.split("\\(")[0];
 			//Set new SymbolTable scope
 			st = new SymbolTable(txt);
-
 	/*		ArrayList<List<String>> varList = st.varMap.get("GLOBAL");
 
 			st = new SymbolTable(txt);
@@ -824,17 +823,6 @@ public class AntlrMicroListener extends MicroBaseListener {
 		String idReg = "";
 		String type = "";
 
-		//Functions have access to their own scope
-		ArrayList<List<String>> varList = st.varMap.get(fy.name);
-	    if(varList != null){
-	      for(List<String> varData : varList){
-	      	if(varData.get(0).equals(id)){
-	      		type = varData.get(1);
-						idReg = varData.get(3);
-	      	}
-	      }
-	    }
-
 	    //Functions have access to GLOBAL scope
 		ArrayList<List<String>> varList2 = st.varMap.get("GLOBAL");
 		   if(varList2 != null){
@@ -845,11 +833,22 @@ public class AntlrMicroListener extends MicroBaseListener {
 		     	}
 		    }
 		}
+		//Functions have access to their own scope
+		ArrayList<List<String>> varList = st.varMap.get(fy.name);
+	    if(varList != null){
+	      for(List<String> varData : varList){
+	      	if(varData.get(0).equals(id)){
+	      		type = varData.get(1);
+				idReg = varData.get(3);
+	      	}
+	      }
+	    }
+
 
 		if(type.equals("INT"))
-			this.meIRL.add(new IRNode("READI", idReg, "", ""));
+			this.meIRL.add(new IRNode("READI", "", "", idReg));
 		if(type.equals("FLOAT"))
-			this.meIRL.add(new IRNode("READF", idReg, "", ""));
+			this.meIRL.add(new IRNode("READF", "", "", idReg));
 	}
 
 	@Override public void enterCall_expr(MicroParser.Call_exprContext ctx) {
@@ -943,7 +942,7 @@ public class AntlrMicroListener extends MicroBaseListener {
 			this.meIRL.add(new IRNode("POP", "", "", ""));
 		}
 		IRNode.tempCnt++;
-		this.meIRL.add(new IRNode("POP", "$T"  + IRNode.tempCnt, "", ""));
+		this.meIRL.add(new IRNode("POP", "", "", "$T"  + IRNode.tempCnt));
 	}
 
 }
